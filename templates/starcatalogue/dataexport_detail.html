@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load starcatalogue_tags %} 
 
 {% block title %}Data Export{% endblock %}
 
@@ -17,19 +18,7 @@
             <p class="lead">Something went wrong while generating your export.</p>
             <form action="{% url 'generate_export' %}" method="POST">
                 {% csrf_token %}
-                {% if object.min_magnitude %}<input type="hidden" name="min_magnitude" value="{{ object.min_magnitude }}">{% endif %}
-                {% if object.max_magnitude %}<input type="hidden" name="max_magnitude" value="{{ object.max_magnitude }}">{% endif %}
-                {% if object.min_period %}<input type="hidden" name="min_period" value="{{ object.min_period }}">{% endif %}
-                {% if object.max_period %}<input type="hidden" name="max_period" value="{{ object.max_period }}">{% endif %}
-                {% if object.certain_period %}<input type="hidden" name="certain_period" value="{{ object.get_certain_period_display }}">{% endif %}
-                {% if object.uncertain_period %}<input type="hidden" name="uncertain_period" value="{{ object.get_uncertain_period_display }}">{% endif %}
-                {% if object.type_pulsator %}<input type="hidden" name="type_pulsator" value="{{ object.get_type_pulsator_display }}">{% endif %}
-                {% if object.type_eaeb %}<input type="hidden" name="type_eaeb" value="{{ object.get_type_eaeb_display }}">{% endif %}
-                {% if object.type_ew %}<input type="hidden" name="type_ew" value="{{ object.get_type_ew_display }}">{% endif %}
-                {% if object.type_rotator %}<input type="hidden" name="type_rotator" value="{{ object.get_type_rotator_display }}">{% endif %}
-                {% if object.type_unknown %}<input type="hidden" name="type_unknown" value="{{ object.get_type_unknown_display }}">{% endif %}
-                {% if object.search %}<input type="hidden" name="search" value="{{ object.search }}">{% endif %}
-                {% if object.search_radius %}<input type="hidden" name="search" value="{{ object.search_radius }}">{% endif %}
+                {% export_hidden_inputs object %}
                 <div class="col">
                   <input type="submit" value="Retry" class="btn btn-secondary">
                 </div>

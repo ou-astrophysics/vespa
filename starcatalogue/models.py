@@ -1,7 +1,6 @@
 import datetime
 import logging
 import urllib
-import uuid
 
 import numpy
 
@@ -326,81 +325,5 @@ class ZooniverseSubject(models.Model):
         )
 
 
-class DataExport(models.Model):
-    EXPORT_FILE_NAME = 'superwasp-vespa-export.zip'
-
-    CHECKBOX_CHOICES = [
-        (True, 'on'),
-        (False, 'off'),
-    ]
-    CHECKBOX_CHOICES_DICT = dict([ (v, k) for (k, v) in CHECKBOX_CHOICES])
-
-    STATUS_PENDING = 0
-    STATUS_RUNNING = 1
-    STATUS_COMPLETE = 2
-    STATUS_FAILED = 3
-    STATUS_CHOICES = (
-        (STATUS_PENDING, 'Pending'),
-        (STATUS_RUNNING, 'Running'),
-        (STATUS_COMPLETE, 'Complete'),
-        (STATUS_FAILED, 'Failed'),
-    )
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    min_period = models.FloatField(null=True)
-    max_period = models.FloatField(null=True)
-    min_magnitude = models.FloatField(null=True)
-    max_magnitude = models.FloatField(null=True)
-    certain_period = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
-    uncertain_period = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
-    type_pulsator = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
-    type_rotator = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
-    type_ew = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
-    type_eaeb = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
-    type_unknown = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
-    search = models.TextField(null=True)
-    search_radius = models.FloatField(null=True)
-
-    data_version = models.FloatField()
-
-    celery_task_id = models.UUIDField(null=True)
-    export_status = models.IntegerField(choices=STATUS_CHOICES, default=STATUS_PENDING)
-    export_file = models.FileField(
-        upload_to=export_upload_to,
-        null=True,
-    )
-
-    progress = models.FloatField(default=0.0)
-
-    created = models.DateTimeField(auto_now_add=True)
-
-    @property
-    def queryset_params(self):
-        return {
-            'min_period': self.min_period,
-            'max_period': self.max_period,
-            'min_magnitude': self.min_magnitude,
-            'max_magnitude': self.max_magnitude,
-            'certain_period': self.get_certain_period_display(),
-            'uncertain_period': self.get_uncertain_period_display(),
-            'type_pulsator': self.get_type_pulsator_display(),
-            'type_rotator': self.get_type_rotator_display(),
-            'type_ew': self.get_type_ew_display(),
-            'type_eaeb': self.get_type_eaeb_display(),
-            'type_unknown': self.get_type_unknown_display(),
-            'search': self.search,
-            'search_radius': self.search_radius,
-        }
-    
-    @property
-    def queryset(self):
-        return StarListView().get_queryset(params=self.queryset_params)
-
-    @property
-    def export_file_naturalsize(self):
-        return naturalsize(self.export_file.size)
-
-
 from .tasks import download_fits, generate_lightcurve_images, generate_star_images
-from .views import StarListView
+from .exports import DataExport

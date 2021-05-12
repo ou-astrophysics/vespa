@@ -18,23 +18,7 @@ from matplotlib import pyplot
 
 from PIL import Image
 
-from .models import DataExport, Star, FoldedLightcurve
-
-
-EXPORT_DATA_DESCRIPTION = {
-    'SuperWASP ID': 'The unique identifier for the source',
-    'Period Length': 'The period length in seconds',
-    'RA': 'Right ascension in hours',
-    'Dec': 'Declination in degrees',
-    'Maximum magnitude': 'The brightest magnitude for this source',
-    'Minimum magnitude': 'The least bright magnitude for this source',
-    'Mean magnitude': 'The mean magnitude for this source',
-    'Classification': 'The candidate variable star type',
-    'Classification count': 'How many Zooniverse classifications this entry received',
-    'Folding flag': 'Whether the correctness of this period is certain or uncertain (based on Zooniverse classifications)',
-    'Sigma': 'Sigma error estimate from original period search',
-    'Chi squared': 'Chi squared error estimate from original period search',
-}
+from .models import Star, FoldedLightcurve
 
 
 @shared_task
@@ -55,42 +39,13 @@ def generate_export(export_id):
             if i % 1000 == 0:
                 export.progress = float(i) / total_records * 100
                 export.save()
-            w.writerow({
-                'SuperWASP ID': record.star.superwasp_id,
-                'Period Length': record.period_length,
-                'RA': record.star.ra,
-                'Dec': record.star.dec,
-                'Maximum magnitude': record.star.max_magnitude,
-                'Minimum magnitude': record.star.min_magnitude,
-                'Mean magnitude': record.star.mean_magnitude,
-                'Classification': record.get_classification_display(), 
-                'Classification count': record.classification_count,
-                'Folding flag': record.get_period_uncertainty_display(),
-                'Sigma': record.sigma,
-                'Chi squared': record.chi_squared,
-            })
+            w.writerow(gen_export_record_dict(record))
 
         export_file = ContentFile(b'')
         with zipfile.ZipFile(export_file, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as export_zip:
             export_zip.writestr('export.csv', export_csv.getvalue())
             export_zip.writestr('fields.yaml', yaml.dump(EXPORT_DATA_DESCRIPTION))
-            export_zip.writestr('params.yaml', yaml.dump({
-                'min_magnitude': export.min_magnitude,
-                'max_magnitude': export.max_magnitude,
-                'min_period': export.min_period,
-                'max_period': export.max_period,
-                'certain_period': export.certain_period,
-                'uncertain_period': export.uncertain_period,
-                'type_pulsator': export.type_pulsator,
-                'type_rotator': export.type_rotator,
-                'type_ew': export.type_ew,
-                'type_eaeb': export.type_eaeb,
-                'type_unknown': export.type_unknown,
-                'search': export.search,
-                'search_radius': export.search_radius,
-                'data_version': export.data_version,
-                'object_count': total_records,
-            }))
+            export_zip.writestr('params.yaml', yaml.dump(gen_export_params_yaml_dict(export, total_records)))
         export.export_file.save(export.EXPORT_FILE_NAME, export_file)
     except:
         export.export_status = export.STATUS_FAILED
@@ -197,3 +152,5 @@ def generate_star_images(star_id):
     star.image_version = star.CURRENT_IMAGE_VERSION
     star.save()
     pyplot.close()
+
+from .exports import EXPORT_DATA_DESCRIPTION, gen_export_params_yaml_dict, gen_export_record_dict, DataExport

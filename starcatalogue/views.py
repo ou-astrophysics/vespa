@@ -14,7 +14,8 @@ from django.views.generic.list import ListView
 from django.views.generic import DetailView
 from django.views import View
 
-from starcatalogue.models import Star, FoldedLightcurve, DataExport
+from starcatalogue.models import Star, FoldedLightcurve
+from starcatalogue.exports import DataExport
 from starcatalogue.fields import Distance
 
 

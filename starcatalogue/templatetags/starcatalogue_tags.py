@@ -4,6 +4,9 @@ from astropy.coordinates import Angle
 from astropy import units as u
 
 from django import template
+from django.utils.html import format_html_join
+
+from ..exports import BASIC_EXPORT_PARAMS, DISPLAYABLE_EXPORT_PARAMS, gen_export_params_dict
 
 register = template.Library()
 
@@ -53,3 +56,10 @@ def startswith(text, starts):
     if isinstance(text, str):
         return text.startswith(starts)
     return False
+
+@register.simple_tag(takes_context=True)
+def export_hidden_inputs(context, obj=None):
+    if obj is None:
+        obj = context
+    out = [(param, value) for param, value in gen_export_params_dict(obj, True).items() if value is not None]
+    return format_html_join('\n', '<input type="hidden" name="{}" value="{}">', out)

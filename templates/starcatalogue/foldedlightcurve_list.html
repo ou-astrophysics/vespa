@@ -187,19 +187,7 @@
 
   <form action="{% url 'generate_export' %}" method="POST" id="export_form">
     {% csrf_token %}
-    <input type="hidden" name="min_period" value="{% if min_period %}{{ min_period }}{% endif %}">
-    <input type="hidden" name="max_period" value="{% if max_period %}{{ max_period }}{% endif %}">
-    <input type="hidden" name="min_magnitude" value="{% if min_magnitude %}{{ min_magnitude }}{% endif %}">
-    <input type="hidden" name="max_magnitude" value="{% if max_magnitude %}{{ max_magnitude }}{% endif %}">
-    <input type="hidden" name="certain_period" value="{% if certain_period %}{{ certain_period }}{% endif %}">
-    <input type="hidden" name="uncertain_period" value="{% if uncertain_period %}{{ uncertain_period }}{% endif %}">
-    <input type="hidden" name="type_pulsator" value="{% if type_pulsator %}{{ type_pulsator }}{% endif %}">
-    <input type="hidden" name="type_eaeb" value="{% if type_eaeb %}{{ type_eaeb }}{% endif %}">
-    <input type="hidden" name="type_ew" value="{% if type_ew %}{{ type_ew }}{% endif %}">
-    <input type="hidden" name="type_rotator" value="{% if type_rotator %}{{ type_rotator }}{% endif %}">
-    <input type="hidden" name="type_unknown" value="{% if type_unknown %}{{ type_unknown }}{% endif %}">
-    <input type="hidden" name="search" value="{% if search %}{{ search }}{% endif %}">
-    <input type="hidden" name="search_radius" value="{% if search_radius %}{{ search_radius }}{% endif %}">
+    {% export_hidden_inputs %}
     <div class="col">
       <input type="submit" value="Export as CSV" class="btn btn-secondary">
     </div>
