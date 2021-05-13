@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% load starcatalogue_tags %} 
+{% load starcatalogue_tags %}
+{% load humanize %}
 
 {% block title %}Browse the Catalogue{% endblock %}
 
@@ -201,6 +202,7 @@
 </div>
 
 <div class="row mt-2">
+  <div class="col mt-2 lead">{{ result_count|intcomma }} result{{ result_count|pluralize }}{% if search and coords %} within {{ search_radius }} deg of {% hours coords.ra %} {{ coords.dec }}{% elif search and not coords %}. Could not determine coordinates.{% endif %}</div>
   {% include "starcatalogue/pagination.html" %}
 </div>
   {% if object_list %}

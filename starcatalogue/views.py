@@ -173,14 +173,17 @@ class StarListView(ListView):
             order_prefix = ''
             self.order = 'asc' # To ditch any invalid values
         
-        if self.coords is None:
-            self.coords = SkyCoord(0,0, unit=u.deg)
+        if not self.search and self.coords is None:
+            self.coords = SkyCoord(0, 0, unit=u.deg)
 
-        qs = qs.annotate(
-            distance=Distance('star__location', (
-                self.coords.ra.to_value(), self.coords.dec.to_value(),
-            )),
-        ).order_by('{}{}'.format(order_prefix, self.sort))
+        if self.coords is not None:
+            qs = qs.annotate(
+                distance=Distance('star__location', (
+                    self.coords.ra.to_value(), self.coords.dec.to_value(),
+                )),
+            ).order_by('{}{}'.format(order_prefix, self.sort))
+
+        self.result_count = qs.count()
 
         return qs
 
@@ -202,6 +205,7 @@ class StarListView(ListView):
         context['coords'] = self.coords
         context['sort'] = self.sort
         context['order'] = self.order
+        context['result_count'] = self.result_count
 
         return context
 

@@ -11,9 +11,14 @@ from ..exports import BASIC_EXPORT_PARAMS, DISPLAYABLE_EXPORT_PARAMS, gen_export
 register = template.Library()
 
 
-@register.simple_tag(takes_context=True)
-def degrees(context, distance):   
+@register.simple_tag()
+def degrees(distance):   
     return Angle(distance, u.rad).to_string(u.deg)
+
+
+@register.simple_tag()
+def hours(coord):   
+    return coord.to_string(u.hour)
 
 
 @register.filter('isnan')
