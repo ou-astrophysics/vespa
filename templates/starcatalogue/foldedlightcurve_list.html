@@ -117,16 +117,16 @@
           <button class="btn btn-secondary dropdown-toggle" type="button" id="periodButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Period
           </button>
-          <div class="dropdown-menu px-3" aria-labelledby="periodButton">
+          <div class="dropdown-menu px-3" aria-labelledby="periodButton" style="width: 200px;">
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="period-min-label">Min</span>
+                <span class="input-group-text" id="period-min-label">Min (sec)</span>
               </div>
               <input type="text" name="min_period" class="form-control" placeholder="" value="{% if min_period %}{{ min_period }}{% endif %}" aria-label="Minimum period" aria-describedby="period-min-label">
             </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="period-max-label">Max</span>
+                <span class="input-group-text" id="period-max-label">Max (sec)</span>
               </div>
               <input type="text" name="max_period" class="form-control" placeholder="" value="{% if max_period %}{{ max_period }}{% endif %}" aria-label="Maximum period" aria-describedby="period-max-label">
             </div> 
