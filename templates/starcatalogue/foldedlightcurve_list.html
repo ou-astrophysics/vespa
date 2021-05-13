@@ -35,7 +35,7 @@
           <div class="dropdown-menu px-3" aria-labelledby="sortButton">
             <div class="container">
               <div class="row align-items-start" style="width: 450px;">
-                <div class="col">
+                <div class="col pl-0">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="sort" value="distance" id="sort_distance" {% if sort == 'distance' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_distance">
@@ -66,8 +66,14 @@
                       Majority Classification
                     </label>
                   </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="sort" value="classification_count" id="sort_classification_count" {% if sort == 'classification_count' %}checked{% endif %}>
+                    <label class="form-check-label" for="sort_classification_count">
+                      Classification Count
+                    </label>
+                  </div>
                 </div>
-                <div class="col">
+                <div class="col pr-0">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="order" value="asc" id="order_asc" {% if order == 'asc' %}checked{% endif %}>
                     <label class="form-check-label" for="order_asc">
@@ -146,38 +152,61 @@
         </div>
         <div class="btn-group">
           <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="typeButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Variable type
+            Classification
           </button>
           <div class="dropdown-menu px-3" aria-labelledby="typeButton">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="type_pulsator" id="type_pulsator" {% if type_pulsator == 'on' %}checked {% endif %}>
-              <label class="form-check-label" for="type_pulsator">
-                Pulsator
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="type_rotator" id="type_rotator" {% if type_rotator == 'on' %}checked {% endif %}>
-              <label class="form-check-label" for="type_rotator">
-                Rotator
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="type_eaeb" id="type_eaeb" {% if type_eaeb == 'on' %}checked {% endif %}>
-              <label class="form-check-label" for="type_eaeb">
-                EA/EB
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="type_ew"  id="type_ew" {% if type_ew == 'on' %}checked {% endif %}>
-              <label class="form-check-label" for="type_ew">
-                EW
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="type_unknown" id="type_unknown" {% if type_unknown == 'on' %}checked {% endif %}>
-              <label class="form-check-label" for="type_unknown">
-                Unknown
-              </label>
+            <div class="container">
+              <div class="row align-items-start" style="width: 350px;">
+                <div class="col pl-0">
+                  <h6>Classification Count</h6>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="classifications-min-label">Min</span>
+                    </div>
+                    <input type="text" name="min_classifications" class="form-control" placeholder="" value="{% if min_classifications %}{{ min_classifications }}{% endif %}" aria-label="Minimum classification count" aria-describedby="classifications-min-label">
+                  </div>    
+                  
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="classifications-max-label">Max</span>
+                    </div>
+                    <input type="text" name="max_classifications" class="form-control" placeholder="" value="{% if max_classifications %}{{ max_classifications }}{% endif %}" aria-label="Maximum classification count" aria-describedby="classifications-max-label">
+                  </div> 
+                </div>
+                <div class="col pr-0">
+                  <h6>Variable Type</h6>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="type_pulsator" id="type_pulsator" {% if type_pulsator == 'on' %}checked {% endif %}>
+                    <label class="form-check-label" for="type_pulsator">
+                      Pulsator
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="type_rotator" id="type_rotator" {% if type_rotator == 'on' %}checked {% endif %}>
+                    <label class="form-check-label" for="type_rotator">
+                      Rotator
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="type_eaeb" id="type_eaeb" {% if type_eaeb == 'on' %}checked {% endif %}>
+                    <label class="form-check-label" for="type_eaeb">
+                      EA/EB
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="type_ew"  id="type_ew" {% if type_ew == 'on' %}checked {% endif %}>
+                    <label class="form-check-label" for="type_ew">
+                      EW
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="type_unknown" id="type_unknown" {% if type_unknown == 'on' %}checked {% endif %}>
+                    <label class="form-check-label" for="type_unknown">
+                      Unknown
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

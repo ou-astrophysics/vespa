@@ -4,8 +4,14 @@
 
 import uuid
 
+from celery.result import AsyncResult
+
+from django.conf import settings
 from django.db import models
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.template import RequestContext
+from django.urls import reverse
+from django.views import View
 
 from humanize import naturalsize
 
@@ -20,6 +26,8 @@ BASIC_EXPORT_PARAMS = (
     'certain_period',
     'search',
     'search_radius',
+    'min_classifications',
+    'max_classifications',
 )
 DISPLAYABLE_EXPORT_PARAMS = (
     'certain_period',
@@ -75,6 +83,8 @@ class DataExport(models.Model):
     max_magnitude = models.FloatField(null=True)
     certain_period = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
     uncertain_period = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
+    min_classifications = models.IntegerField(null=True)
+    max_classifications = models.IntegerField(null=True)
     type_pulsator = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
     type_rotator = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
     type_ew = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
@@ -149,4 +159,67 @@ def gen_export_record_dict(record):
         'Chi squared': record.chi_squared,
     }
 
+class GenerateExportView(View):
+    def get(self, request):
+        return HttpResponseRedirect(reverse('vespa'))
+
+    def post(self, request):
+        try:
+            min_period = request.POST.get('min_period', None)
+            if not min_period:
+                min_period = None
+
+            max_period = request.POST.get('max_period', None)
+            if not max_period:
+                max_period = None
+
+            min_magnitude = request.POST.get('min_magnitude', None)
+            if not min_magnitude:
+                min_magnitude = None
+
+            max_magnitude = request.POST.get('max_magnitude', None)
+            if not max_magnitude:
+                max_magnitude = None
+
+            min_classifications = request.POST.get('min_classifications', None)
+            if not min_classifications:
+                min_classifications = None
+
+            max_classifications = request.POST.get('max_classifications', None)
+            if not max_classifications:
+                max_classifications = None
+
+            search_radius = request.POST.get('search_radius', None)
+            if not search_radius:
+                search_radius = None
+
+            export, created = DataExport.objects.get_or_create(
+                data_version=settings.DATA_VERSION,
+                min_period = min_period,
+                max_period = max_period,
+                min_magnitude = min_magnitude,
+                max_magnitude = max_magnitude,
+                min_classifications = min_classifications,
+                max_classifications = max_classifications,
+                certain_period = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('certain_period', 'on')],
+                uncertain_period = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('uncertain_period', 'on')],
+                type_pulsator = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('type_pulsator', 'on')],
+                type_eaeb = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('type_eaeb', 'on')],
+                type_ew = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('type_ew', 'on')],
+                type_rotator = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('type_rotator', 'on')],
+                type_unknown = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('type_unknown', 'on')],
+                search = request.POST.get('search', None),
+                search_radius = search_radius,
+            )
+            if (
+                export.export_status in (export.STATUS_PENDING, export.STATUS_FAILED) 
+                or (export.export_status == export.STATUS_RUNNING and AsyncResult(export.celery_task_id).ready())
+            ):
+                export.celery_task_id = generate_export.delay(export.id).id
+                export.save()
+            return HttpResponseRedirect(reverse('view_export', kwargs={'pk': export.id.hex}))
+        except (ValueError, TypeError):
+            return HttpResponseBadRequest('Bad Request')
+
+from .tasks import generate_export
 from .views import StarListView

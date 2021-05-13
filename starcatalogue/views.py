@@ -2,17 +2,11 @@ from astropy.coordinates import SkyCoord
 from astropy.coordinates.name_resolve import NameResolveError
 from astropy import units as u
 
-from celery.result import AsyncResult
-
-from django.conf import settings
-from django.db.models import Q, F
-from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from django.urls import reverse
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView
-from django.views import View
 
 from starcatalogue.models import Star, FoldedLightcurve
 from starcatalogue.exports import DataExport
@@ -84,6 +78,26 @@ class StarListView(ListView):
                 self.max_magnitude = None
         except (ValueError, TypeError):
             self.max_magnitude = None
+
+        try:
+            self.min_classifications = int(params.get('min_classifications', None))
+            if self.min_classifications:
+                qs = qs.filter(classification_count__gte=self.min_classifications)
+            else:
+                # To ensure it's None rather than ''
+                self.min_classifications = None
+        except (ValueError, TypeError):
+            self.min_classifications = None
+        
+        try:
+            self.max_classifications = int(params.get('max_classifications', None))
+            if self.max_classifications:
+                qs = qs.filter(classification_count__lte=self.max_classifications)
+            else:
+                # To ensure it's None rather than ''
+                self.max_classifications = None
+        except (ValueError, TypeError):
+            self.max_classifications = None
 
         self.type_pulsator = params.get('type_pulsator', 'off')
         self.type_rotator = params.get('type_rotator', 'off')
@@ -158,6 +172,7 @@ class StarListView(ListView):
             'star__superwasp_id',
             'period_length',
             'classification',
+            'classification_count',
             'star___mean_magnitude',
             'star___max_magnitude',
             'star___min_magnitude'
@@ -195,6 +210,8 @@ class StarListView(ListView):
         context['max_magnitude'] = self.max_magnitude
         context['certain_period'] = self.certain_period
         context['uncertain_period'] = self.uncertain_period
+        context['min_classifications'] = self.min_classifications
+        context['max_classifications'] = self.max_classifications
         context['type_pulsator'] = self.type_pulsator
         context['type_eaeb'] = self.type_eaeb
         context['type_ew'] = self.type_ew
@@ -218,59 +235,6 @@ class DownloadView(TemplateView):
     template_name = 'starcatalogue/download.html'
 
 
-class GenerateExportView(View):
-    def get(self, request):
-        return HttpResponseRedirect(reverse('vespa'))
-
-    def post(self, request):
-        try:
-            min_period = request.POST.get('min_period', None)
-            if not min_period:
-                min_period = None
-
-            max_period = request.POST.get('max_period', None)
-            if not max_period:
-                max_period = None
-
-            min_magnitude = request.POST.get('min_magnitude', None)
-            if not min_magnitude:
-                min_magnitude = None
-
-            max_magnitude = request.POST.get('max_magnitude', None)
-            if not max_magnitude:
-                max_magnitude = None
-
-            search_radius = request.POST.get('search_radius', None)
-            if not search_radius:
-                search_radius = None
-
-            export, created = DataExport.objects.get_or_create(
-                data_version=settings.DATA_VERSION,
-                min_period = min_period,
-                max_period = max_period,
-                min_magnitude = min_magnitude,
-                max_magnitude = max_magnitude,
-                certain_period = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('certain_period', 'on')],
-                uncertain_period = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('uncertain_period', 'on')],
-                type_pulsator = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('type_pulsator', 'on')],
-                type_eaeb = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('type_eaeb', 'on')],
-                type_ew = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('type_ew', 'on')],
-                type_rotator = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('type_rotator', 'on')],
-                type_unknown = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('type_unknown', 'on')],
-                search = request.POST.get('search', None),
-                search_radius = search_radius,
-            )
-            if (
-                export.export_status in (export.STATUS_PENDING, export.STATUS_FAILED) 
-                or (export.export_status == export.STATUS_RUNNING and AsyncResult(export.celery_task_id).ready())
-            ):
-                export.celery_task_id = generate_export.delay(export.id).id
-                export.save()
-            return HttpResponseRedirect(reverse('view_export', kwargs={'pk': export.id.hex}))
-        except (ValueError, TypeError):
-            return HttpResponseBadRequest('Bad Request')
-
-
 class DataExportView(DetailView):
     model = DataExport
 
@@ -281,5 +245,4 @@ class SourceView(DetailView):
     def get_object(self, queryset=None):
         return get_object_or_404(self.model, superwasp_id=self.kwargs['swasp_id'])
 
-
-from .tasks import generate_export
+from .exports import GenerateExportView
