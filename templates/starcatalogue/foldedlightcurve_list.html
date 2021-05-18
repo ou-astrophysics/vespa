@@ -144,30 +144,38 @@
           <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="periodButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Period
           </button>
-          <div class="dropdown-menu px-3" aria-labelledby="periodButton" style="width: 200px;">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="period-min-label">Min (sec)</span>
+          <div class="dropdown-menu px-3" aria-labelledby="periodButton">
+            <div class="container">
+              <div class="row align-items-start" style="width: 350px;">
+                <div class="col pl-0">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="period-min-label">Min (sec)</span>
+                    </div>
+                    <input type="text" name="min_period" class="form-control" placeholder="" value="{% if min_period %}{{ min_period }}{% endif %}" aria-label="Minimum period" aria-describedby="period-min-label">
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="period-max-label">Max (sec)</span>
+                    </div>
+                    <input type="text" name="max_period" class="form-control" placeholder="" value="{% if max_period %}{{ max_period }}{% endif %}" aria-label="Maximum period" aria-describedby="period-max-label">
+                  </div> 
+                </div>
+                <div class="col pr-0">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="certain_period" id="certain_period" {% if certain_period == 'on' %}checked {% endif %}>
+                    <label class="form-check-label" for="certain_period">
+                      Certain
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="uncertain_period" id="uncertain_period" {% if uncertain_period == 'on' %}checked {% endif %}>
+                    <label class="form-check-label" for="uncertain_period">
+                      Uncertain
+                    </label>
+                  </div>
+                </div>
               </div>
-              <input type="text" name="min_period" class="form-control" placeholder="" value="{% if min_period %}{{ min_period }}{% endif %}" aria-label="Minimum period" aria-describedby="period-min-label">
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="period-max-label">Max (sec)</span>
-              </div>
-              <input type="text" name="max_period" class="form-control" placeholder="" value="{% if max_period %}{{ max_period }}{% endif %}" aria-label="Maximum period" aria-describedby="period-max-label">
-            </div> 
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="certain_period" id="certain_period" {% if certain_period == 'on' %}checked {% endif %}>
-              <label class="form-check-label" for="certain_period">
-                Certain
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="uncertain_period" id="uncertain_period" {% if uncertain_period == 'on' %}checked {% endif %}>
-              <label class="form-check-label" for="uncertain_period">
-                Uncertain
-              </label>
             </div>
           </div>
         </div>
