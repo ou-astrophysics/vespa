@@ -23,6 +23,8 @@ BASIC_EXPORT_PARAMS = (
     'max_period',
     'min_magnitude',
     'max_magnitude',
+    'min_amplitude',
+    'max_amplitude',
     'certain_period',
     'search',
     'search_radius',
@@ -81,6 +83,8 @@ class DataExport(models.Model):
     max_period = models.FloatField(null=True)
     min_magnitude = models.FloatField(null=True)
     max_magnitude = models.FloatField(null=True)
+    min_amplitude = models.FloatField(null=True)
+    max_amplitude = models.FloatField(null=True)
     certain_period = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
     uncertain_period = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
     min_classifications = models.IntegerField(null=True)
@@ -136,6 +140,7 @@ EXPORT_DATA_DESCRIPTION = {
     'Maximum magnitude': 'The brightest magnitude for this source',
     'Minimum magnitude': 'The least bright magnitude for this source',
     'Mean magnitude': 'The mean magnitude for this source',
+    'Amplitude': 'The absolute difference between max and min magnitude',
     'Classification': 'The candidate variable star type',
     'Classification count': 'How many Zooniverse classifications this entry received',
     'Folding flag': 'Whether the correctness of this period is certain or uncertain (based on Zooniverse classifications)',
@@ -152,6 +157,7 @@ def gen_export_record_dict(record):
         'Maximum magnitude': record.star.max_magnitude,
         'Minimum magnitude': record.star.min_magnitude,
         'Mean magnitude': record.star.mean_magnitude,
+        'Amplitude': record.star.amplitude,
         'Classification': record.get_classification_display(), 
         'Classification count': record.classification_count,
         'Folding flag': record.get_period_uncertainty_display(),
@@ -181,6 +187,14 @@ class GenerateExportView(View):
             if not max_magnitude:
                 max_magnitude = None
 
+            min_amplitude = request.POST.get('min_amplitude', None)
+            if not min_amplitude:
+                min_amplitude = None
+
+            max_amplitude = request.POST.get('max_amplitude', None)
+            if not max_amplitude:
+                max_amplitude = None
+
             min_classifications = request.POST.get('min_classifications', None)
             if not min_classifications:
                 min_classifications = None
@@ -199,6 +213,8 @@ class GenerateExportView(View):
                 max_period = max_period,
                 min_magnitude = min_magnitude,
                 max_magnitude = max_magnitude,
+                min_amplitude = min_amplitude,
+                max_amplitude = max_amplitude,
                 min_classifications = min_classifications,
                 max_classifications = max_classifications,
                 certain_period = DataExport.CHECKBOX_CHOICES_DICT[request.POST.get('certain_period', 'on')],

@@ -42,6 +42,10 @@
                     <th scope="row">Mean Magnitude</th>
                     <td>{% if not object.mean_magnitude|isnan %}{{ object.mean_magnitude|floatformat:2 }}{% else %}Less than limit (V~15){% endif %}</td>
                 </tr>
+                <tr>
+                    <th scope="row">Amplitude</th>
+                    <td>{% if not object.amplitude|isnan %}{{ object.amplitude|floatformat:2 }}{% else %}Less than limit (V~15){% endif %}</td>
+                </tr>
                 {% if object.fits %}
                 <tr>
                     <th scope="row">Raw data</th>

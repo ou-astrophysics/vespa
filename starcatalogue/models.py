@@ -59,7 +59,7 @@ class ImageGenerator(object):
 
 class Star(models.Model, ImageGenerator):
     CURRENT_IMAGE_VERSION = 0.92
-    CURRENT_STATS_VERSION = 0.31
+    CURRENT_STATS_VERSION = 0.4
 
     superwasp_id = models.CharField(unique=True, max_length=26)
     fits_file = models.FileField(null=True, upload_to=star_upload_to)
@@ -75,6 +75,7 @@ class Star(models.Model, ImageGenerator):
     _min_magnitude = models.FloatField(null=True)
     _mean_magnitude = models.FloatField(null=True)
     _max_magnitude = models.FloatField(null=True)
+    _amplitude = models.FloatField(null=True)
     stats_version = models.FloatField(null=True)
 
     location = SPointField(null=True)
@@ -218,6 +219,7 @@ class Star(models.Model, ImageGenerator):
         for attr_name, agg_func in agg_funcs.items():
             mag = 15 - 2.5 * numpy.log10(agg_func(flux))
             setattr(self, attr_name, mag)
+        self._amplitude = self._min_magnitude - self._max_magnitude
         self.stats_version = self.CURRENT_STATS_VERSION
         self.save()
 
@@ -232,6 +234,10 @@ class Star(models.Model, ImageGenerator):
     @property
     def min_magnitude(self):
         return self.get_magnitude('_min_magnitude')
+
+    @property
+    def amplitude(self):
+        return self.get_magnitude('_amplitude')
 
 
 class FoldedLightcurve(models.Model, ImageGenerator):

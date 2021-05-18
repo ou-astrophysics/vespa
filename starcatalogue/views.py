@@ -80,6 +80,26 @@ class StarListView(ListView):
             self.max_magnitude = None
 
         try:
+            self.min_amplitude = float(params.get('min_amplitude', None))
+            if self.min_amplitude:
+                qs = qs.filter(star___amplitude__gte=self.min_amplitude)
+            else:
+                # To ensure it's None rather than ''
+                self.min_amplitude = None
+        except (ValueError, TypeError):
+            self.min_amplitude = None
+        
+        try:
+            self.max_amplitude = float(params.get('max_amplitude', None))
+            if self.max_amplitude:
+                qs = qs.filter(star___amplitude__lte=self.max_amplitude)
+            else:
+                # To ensure it's None rather than ''
+                self.max_amplitude = None
+        except (ValueError, TypeError):
+            self.max_amplitude = None
+
+        try:
             self.min_classifications = int(params.get('min_classifications', None))
             if self.min_classifications:
                 qs = qs.filter(classification_count__gte=self.min_classifications)
@@ -175,7 +195,8 @@ class StarListView(ListView):
             'classification_count',
             'star___mean_magnitude',
             'star___max_magnitude',
-            'star___min_magnitude'
+            'star___min_magnitude',
+            'star___amplitude',
         )
         self.sort = params.get('sort', None)
         if self.sort not in sort_fields:
@@ -208,6 +229,8 @@ class StarListView(ListView):
         context['max_period'] = self.max_period
         context['min_magnitude'] = self.min_magnitude
         context['max_magnitude'] = self.max_magnitude
+        context['min_amplitude'] = self.min_amplitude
+        context['max_amplitude'] = self.max_amplitude
         context['certain_period'] = self.certain_period
         context['uncertain_period'] = self.uncertain_period
         context['min_classifications'] = self.min_classifications
