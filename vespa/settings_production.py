@@ -7,6 +7,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'stem-superwasp-live',
+    'superwasp.org',
+    'www.superwasp.org',
 ]
 
 DATABASES = {
