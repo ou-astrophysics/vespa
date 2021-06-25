@@ -32,6 +32,9 @@ def export_upload_to(instance, filename):
 def star_upload_to(instance, filename):
     return f'sources/{instance.superwasp_id}/v{instance.CURRENT_IMAGE_VERSION}_{filename}'
 
+def star_json_upload_to(instance, filename):
+    return f'sources/{instance.superwasp_id}/v{instance.CURRENT_JSON_VERSION}_{filename}'
+
 def lightcurve_upload_to(instance, filename):
     return f'sources/{instance.star.superwasp_id}/v{instance.CURRENT_IMAGE_VERSION}_{filename}'
 
@@ -57,8 +60,30 @@ class ImageGenerator(object):
         return image_attr.url
 
 
-class Star(models.Model, ImageGenerator):
+class JSONGenerator(object):
+    def get_or_generate_json(self, json_attr, generation_task, default=None):
+        json_not_present = not json_attr or not self.json_version
+        json_outdated = self.json_version and self.json_version < self.CURRENT_JSON_VERSION
+        if json_not_present or json_outdated:
+            if (
+                not self.json_files_celery_task_id
+                or AsyncResult(self.json_files_celery_task_id).ready()
+                or not self.json_file_celery_started
+                or self.json_file_celery_started < (timezone.now() - datetime.timedelta(minutes=5))
+            ):
+                self.json_files_celery_task_id = generation_task.delay(self.id).id
+                self.json_file_celery_started = timezone.now()
+                self.save()
+            if image_not_present:
+                return default
+        elif self.json_files_celery_task_id:
+            AsyncResult(self.json_files_celery_task_id).forget()
+        return json_attr.url
+
+
+class Star(models.Model, ImageGenerator, JSONGenrator):
     CURRENT_IMAGE_VERSION = 0.92
+    CURRENT_JSON_VERSION = 0.1
     CURRENT_STATS_VERSION = 0.4
 
     superwasp_id = models.CharField(unique=True, max_length=26)
@@ -71,6 +96,11 @@ class Star(models.Model, ImageGenerator):
     images_celery_task_id = models.UUIDField(null=True)
     image_version = models.FloatField(null=True)
     image_celery_started = models.DateTimeField(null=True)
+
+    json_file = models.ImageField(null=True, upload_to=star_json_upload_to)
+    json_files_celery_task_id = models.UUIDField(null=True)
+    json_version = models.FloatField(null=True)
+    json_celery_started = models.DateTimeField(null=True)
 
     _min_magnitude = models.FloatField(null=True)
     _mean_magnitude = models.FloatField(null=True)
@@ -100,7 +130,7 @@ class Star(models.Model, ImageGenerator):
     @property
     def coords(self):
         return SkyCoord(self.coords_str, unit=(units.hour, units.deg))
-    
+
     @property
     def coords_quoted(self):
         return urllib.parse.quote(self.coords_str)
@@ -108,7 +138,7 @@ class Star(models.Model, ImageGenerator):
     @property
     def ra(self):
         return self.coords.ra.to_string(units.hour)
-    
+
     @property
     def dec(self):
         return self.coords.dec
@@ -185,13 +215,20 @@ class Star(models.Model, ImageGenerator):
         return self.get_or_generate_image(self.image_file, generate_star_images)
 
     @property
+    def json_location(self):
+        return self.get_json_location()
+
+    def get_json_location(self):
+        return self.get_or_generate_json(self.image_file, generate_star_json_files)
+
+    @property
     def cerit_url(self):
         return f'https://wasp.cerit-sc.cz/search?objid={self.coords_quoted}&radius=1&radiusUnit=deg&limit=10'
 
     @property
     def simbad_url(self):
         return f'http://simbad.u-strasbg.fr/simbad/sim-coo?Coord={self.ra_quoted}+{self.dec_quoted}&Radius=2&Radius.unit=arcmin&submit=submit+query'
-    
+
     @property
     def asassn_url(self):
         return f'https://asas-sn.osu.edu/photometry?ra={self.ra_quoted}&dec={self.dec_quoted}&radius=2'
@@ -199,7 +236,7 @@ class Star(models.Model, ImageGenerator):
     def get_magnitude(self, attr_name='_mean_magnitude'):
         if (
             self.stats_version is None or
-            self.stats_version < self.CURRENT_STATS_VERSION or 
+            self.stats_version < self.CURRENT_STATS_VERSION or
             getattr(self, attr_name) is None
         ):
             self.calculate_magnitudes()
@@ -330,6 +367,10 @@ class ZooniverseSubject(models.Model):
             self.image_location.replace('https://', ''),
         )
 
-
-from .tasks import download_fits, generate_lightcurve_images, generate_star_images
+from .tasks import (
+    download_fits,
+    generate_lightcurve_images,
+    generate_star_images,
+    generate_star_json_files,
+)
 from .exports import DataExport
