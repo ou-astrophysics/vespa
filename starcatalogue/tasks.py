@@ -3,6 +3,7 @@ import io
 import urllib
 import yaml
 import zipfile
+import json
 
 import seaborn
 
@@ -78,12 +79,39 @@ def download_fits(star_id):
 
 
 @shared_task
+def generate_star_json_files(star_id):
+    star = Star.objects.get(id=star_id)
+
+    if not star.fits:
+        return
+
+    ts = star.timeseries
+    if not ts:
+        return
+    ts_flux = Star.outlier_clip(ts["TAMFLUX2"])
+    ts_data = {
+        "data": {"x": ts.time.jd, "y": ts_flux},
+        "chartOptions": {
+            "xAxisLabel": "Days",
+            "yAxisLabel": "Brightness",
+            "zoomConfiguration": {direction: "x"},
+        },
+    }
+
+    json_data = ContentFile(b'')
+    json.dump(ts_data, json_data)
+    star.json_file.save(f"lightcurve.json", json_data)
+    star.json_version = star.CURRENT_JSON_VERSION
+    star.save()
+
+
+@shared_task
 def generate_lightcurve_images(lightcurve_id):
     lightcurve = FoldedLightcurve.objects.get(id=lightcurve_id)
 
     if not lightcurve.star.fits:
         return
-    
+
     ts = lightcurve.timeseries
     if not ts:
         return
@@ -128,7 +156,7 @@ def generate_star_images(star_id):
 
     if not star.fits:
         return
-    
+
     ts = star.timeseries
     if not ts:
         return
