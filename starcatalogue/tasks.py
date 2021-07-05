@@ -3,7 +3,7 @@ import io
 import urllib
 import yaml
 import zipfile
-import json
+import ujson as json
 
 import seaborn
 
