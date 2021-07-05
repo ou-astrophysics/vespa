@@ -219,7 +219,7 @@ class Star(models.Model, ImageGenerator, JSONGenrator):
         return self.get_json_location()
 
     def get_json_location(self):
-        return self.get_or_generate_json(self.image_file, generate_star_json_files)
+        return self.get_or_generate_json(self.json_file, generate_star_json_files)
 
     @property
     def cerit_url(self):
