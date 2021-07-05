@@ -89,6 +89,8 @@ def generate_star_json_files(star_id):
     if not ts:
         return
     ts_flux = Star.outlier_clip(ts["TAMFLUX2"])
+    # Format based on Zooniverse lightcurve viewer requirements:
+    # https://github.com/zooniverse/front-end-monorepo/blob/master/packages/lib-classifier/src/components/Classifier/components/SubjectViewer/components/ScatterPlotViewer/README.md#scatter-plot-viewer
     ts_data = {
         "data": {"x": ts.time.jd, "y": ts_flux},
         "chartOptions": {
