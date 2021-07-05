@@ -74,7 +74,7 @@ class JSONGenerator(object):
                 self.json_files_celery_task_id = generation_task.delay(self.id).id
                 self.json_file_celery_started = timezone.now()
                 self.save()
-            if image_not_present:
+            if json_not_present:
                 return default
         elif self.json_files_celery_task_id:
             AsyncResult(self.json_files_celery_task_id).forget()
