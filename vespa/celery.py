@@ -23,6 +23,7 @@ app.autodiscover_tasks()
 @app.on_after_finalize.connect
 def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(3600, queue_image_generations.s())
+    sender.add_periodic_task(3600, queue_json_generations.s())
     sender.add_periodic_task(3600, calculate_magnitudes.s())
     sender.add_periodic_task(3600, set_locations.s())
 
@@ -32,7 +33,7 @@ def queue_image_generations():
     for star in Star.objects.filter(
         fits_error_count__lt=settings.FITS_DOWNLOAD_ATTEMPTS
     ).filter(
-        Q(image_version=None) 
+        Q(image_version=None)
         | Q(image_version__lt=Star.CURRENT_IMAGE_VERSION)
     )[:1000]:
         star.get_image_location()
@@ -40,10 +41,21 @@ def queue_image_generations():
     for lightcurve in FoldedLightcurve.objects.filter(
         star__fits_error_count__lt=settings.FITS_DOWNLOAD_ATTEMPTS
     ).filter(
-        Q(image_version=None) 
+        Q(image_version=None)
         | Q(image_version__lt=FoldedLightcurve.CURRENT_IMAGE_VERSION)
     )[:1000]:
         lightcurve.get_image_location()
+
+@app.task
+def queue_json_generations():
+    from starcatalogue.models import Star, FoldedLightcurve
+    for star in Star.objects.filter(
+        fits_error_count__lt=settings.FITS_DOWNLOAD_ATTEMPTS
+    ).filter(
+        Q(json_version=None)
+        | Q(json_version__lt=Star.CURRENT_JSON_VERSION)
+    )[:1000]:
+        star.get_json_location()
 
 @app.task
 def calculate_magnitudes():
