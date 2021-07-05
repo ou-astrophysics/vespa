@@ -97,7 +97,7 @@ class Star(models.Model, ImageGenerator, JSONGenrator):
     image_version = models.FloatField(null=True)
     image_celery_started = models.DateTimeField(null=True)
 
-    json_file = models.ImageField(null=True, upload_to=star_json_upload_to)
+    json_file = models.FileField(null=True, upload_to=star_json_upload_to)
     json_files_celery_task_id = models.UUIDField(null=True)
     json_version = models.FloatField(null=True)
     json_celery_started = models.DateTimeField(null=True)
