@@ -139,6 +139,11 @@
 {% block bodyEnd %}
 <script type="text/javascript" src="https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.js" crossorigin="anonymous" charset="utf-8"></script>
 <script type="text/javascript">
-    var aladin = A.aladin('#aladin-lite-div', {survey: "P/DSS2/color", fov:0.17, target: "{{ object.coords_str }}"});
+    var aladin = A.aladin('#aladin-lite-div', {
+        survey: "P/DSS2/color",
+        fov: 0.17,
+        target: "{{ object.coords_str }}",
+        showShareControl: true
+    });
 </script>
 {% endblock %}
