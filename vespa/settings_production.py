@@ -31,6 +31,8 @@ CELERY_BROKER_URL = (
     f'@{os.environ["CELERY_RABBITMQ_HOST"]}/{os.environ["CELERY_RABBITMQ_VHOST"]}'
 )
 
+PERIODIC_TASK_INTERVAL = 3600
+
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 

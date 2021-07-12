@@ -137,5 +137,7 @@ MEDIA_URL = '/media/'
 CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq/vespa'
 CELERY_RESULT_BACKEND = 'django-db'
 
+PERIODIC_TASK_INTERVAL = 120
+
 DATA_VERSION = 0.9
 FITS_DOWNLOAD_ATTEMPTS = 5
