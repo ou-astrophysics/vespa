@@ -83,7 +83,7 @@ class JSONGenerator(object):
 
 class Star(models.Model, ImageGenerator, JSONGenerator):
     CURRENT_IMAGE_VERSION = 0.92
-    CURRENT_JSON_VERSION = 0.1
+    CURRENT_JSON_VERSION = 0.3
     CURRENT_STATS_VERSION = 0.4
 
     superwasp_id = models.CharField(unique=True, max_length=26)
