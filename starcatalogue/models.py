@@ -326,9 +326,10 @@ class ZooniverseSubject(models.Model):
 
     @property
     def thumbnail_location(self):
-        return 'https://thumbnails.zooniverse.org/100x80/{}'.format(
-            self.image_location.replace('https://', ''),
-        )
+        if self.image_location:
+            return 'https://thumbnails.zooniverse.org/100x80/{}'.format(
+                self.image_location.replace('https://', ''),
+            )
 
 
 from .tasks import download_fits, generate_lightcurve_images, generate_star_images
