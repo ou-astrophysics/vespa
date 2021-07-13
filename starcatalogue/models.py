@@ -68,11 +68,11 @@ class JSONGenerator(object):
             if (
                 not self.json_files_celery_task_id
                 or AsyncResult(self.json_files_celery_task_id).ready()
-                or not self.json_file_celery_started
-                or self.json_file_celery_started < (timezone.now() - datetime.timedelta(minutes=5))
+                or not self.json_celery_started
+                or self.json_celery_started < (timezone.now() - datetime.timedelta(minutes=5))
             ):
                 self.json_files_celery_task_id = generation_task.delay(self.id).id
-                self.json_file_celery_started = timezone.now()
+                self.json_celery_started = timezone.now()
                 self.save()
             if json_not_present:
                 return default

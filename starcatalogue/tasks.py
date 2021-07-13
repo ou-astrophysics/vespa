@@ -92,17 +92,20 @@ def generate_star_json_files(star_id):
     # Format based on Zooniverse lightcurve viewer requirements:
     # https://github.com/zooniverse/front-end-monorepo/blob/master/packages/lib-classifier/src/components/Classifier/components/SubjectViewer/components/ScatterPlotViewer/README.md#scatter-plot-viewer
     ts_data = {
-        "data": {"x": ts.time.jd, "y": ts_flux},
+        "data": {
+            "x": list((ts.time.jd[~ts_flux.mask]).astype(float)),
+            "y": list(ts_flux[~ts_flux.mask].astype(float))
+            },
         "chartOptions": {
             "xAxisLabel": "Days",
             "yAxisLabel": "Brightness",
-            "zoomConfiguration": {direction: "x"},
+            "zoomConfiguration": {"direction": "x"},
         },
     }
 
-    json_data = ContentFile(b'')
+    json_data = ContentFile('')
     json.dump(ts_data, json_data)
-    star.json_file.save(f"lightcurve.json", json_data)
+    star.json_file.save("lightcurve.json", json_data)
     star.json_version = star.CURRENT_JSON_VERSION
     star.save()
 
