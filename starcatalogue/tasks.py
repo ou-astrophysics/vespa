@@ -96,11 +96,6 @@ def generate_star_json_files(star_id):
             "x": list((ts.time.jd[~ts_flux.mask]).astype(float)),
             "y": list(ts_flux[~ts_flux.mask].astype(float))
             },
-        "chartOptions": {
-            "xAxisLabel": "Days",
-            "yAxisLabel": "Brightness",
-            "zoomConfiguration": {"direction": "x"},
-        },
     }
 
     json_data = ContentFile('')
