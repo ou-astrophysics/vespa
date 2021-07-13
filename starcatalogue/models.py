@@ -81,7 +81,7 @@ class JSONGenerator(object):
         return json_attr.url
 
 
-class Star(models.Model, ImageGenerator, JSONGenrator):
+class Star(models.Model, ImageGenerator, JSONGenerator):
     CURRENT_IMAGE_VERSION = 0.92
     CURRENT_JSON_VERSION = 0.1
     CURRENT_STATS_VERSION = 0.4
