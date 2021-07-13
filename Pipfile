@@ -24,6 +24,7 @@ django-celery-results = "*"
 seaborn = "*"
 pillow = "*"
 sentry-sdk = "*"
+ujson = "*"
 
 [requires]
 python_version = "3.8"
