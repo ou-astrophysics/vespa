@@ -25,7 +25,9 @@ SECRET_KEY = 'q*a*+z=b5l6-l@06yw*56r84zp2#ybyfnp0dp$sfr47#l@b+lx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+]
 
 
 # Application definition
@@ -139,5 +141,5 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 PERIODIC_TASK_INTERVAL = 120
 
-DATA_VERSION = 0.92
+DATA_VERSION = 0.93
 FITS_DOWNLOAD_ATTEMPTS = 5

@@ -167,10 +167,10 @@ def gen_export_record_dict(record):
         'Folding flag': record.get_period_uncertainty_display(),
         'Sigma': record.sigma,
         'Chi squared': record.chi_squared,
-        'FITS URL': record.star.fits_file.url,
-        'JSON URL': record.star.json_file.url,
-        'Unfolded plot URL': record.star.image_file.url,
-        'Folded plot URL': record.image_file.url,
+        'FITS URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.fits_file.url}',
+        'JSON URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.json_file.url}',
+        'Unfolded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.image_file.url}',
+        'Folded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.image_file.url}',
     }
 
 class GenerateExportView(View):
