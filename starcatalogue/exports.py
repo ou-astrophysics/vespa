@@ -183,6 +183,8 @@ def gen_export_record_dict(record):
             'Folded plot URL': '',
         })
 
+    return out
+
 class GenerateExportView(View):
     def get(self, request):
         return HttpResponseRedirect(reverse('vespa'))
