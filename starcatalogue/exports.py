@@ -167,6 +167,10 @@ def gen_export_record_dict(record):
         'Folding flag': record.get_period_uncertainty_display(),
         'Sigma': record.sigma,
         'Chi squared': record.chi_squared,
+        'FITS URL': '',
+        'JSON URL': '',
+        'Unfolded plot URL': '',
+        'Folded plot URL': '',
     }
     if record.star.fits_file:
         out.update({
@@ -174,13 +178,6 @@ def gen_export_record_dict(record):
             'JSON URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.json_file.url}',
             'Unfolded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.image_file.url}',
             'Folded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.image_file.url}',
-        })
-    else:
-        out.update({
-            'FITS URL': '',
-            'JSON URL': '',
-            'Unfolded plot URL': '',
-            'Folded plot URL': '',
         })
 
     return out
