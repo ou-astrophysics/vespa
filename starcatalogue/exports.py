@@ -153,7 +153,7 @@ EXPORT_DATA_DESCRIPTION = {
 }
 
 def gen_export_record_dict(record):
-    return {
+    out = {
         'SuperWASP ID': record.star.superwasp_id,
         'Period Length': record.period_length,
         'RA': record.star.ra,
@@ -167,11 +167,14 @@ def gen_export_record_dict(record):
         'Folding flag': record.get_period_uncertainty_display(),
         'Sigma': record.sigma,
         'Chi squared': record.chi_squared,
-        'FITS URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.fits_file.url}',
-        'JSON URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.json_file.url}',
-        'Unfolded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.image_file.url}',
-        'Folded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.image_file.url}',
     }
+    if record.star.fits_file:
+        out.update({
+            'FITS URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.fits_file.url}',
+            'JSON URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.json_file.url}',
+            'Unfolded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.image_file.url}',
+            'Folded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.image_file.url}',
+        })
 
 class GenerateExportView(View):
     def get(self, request):
