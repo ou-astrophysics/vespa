@@ -175,6 +175,13 @@ def gen_export_record_dict(record):
             'Unfolded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.image_file.url}',
             'Folded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.image_file.url}',
         })
+    else:
+        out.update({
+            'FITS URL': '',
+            'JSON URL': '',
+            'Unfolded plot URL': '',
+            'Folded plot URL': '',
+        })
 
 class GenerateExportView(View):
     def get(self, request):
