@@ -146,6 +146,10 @@ EXPORT_DATA_DESCRIPTION = {
     'Folding flag': 'Whether the correctness of this period is certain or uncertain (based on Zooniverse classifications)',
     'Sigma': 'Sigma error estimate from original period search',
     'Chi squared': 'Chi squared error estimate from original period search',
+    'FITS URL': 'The URL of the FITS file containing unfolded photometry data',
+    'JSON URL': 'The URL of the JSON file containing unfolded photometry data',
+    'Unfolded plot URL': 'The URL of the PNG plot of the unfolded light curve',
+    'Folded plot URL': 'The URL of the PNG plot of the folded light curve',
 }
 
 def gen_export_record_dict(record):
@@ -163,6 +167,10 @@ def gen_export_record_dict(record):
         'Folding flag': record.get_period_uncertainty_display(),
         'Sigma': record.sigma,
         'Chi squared': record.chi_squared,
+        'FITS URL': record.star.fits_file.url,
+        'JSON URL': record.star.json_file.url,
+        'Unfolded plot URL': record.star.image_file.url,
+        'Folded plot URL': record.image_file.url,
     }
 
 class GenerateExportView(View):
