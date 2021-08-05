@@ -174,10 +174,10 @@ def gen_export_record_dict(record):
     }
     if record.star.fits_file:
         out.update({
-            'FITS URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.fits_file.url}',
-            'JSON URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.json_file.url}',
-            'Unfolded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.star.image_file.url}',
-            'Folded plot URL': f'http://{settings.ALLOWED_HOSTS[0]}{record.image_file.url}',
+            'FITS URL': f'https://{settings.ALLOWED_HOSTS[0]}{record.star.fits_file.url}',
+            'JSON URL': f'https://{settings.ALLOWED_HOSTS[0]}{record.star.json_file.url}',
+            'Unfolded plot URL': f'https://{settings.ALLOWED_HOSTS[0]}{record.star.image_file.url}',
+            'Folded plot URL': f'https://{settings.ALLOWED_HOSTS[0]}{record.image_file.url}',
         })
 
     return out

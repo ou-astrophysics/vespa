@@ -6,9 +6,9 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'stem-superwasp-live',
-    'superwasp.org',
     'www.superwasp.org',
+    'superwasp.org',
+    'stem-superwasp-live',
 ]
 
 DATABASES = {
