@@ -34,25 +34,25 @@
         },
         "astropy": {
             "hashes": [
-                "sha256:1b9f976f32675ae715bd38fcfb3540fcf01f6be1d75266c39b6fb085adac9410",
-                "sha256:1d879b91bbd61d69682c72b773d9c8851eff23e51cf1fb86b32dc80e783be643",
-                "sha256:460e07cb72789976421689833556a0a364dba89e25fe9183e669702dbcbf72c2",
-                "sha256:52c1038bad27e7ae1154eda0447ba790f13cb9bcb98e04c60493c2e547a87e6c",
-                "sha256:607739958f8fcc37d4f2efdb8b9bbcc3bf063c880e2d83104cf72a81c3e89b91",
-                "sha256:6779cc4c840128d12a6721d6fc835c826646967b019daaeacc6e71ed79850973",
-                "sha256:6ac307416a8718e4f4ed42f42c14587754fe6df38d822533c6d795db64a29453",
-                "sha256:8062ece72d6fe6f4349219c9e2e0f213847de4f7f3bc3796ce7949bc1a202bf9",
-                "sha256:8d70811b68f702d7b2e21fc0d644f88baf977482b1f915011460cc1b7fa285ea",
-                "sha256:a1b57aa21fdc8526dbca96b69cdcaba83066d7688ff52b87b7cdf5362e75f112",
-                "sha256:a420917baf9e02252e3477da265675167a324716f8a09e78607577b5bd27a159",
-                "sha256:be62ba888f0dd82a7265698a602e64ca2466f1f17bd6c4ef085a055c5968e458",
-                "sha256:dc8acf92a20c9c916f25b17dbb0f618f91751941ec36f240452871e72fb608ca",
-                "sha256:e2670fc08868cd8d0d1e653dcfcf224b506235b30434742538702f74c6859d24",
-                "sha256:e95ddb6fb0850fe28690e498fe8d2c3cee72d54c098083a2fe0e01b7b3895771",
-                "sha256:ffe13ed14298e819f2be5224aa649c44f8ddc9fcf32b5d4296fc62624ae867cd"
+                "sha256:0b4576d9bc2ab8359f2c4b87d0496c5ad768c7a14d1b16dc634ec24d22147c79",
+                "sha256:26f8dce66d3de8aa761508d76b99627ed745d99ec7c5e10289566c2082fa7dc3",
+                "sha256:2d3951223b4eb7f368fcad8c8340d27374c5d8e3b635a636275acdb38f35cd51",
+                "sha256:34992c0ac1da577d7a1b13171cd8097cdb4544f09687bbd27e433806d3fd2e9f",
+                "sha256:434ab46e85f5406acc9f2d2084e5e36890abeaf615c8aa71178e835134b64726",
+                "sha256:4b0ff70baee2a2c768cfc5f7966a371fa0741c93a7283d7e99d6a668f2606851",
+                "sha256:6a5fb4ce4c964f02d7ac2b755f80f5210157a413cbfcdccbc25ad6e7586c258f",
+                "sha256:98bba44f60bb3584b3ad24d1ffad1763138d4d18fc7ca31921732d2449419dd9",
+                "sha256:9a01cc7b9d50f265d5d77e1f7206cda22c62720f5bed63158ee56440708848ea",
+                "sha256:9e5613e897cb6da64330c5969981f576385491ff5ea61435218117d717a71ff2",
+                "sha256:a0764d7f68034c584dda8d1c9cc4357ade05cec4c1134db43bce804fcf656ff1",
+                "sha256:aae1e9e6b2c7811070e4a3373c54eac603f882dc381a796b981a25c02e7fafe2",
+                "sha256:bcedff7bad0fbc70209751e8eb98eec7c0bd3f0e202f4ee7ff65b8ddf19d5e53",
+                "sha256:beddc4a365d696214e13ff9aa9362d418ecc112f1dba6338f8ac4218fe475e25",
+                "sha256:ce1095e385ec74c655866eacd1853535fbc2dd2c42a8188503fe9a68b8a98ea0",
+                "sha256:dcb6d7e6631d92d5d15b7ae4e0a994829609b09a4e3af2055995187edb8989e3"
             ],
             "index": "pypi",
-            "version": "==4.3.post1"
+            "version": "==4.3.1"
         },
         "billiard": {
             "hashes": [
@@ -538,11 +538,11 @@
     "develop": {
         "astroid": {
             "hashes": [
-                "sha256:7b963d1c590d490f60d2973e57437115978d3a2529843f160b5003b721e1e925",
-                "sha256:83e494b02d75d07d4e347b27c066fd791c0c74fc96c613d1ea3de0c82c48168f"
+                "sha256:3975a0bd5373bdce166e60c851cfcbaf21ee96de80ec518c1f4cb3e94c3fb334",
+                "sha256:ab7f36e8a78b8e54a62028ba6beef7561db4cdb6f2a5009ecc44a6f42b5697ef"
             ],
             "markers": "python_version ~= '3.6'",
-            "version": "==2.6.5"
+            "version": "==2.6.6"
         },
         "attrs": {
             "hashes": [
@@ -607,7 +607,7 @@
                 "sha256:f0b278ce10936db1a37e6954e15a3730bea96a0997c26d7fee88e6c396c2086d",
                 "sha256:f11642dddbb0253cc8853254301b51390ba0081750a8ac03f20ea8103f0c56b6"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4.0'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
             "version": "==5.5"
         },
         "iniconfig": {
@@ -622,7 +622,7 @@
                 "sha256:9c2ea1e62d871267b78307fe511c0838ba0da28698c5732d54e2790bf3ba9899",
                 "sha256:e17d6e2b81095c9db0a03a8025a957f334d6ea30b26f9ec70805411e5c7c81f2"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
             "version": "==5.9.3"
         },
         "lazy-object-proxy": {
