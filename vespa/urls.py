@@ -26,6 +26,7 @@ import waspstatic.views
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('exoplanets/', TemplateView.as_view(template_name='waspstatic/exoplanets.html'), name='exoplanets'),
+    path('black-hole-hunters/', TemplateView.as_view(template_name='waspstatic/black-hole-hunters.html'), name='black-hole-hunters'),
     path('vespa/', starcatalogue.views.IndexListView.as_view(), name='vespa'),
     path('vespa/browse/', starcatalogue.views.StarListView.as_view(), name='browse'),
     path('vespa/download/', starcatalogue.views.DownloadView.as_view(), name='download'),
