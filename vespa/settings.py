@@ -43,6 +43,13 @@ INSTALLED_APPS = [
     'starcatalogue',
     'waspstatic',
     'django_celery_results',
+    'django_filters',
+    'rest_framework',
+    'taggit',
+    'ckeditor',
+    'ckeditor_uploader',
+    'crispy_forms',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +150,23 @@ PERIODIC_TASK_INTERVAL = 120
 
 DATA_VERSION = 1.0
 FITS_DOWNLOAD_ATTEMPTS = 5
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_CONFIGS = {
+    'default':
+        {'toolbar': 'full',
+            'width': 'auto',
+            'extraPlugins': ','.join([
+                'codesnippet',
+                'youtube'
+            ]),
+            },
+}
+
+LOGIN_URL = '/account/login/'
+LOGIN_REDIRECT_URL = '/author/dashboard/'
+LOGOUT_REDIRECT_URL = '/account/logout/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

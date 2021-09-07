@@ -25,6 +25,7 @@ seaborn = "*"
 pillow = "*"
 sentry-sdk = "*"
 ujson = "*"
+django-bona-blog = {git = "https://github.com/Williano/django-bona-blog.git"}
 
 [requires]
 python_version = "3.8"
