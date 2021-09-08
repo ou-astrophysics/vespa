@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}SuperWASP Blog &ndash; {{ article.title }}{% endblock %}
+{% block title %}SuperWASP Blog{% endblock %}
+
+{% block content %}
+<div class="row mt-2">
+    {% include "blog/article_pagination.html" %}
+</div>
+<h2>{{ article.title }}</h2>
+
+<p class="small">{{ article.date_created|date:"d F Y" }}, by {{ article.author.first_name }} {{ article.author.last_name }}</p>
+
+{{ article.body_html|safe }}
+<div class="row mt-2">
+    {% include "blog/article_pagination.html" %}
+</div>
+{% endblock %}

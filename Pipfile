@@ -25,6 +25,7 @@ seaborn = "*"
 pillow = "*"
 sentry-sdk = "*"
 ujson = "*"
+markdown = "*"
 
 [requires]
 python_version = "3.8"

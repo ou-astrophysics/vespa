@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'starcatalogue',
     'waspstatic',
     'django_celery_results',
+    'blog',
 ]
 
 MIDDLEWARE = [

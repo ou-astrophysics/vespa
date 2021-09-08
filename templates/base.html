@@ -24,11 +24,13 @@
                 {% url 'exoplanets' as exoplanets_url %}
                 {% url 'about' as about_url %}
                 {% url 'black-hole-hunters' as black_hole_hunters_url %}
+                {% url 'blog' as blog_url %}
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item {% if request.path|startswith:about_url %}active{% endif %}"><a class="nav-link" href="{{ about_url }}">About</a></li>
                     <li class="nav-item {% if request.path|startswith:exoplanets_url %}active{% endif %}"><a class="nav-link" href="{{ exoplanets_url }}">Exoplanets</a></li>
                     <li class="nav-item {% if request.path|startswith:vespa_url %}active{% endif %}"><a class="nav-link" href="{{ vespa_url }}">VeSPA: Variable Stars</a></li>
                     <li class="nav-item {% if request.path|startswith:black_hole_hunters_url %}active{% endif %}"><a class="nav-link" href="{{ black_hole_hunters_url }}">SuperWASP: Black Hole Hunters</a></li>
+                    <li class="nav-item {% if request.path|startswith:blog_url %}active{% endif %}"><a class="nav-link" href="{{ blog_url }}">Blog</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="nav-links" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Links</a>
                         <div class="dropdown-menu" aria-labelledby="nav-links">

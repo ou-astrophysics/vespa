@@ -16,23 +16,32 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
+from django.views.generic import DateDetailView
 
 from django.conf import settings
 from django.conf.urls.static import static
 
+import blog.models
 import starcatalogue.views
 import waspstatic.views
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
+
+    path('about/', waspstatic.views.AboutView.as_view(), name='about'),
     path('exoplanets/', TemplateView.as_view(template_name='waspstatic/exoplanets.html'), name='exoplanets'),
     path('black-hole-hunters/', TemplateView.as_view(template_name='waspstatic/black-hole-hunters.html'), name='black-hole-hunters'),
+
     path('vespa/', starcatalogue.views.IndexListView.as_view(), name='vespa'),
     path('vespa/browse/', starcatalogue.views.StarListView.as_view(), name='browse'),
     path('vespa/download/', starcatalogue.views.DownloadView.as_view(), name='download'),
     path('vespa/export/', starcatalogue.views.GenerateExportView.as_view(), name='generate_export'),
     path('vespa/export/<str:pk>/', starcatalogue.views.DataExportView.as_view(), name='view_export'),
     path('vespa/source/<str:swasp_id>/', starcatalogue.views.SourceView.as_view(), name='view_source'),
-    path('about/', waspstatic.views.AboutView.as_view(), name='about'),
+
+    path('blog/', ListView.as_view(model=blog.models.Article, paginate_by=10), name='blog'),
+    path('blog/<int:year>/<str:month>/<int:day>/<str:slug>/', DateDetailView.as_view(model=blog.models.Article, date_field="date_created"), name='blog_article_detail'),
+
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
