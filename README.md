@@ -45,7 +45,7 @@ podman run -d --restart=always --pod=vespa --name vespa-postgres --label "io.con
 
 podman run -d --restart=always --pod=vespa --name vespa-rabbitmq --label "io.containers.autoupdate=image" -v /opt/vespa/rabbitmq/:/var/lib/rabbitmq/:z --env-file /opt/vespa/rabbitmq.env docker.io/rabbitmq:3.8
 
-podman run -d --restart=always --pod=vespa --name vespa-nginx --label "io.containers.autoupdate=image" -v /opt/vespa/nginx.conf:/etc/nginx/nginx.conf:ro -v /opt/vespa/static/:/opt/vespa/static:z -v /srv/www/superwasp-live/media:/opt/vespa/media -v /src/www/superwasp-live/nginx-logs:/var/log/nginx -v /srv/www/superwasp-live/awstats/html:/opt/vespa/stats docker.io/nginx:1
+podman run -d --restart=always --pod=vespa --name vespa-nginx --label "io.containers.autoupdate=image" -v /opt/vespa/nginx.conf:/etc/nginx/nginx.conf:ro -v /opt/vespa/static/:/opt/vespa/static:z -v /srv/www/superwasp-live/media:/opt/vespa/media -v /src/www/superwasp-live/nginx-logs:/var/log/nginx -v /srv/www/superwasp-live/awstats/html:/opt/vespa/stats -v /opt/vespa/awstats.htpasswd:/etc/nginx/awstats.htpasswd docker.io/nginx:1
 
 podman run -d --restart=always --pod=vespa --name=vespa-django --label "io.containers.autoupdate=image"  --env-file /opt/vespa/prod.env -v /opt/vespa/static:/opt/vespa/static:z -v /srv/www/superwasp-live/astropy:/opt/vespa/astropy:z -v /srv/www/superwasp-live/media:/opt/vespa/media ghcr.io/ou-escape-eco/vespa
 
