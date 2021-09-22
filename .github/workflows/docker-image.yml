@@ -21,4 +21,4 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/ou-escape-eco/vespa:latest
+            ghcr.io/ou-astrophysics/vespa:latest
