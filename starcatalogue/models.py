@@ -122,6 +122,9 @@ class Star(models.Model, ImageGenerator, JSONGenerator):
             ),
             sigma=OUTLIER_SIGMA_CLIP
         )
+    
+    def __str__(self):
+        return self.superwasp_id
 
     @property
     def coords_str(self):
@@ -318,6 +321,9 @@ class FoldedLightcurve(models.Model, ImageGenerator):
     image_version = models.FloatField(null=True)
     image_celery_started = models.DateTimeField(null=True)
 
+    def __str__(self):
+        return f'{self.star.superwasp_id}@{self.period_length} sec'
+
     @property
     def natural_period(self):
         return naturaldelta(self.period_length)
@@ -360,6 +366,9 @@ class ZooniverseSubject(models.Model):
     subject_set_id = models.IntegerField(null=True)
     retired_at = models.DateTimeField(null=True)
     image_location = models.URLField(null=True)
+
+    def __str__(self):
+        return f'Subject {self.zooniverse_id}'
 
     @property
     def thumbnail_location(self):

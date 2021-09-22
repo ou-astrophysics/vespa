@@ -97,6 +97,8 @@ class DataExport(models.Model):
     search = models.TextField(null=True)
     search_radius = models.FloatField(null=True)
 
+    in_data_archive = models.BooleanField(default=False)
+
     data_version = models.FloatField()
 
     celery_task_id = models.UUIDField(null=True)
