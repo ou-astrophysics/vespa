@@ -4,7 +4,6 @@ from astropy import units as u
 
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView
 
@@ -248,18 +247,6 @@ class StarListView(ListView):
         context['result_count'] = self.result_count
 
         return context
-
-
-class IndexListView(StarListView):
-    template_name = 'starcatalogue/index.html'
-
-
-class DownloadView(TemplateView):
-    template_name = 'starcatalogue/download.html'
-
-
-class DataExportView(DetailView):
-    model = DataExport
 
 
 class SourceView(DetailView):

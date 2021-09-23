@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
-from django.views.generic import DateDetailView
+from django.views.generic import DateDetailView, DetailView
 
 from django.conf import settings
 from django.conf.urls.static import static
 
 import blog.models
+import starcatalogue.models
 import starcatalogue.views
 import waspstatic.views
 
@@ -33,11 +34,11 @@ urlpatterns = [
     path('exoplanets/', TemplateView.as_view(template_name='waspstatic/exoplanets.html'), name='exoplanets'),
     path('black-hole-hunters/', TemplateView.as_view(template_name='waspstatic/black-hole-hunters.html'), name='black-hole-hunters'),
 
-    path('vespa/', starcatalogue.views.IndexListView.as_view(), name='vespa'),
+    path('vespa/', starcatalogue.views.StarListView.as_view(template_name = 'starcatalogue/index.html'), name='vespa'),
     path('vespa/browse/', starcatalogue.views.StarListView.as_view(), name='browse'),
-    path('vespa/download/', starcatalogue.views.DownloadView.as_view(), name='download'),
+    path('vespa/download/', TemplateView.as_view(template_name='starcatalogue/download.html'), name='download'),
     path('vespa/export/', starcatalogue.views.GenerateExportView.as_view(), name='generate_export'),
-    path('vespa/export/<str:pk>/', starcatalogue.views.DataExportView.as_view(), name='view_export'),
+    path('vespa/export/<str:pk>/', DetailView.as_view(model=starcatalogue.models.DataExport), name='view_export'),
     path('vespa/source/<str:swasp_id>/', starcatalogue.views.SourceView.as_view(), name='view_source'),
 
     path('blog/', ListView.as_view(model=blog.models.Article, paginate_by=10), name='blog'),
