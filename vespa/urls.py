@@ -36,7 +36,10 @@ urlpatterns = [
 
     path('vespa/', starcatalogue.views.StarListView.as_view(template_name = 'starcatalogue/index.html'), name='vespa'),
     path('vespa/browse/', starcatalogue.views.StarListView.as_view(), name='browse'),
-    path('vespa/download/', TemplateView.as_view(template_name='starcatalogue/download.html'), name='download'),
+    path('vespa/data-releases/', ListView.as_view(
+        queryset=starcatalogue.exports.DataExport.objects.filter(in_data_archive=True).order_by('-created'),
+        template_name='starcatalogue/data_releases.html'
+    ), name='data_releases'),
     path('vespa/export/', starcatalogue.views.GenerateExportView.as_view(), name='generate_export'),
     path('vespa/export/<str:pk>/', DetailView.as_view(model=starcatalogue.models.DataExport), name='view_export'),
     path('vespa/source/<str:swasp_id>/', starcatalogue.views.SourceView.as_view(), name='view_source'),
