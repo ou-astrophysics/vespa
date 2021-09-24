@@ -19,7 +19,7 @@
             <div{% if not forloop.last %} class="mb-5"{% endif %}>
                 <h3><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
 
-                <p class="small">{{ article.date_created|date:"d F Y" }}, by {{ article.author.first_name }} {{ article.author.last_name }}</p>
+                <p class="small">{{ article.date_created|date:"d F Y" }}, by {{ article.author.first_name }} {{ article.author.last_name }}{% for category in article.categories.all %}{% if forloop.first %} in{% else %}{% if forloop.last %} and {% else %}, {% endif %}{% endif %} <a href="{% url 'blog' category=category.slug %}">{{ category.name }}</a>{% endfor %}</p>
 
                 {{ article.body_html|truncatewords_html:"50"|safe }}
 
