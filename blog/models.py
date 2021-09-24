@@ -5,12 +5,26 @@ from django.urls import reverse
 from markdown import markdown
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=250, null=False, blank=False)
+    slug = models.SlugField(unique=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
+
+
 class Article(models.Model):
     title = models.CharField(max_length=250, null=False, blank=False)
     slug = models.SlugField(unique_for_date="date_created")
     
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='articles', editable=False)
     body = models.TextField()
+
+    categories = models.ManyToManyField(Category)
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)

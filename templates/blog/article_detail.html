@@ -1,17 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'blog/article_archive.html' %}
 
 {% block pagetitle %}SuperWASP Blog &ndash; {{ article.title }}{% endblock %}
 {% block title %}SuperWASP Blog{% endblock %}
 
-{% block content %}
+{% block topPagination %}
 <div class="row mt-2">
     {% include "blog/article_pagination.html" %}
 </div>
+{% endblock %}
+
+{% block blogContent %}
 <h2>{{ article.title }}</h2>
 
-<p class="small">{{ article.date_created|date:"d F Y" }}, by {{ article.author.first_name }} {{ article.author.last_name }}</p>
+<p class="small">{{ article.date_created|date:"d F Y" }}, by {{ article.author.first_name }} {{ article.author.last_name }}{% for category in article.categories.all %}{% if forloop.first %} in{% else %}{% if forloop.last %} and {% else %}, {% endif %}{% endif %} <a href="{% url 'blog' category=category.slug %}">{{ category.name }}</a>{% endfor %}</p>
 
 {{ article.body_html|safe }}
+{% endblock %}
+
+{% block bottomPagination %}
 <div class="row mt-2">
     {% include "blog/article_pagination.html" %}
 </div>

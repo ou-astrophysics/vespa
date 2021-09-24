@@ -1,6 +1,12 @@
 from django.contrib import admin
 
-from blog.models import Article
+from blog.models import Article, Category
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+
+admin.site.register(Category, CategoryAdmin)
 
 
 class ArticleAdmin(admin.ModelAdmin):

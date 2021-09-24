@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}SuperWASP Blog{% endblock %}
+{% block pagetitle %}SuperWASP Blog{% endblock %}
+
+{% block content %}
+    {% block topPagination %}
+    <div class="row mt-2">
+        {% include "blog/pagination.html" %}
+    </div>
+    {% endblock %}
+
+    <div class="row">
+        <div class="col-lg">
+            {% block blogContent %}
+            <h2 class="mb-4">{% block archiveTitle %}Latest Posts{% endblock %}</h2>
+
+            {% for article in object_list %}
+            <div{% if not forloop.last %} class="mb-5"{% endif %}>
+                <h3><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
+
+                <p class="small">{{ article.date_created|date:"d F Y" }}, by {{ article.author.first_name }} {{ article.author.last_name }}</p>
+
+                {{ article.body_html|truncatewords_html:"50"|safe }}
+
+                <p><a href="{{ article.get_absolute_url }}">Read more</a></p>
+            </div>
+            {% endfor %}
+            {% endblock %}
+        </div>
+
+        <div class="col-sm-3">
+            <h2>Categories</h2>
+            <ul class="nav flex-column">
+                {% for category in categories %}
+                <li class="nav-item"><a href="{% url 'blog' category=category.slug %}">{{ category.name }}</a></li>
+                {% endfor %}
+            </ul>
+        
+            <h2 class="mt-4">Archives</h2>
+            <ol class="nav flex-column">
+                {% for date in years %}
+                <li class="nav-item"><a href="{% url 'blog' year=date.year %}">{{ date|date:"Y" }}</a></li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+
+    {% block bottomPagination %}
+    <div class="row mt-2">
+        {% include "blog/pagination.html" %}
+    </div>
+    {% endblock %}
+{% endblock %}
