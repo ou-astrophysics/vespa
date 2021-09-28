@@ -17,6 +17,7 @@ class DataExportAdmin(admin.ModelAdmin):
     list_filter = ('in_data_archive', 'export_status', 'data_version')
     fields = (
         'in_data_archive', 
+        'doi',
         'data_version', 
         'export_file',
         ('min_period', 'max_period'),
@@ -27,7 +28,7 @@ class DataExportAdmin(admin.ModelAdmin):
         ('type_pulsator', 'type_rotator', 'type_ew', 'type_eaeb', 'type_unknown'),
         ('search', 'search_radius'),
     )
-    readonly_fields = fields[1:3] + tuple(f for f in chain.from_iterable(fields[3:]))
+    readonly_fields = fields[2:4] + tuple(f for f in chain.from_iterable(fields[4:]))
     ordering = ('-created',)
 
 admin.site.register(DataExport, DataExportAdmin)
