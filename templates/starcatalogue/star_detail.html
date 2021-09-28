@@ -11,15 +11,53 @@
 
 {% block content %}
 <div class="row mt-5">
-{% if object.image_location %}
+{% if object.image_location or object.json_file %}
 
     <div class="col">
         <p id="main-light-curve"><img src="{{ object.image_location }}" alt=""></p>
     </div>
 
-{% endif %}
     <div class="col">
-        <div id="aladin-lite-div" style="width:100%;height:300px;"></div>
+        <div class="row ml-3">
+                    <label for="foldingPeriodRange" class="form-label"><strong>Folding period (sec):</strong></label>
+        </div>
+        <div class="row ml-3">
+            <input type="text" id="foldingPeriodInput">
+            <a href="#main-light-curve" class="ml-2 btn btn-primary plot-button" id="custom-plot-button">Plot</a> 
+            <a href="#main-light-curve" class="ml-2 btn btn-primary plot-button" data-folding-period="">Clear</a> 
+        </div>
+
+
+        <div class="album py-5">
+            <div class="container">
+              <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 g-3">
+                {% for lightcurve in object.lightcurves %}
+                <div class="col">
+                  <div class="card shadow-sm mb-4">
+                      <img src="{{ lightcurve.image_location }}" class="card-img-top">
+                    <div class="card-body">
+                      <p class="card-text">{{ lightcurve.get_classification_display }}, {{ lightcurve.natural_period }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#main-light-curve" class="btn btn-primary plot-button" data-folding-period="{{ lightcurve.period_length }}">Plot</a> 
+                        <a href="#lightcurve-{{ lightcurve.id }}" class="btn btn-primary">Details</a>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+        </div>
+        
+    </div>
+
+{% endif %}
+</div>
+<div class="row mt-5">
+    <div class="col">
+        <div id="aladin-lite-div" style="width:100%;height:450px;"></div>
+    </div>
+    <div class="col">
         <table class="table">
             <tbody>
                 <tr>
@@ -64,24 +102,6 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-</div>
-
-
-<div class="album py-5 bg-light">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% for lightcurve in object.lightcurves %}
-        <div class="col">
-          <div class="card shadow-sm mb-4">
-              <a href="#lightcurve-{{ lightcurve.id }}"><img src="{{ lightcurve.image_location }}" class="card-img-top"></a>
-            <div class="card-body">
-              <p class="card-text">{{ lightcurve.get_classification_display }}, {{ lightcurve.natural_period }}</p>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
     </div>
 </div>
 
@@ -149,13 +169,15 @@
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script type="text/javascript">
+
+var lc_data = null;
+
+function plotLightcurve(plot_epochs = 1) {
     var lc = d3.select("#main-light-curve");
     lc.selectAll("*").remove();
     var margin = {top: 10, right: 30, bottom: 30, left: 60},
     width = 650 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
-
-    plot_epochs = 2;
 
 // append the svg object to the body of the page
 var svg = lc
@@ -166,43 +188,61 @@ var svg = lc
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-//Read the data
-d3.json("{{ object.json_file.url }}")
-.then(function(data) {
-    data = data["data"];
+    folding_period = d3.select("#foldingPeriodInput").property('value');
 
-    folding_period = {{ object.lightcurves.0.period_length }};
-    data['x'] = data['x'].map(x => (x * 86400 / folding_period) % 1);
-
-  // Add X axis
-  var x = d3.scaleLinear()
-    .domain([d3.min(data['x']), d3.max(data['x']) * plot_epochs])
-    .range([ 0, width ]);
-  svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
-
-  // Add Y axis
-  var y = d3.scaleLinear()
-    .domain([d3.min(data["y"]), d3.max(data["y"]) ])
-    .range([ height, 0]);
-  svg.append("g")
-    .call(d3.axisLeft(y));
-
-    for (i=0; i < plot_epochs; i++) {
-  // Add dots
-  svg.append('g')
-    .selectAll("dot")
-    .data(d3.zip(data['x'], data["y"]))
-    .enter()
-    .append("circle")
-      .attr("cx", function (d) { return x(d[0] + i); } )
-      .attr("cy", function (d) { return y(d[1]); } )
-      .attr("r", 0.5)
-      .style("fill", "#0000FF")
-
+    if ($.isNumeric(folding_period)) {
+        var scaled_x_data = lc_data['x'].map(x => (x * 86400 / folding_period) % 1);
+    } else {
+        var scaled_x_data = lc_data['x'];
+        plot_epochs = 1;
     }
 
+    // Add X axis
+    var x = d3.scaleLinear()
+        .domain([d3.min(scaled_x_data), d3.max(scaled_x_data) * plot_epochs])
+        .range([ 0, width ]);
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
+    // Add Y axis
+    var y = d3.scaleLinear()
+        .domain([d3.min(lc_data["y"]), d3.max(lc_data["y"]) ])
+        .range([ height, 0]);
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    for (i=0; i < plot_epochs; i++) {
+        // Add dots
+        svg.append('g')
+            .selectAll("dot")
+            .data(d3.zip(scaled_x_data, lc_data["y"]))
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) { return x(d[0] + i); } )
+            .attr("cy", function (d) { return y(d[1]); } )
+            .attr("r", 0.5)
+            .style("fill", "#0000FF")
+
+    }
+}
+
+//Read the data
+d3.json("{{ object.json_file.url }}")
+    .then(function(data) {
+        lc_data = data["data"];
+
+        plotLightcurve();
+    });
+
+d3.select("#foldingPeriodInput").on('change', function() {
+     d3.select('#custom-plot-button').attr('data-folding-period', $(this).value);
 });
+d3.selectAll(".plot-button").on('click', function(e) { 
+    e.preventDefault();
+    d3.select("#foldingPeriodInput").property('value', $(this).attr('data-folding-period'));
+    plotLightcurve(2);
+});
+
 </script>
 {% endblock %}
