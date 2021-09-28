@@ -16,7 +16,7 @@
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Data version {{ release.data_version }}</h5>
-                    <p class="card-text">Published {{ release.created|date:"j F Y" }}</p>
+                    <h6 class="card-subtitle mb-2 text-muted">Published {{ release.created|date:"j F Y" }}</h6>
                     {% if release.doi %}<p class="card-text"><a href="https://doi.org/{{ release.doi }}"><img src="https://zenodo.org/badge/DOI/{{ release.doi }}.svg" alt="DOI"></a></p>{% endif %}
                     <a href="{% url 'view_export' release.id %}" class="btn btn-primary">Download export</a>
                     <p class="card-text small mt-1"><i class="bi bi-file-zip"></i> {{ release.export_file_naturalsize }}, {{ release.queryset.count|intcomma }} objects</p>
