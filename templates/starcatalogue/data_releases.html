@@ -14,8 +14,9 @@
         {% for release in object_list %}
         <div class="col">
             <div class="card" style="width: 18rem;">
+                <h5 class="card-header">Data version {{ release.data_version }}</h5>
+
                 <div class="card-body">
-                    <h5 class="card-title">Data version {{ release.data_version }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Published {{ release.created|date:"j F Y" }}</h6>
                     {% if release.doi %}<p class="card-text"><a href="https://doi.org/{{ release.doi }}"><img src="https://zenodo.org/badge/DOI/{{ release.doi }}.svg" alt="DOI"></a></p>{% endif %}
                     <a href="{% url 'view_export' release.id %}" class="btn btn-primary">Download export</a>
