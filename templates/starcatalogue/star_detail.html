@@ -17,38 +17,41 @@
         <p id="main-light-curve"><img src="{{ object.image_location }}" alt=""></p>
     </div>
 
-    <div class="col">
-        <div class="row ml-3">
-                    <label for="foldingPeriodRange" class="form-label"><strong>Folding period (sec):</strong></label>
-        </div>
-        <div class="row ml-3">
-            <input type="text" id="foldingPeriodInput">
-            <a href="#main-light-curve" class="ml-2 btn btn-primary plot-button" id="custom-plot-button">Plot</a> 
-            <a href="#main-light-curve" class="ml-2 btn btn-primary plot-button" data-folding-period="">Clear</a> 
-        </div>
+    <div class="col-sm-4">
+        <form id="main-plot-controls">
+            <div class="form-group row">
+              <label for="foldingPeriodInput" class="col-sm-12 col-form-label">Folding period (seconds):</label>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="foldingPeriodInput">
+              </div>
 
-
-        <div class="album py-5">
-            <div class="container">
-              <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 g-3">
-                {% for lightcurve in object.lightcurves %}
-                <div class="col">
-                  <div class="card shadow-sm mb-4">
-                      <img src="{{ lightcurve.image_location }}" class="card-img-top">
-                    <div class="card-body">
-                      <p class="card-text">{{ lightcurve.get_classification_display }}, {{ lightcurve.natural_period }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#main-light-curve" class="btn btn-primary plot-button" data-folding-period="{{ lightcurve.period_length }}">Plot</a> 
-                        <a href="#lightcurve-{{ lightcurve.id }}" class="btn btn-primary">Details</a>
-                    </div>
-                  </div>
-                </div>
-                {% endfor %}
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary plot-button" id="custom-plot-button">Plot</button>
+                <button type="submit" class="btn btn-primary plot-button" data-folding-period="">Reset</button>
               </div>
             </div>
-        </div>
-        
+          </form>
+          <div class="card" >
+            <ul class="list-group list-group-flush">
+                {% for lightcurve in object.lightcurves %}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <img src="{{ lightcurve.image_location }}" class="card-img-top">
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="card-text">{{ lightcurve.get_classification_display }}, {{ lightcurve.natural_period }}</p>
+                            <button type="submit" class="btn btn-primary plot-button"  data-folding-period="{{ lightcurve.period_length }}">Plot</button>
+                            <a href="#lightcurve-{{ lightcurve.id }}" class="btn btn-primary">Details</a>
+                        </div>
+                    </div>
+
+                </li>
+                {% endfor %}
+            </ul>
+          </div>
     </div>
 
 {% endif %}
@@ -175,27 +178,34 @@ var lc_data = null;
 function plotLightcurve(plot_epochs = 1) {
     var lc = d3.select("#main-light-curve");
     lc.selectAll("*").remove();
-    var margin = {top: 10, right: 30, bottom: 30, left: 60},
-    width = 650 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+    var margin = {top: 10, right: 30, bottom: 60, left: 80},
+    width = lc.node().getBoundingClientRect().width - margin.left - margin.right,
+    height = width * 0.9 - margin.top - margin.bottom;
 
-// append the svg object to the body of the page
-var svg = lc
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+    var svg = lc
+        .append("svg")
+            .attr("style", "width: 100%;")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
 
     folding_period = d3.select("#foldingPeriodInput").property('value');
 
     if ($.isNumeric(folding_period)) {
         var scaled_x_data = lc_data['x'].map(x => (x * 86400 / folding_period) % 1);
+        var x_label = "Phase";
     } else {
         var scaled_x_data = lc_data['x'];
         plot_epochs = 1;
+        var x_label = "Observation date (Julian date)";
     }
+
+    var scaled_y_data = lc_data['y'].map(y => 15 - 2.5 * Math.log10(y));
+    var scaled_lc_data = d3.zip(scaled_x_data, scaled_y_data).filter(d => d[1] < 16);
+    var filtered_y_data = scaled_y_data.filter(d => d < 16);
+    var y_domain = [d3.max(filtered_y_data), d3.min(filtered_y_data) ];
 
     // Add X axis
     var x = d3.scaleLinear()
@@ -204,25 +214,39 @@ var svg = lc
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x));
+    svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "middle")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom / 2 + 10)
+        .text(x_label);
 
     // Add Y axis
     var y = d3.scaleLinear()
-        .domain([d3.min(lc_data["y"]), d3.max(lc_data["y"]) ])
+        .domain(y_domain)
         .range([ height, 0]);
     svg.append("g")
         .call(d3.axisLeft(y));
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "middle")
+        .attr("y", -margin.left / 2 - 10)
+        .attr("x", -height / 2)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .text("Magnitude");
 
     for (i=0; i < plot_epochs; i++) {
         // Add dots
         svg.append('g')
             .selectAll("dot")
-            .data(d3.zip(scaled_x_data, lc_data["y"]))
+            .data(scaled_lc_data)
             .enter()
             .append("circle")
             .attr("cx", function (d) { return x(d[0] + i); } )
             .attr("cy", function (d) { return y(d[1]); } )
             .attr("r", 0.5)
-            .style("fill", "#0000FF")
+            .style("fill", "#5597c4")
 
     }
 }
