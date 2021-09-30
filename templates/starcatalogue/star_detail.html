@@ -209,7 +209,7 @@ function plotLightcurve(plot_epochs = 1) {
 
     // Add X axis
     var x = d3.scaleLinear()
-        .domain([d3.min(scaled_x_data), d3.max(scaled_x_data) * plot_epochs])
+        .domain([d3.min(scaled_x_data) - 10, d3.max(scaled_x_data) * plot_epochs])
         .range([ 0, width ]);
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
