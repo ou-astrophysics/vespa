@@ -205,11 +205,13 @@ function plotLightcurve(plot_epochs = 1) {
     var scaled_y_data = lc_data['y'].map(y => 15 - 2.5 * Math.log10(y));
     var scaled_lc_data = d3.zip(scaled_x_data, scaled_y_data).filter(d => d[1] < 16);
     var filtered_y_data = scaled_y_data.filter(d => d < 16);
-    var y_domain = [d3.max(filtered_y_data), d3.min(filtered_y_data) ];
+    var y_padding = (d3.max(filtered_y_data) - d3.min(filtered_y_data)) * 0.01
+    var y_domain = [d3.max(filtered_y_data) + y_padding, d3.min(filtered_y_data)];
+    var x_padding = (d3.max(scaled_x_data) - d3.min(scaled_x_data)) * 0.005
 
     // Add X axis
     var x = d3.scaleLinear()
-        .domain([d3.min(scaled_x_data) - 10, d3.max(scaled_x_data) * plot_epochs])
+        .domain([d3.min(scaled_x_data) - x_padding, d3.max(scaled_x_data) * plot_epochs])
         .range([ 0, width ]);
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
