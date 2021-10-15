@@ -12,6 +12,7 @@
             <h2>Export ready to download</h2>
             <p><i class="bi bi-check-circle" style="font-size: xxx-large;"></i></p>
             <p class="lead"><i class="bi bi-download mr-2"></i><a href="{{ object.export_file.url }}">Download export ({{ object.export_file_naturalsize }})</a></p>
+            <p class="mt-5"><small>If you publish research based on VeSPA data, please consider citing <a href="https://doi.org/10.3847/2515-5172/ac2de8">Adam McMaster et al 2021 Res. Notes AAS 5 228</a> as well as the Zenodo publication for the specific <a href="{% url 'data_releases' %}">data release</a> you used.</small></p>
         {% elif object.export_status == object.STATUS_FAILED %}
             <h2>Export failed</h2>
             <p><i class="bi bi-exclamation-circle" style="font-size: xxx-large;"></i></p>
