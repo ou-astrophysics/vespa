@@ -26,6 +26,7 @@ pillow = "*"
 sentry-sdk = "*"
 ujson = "*"
 markdown = "*"
+panoptes-client = "*"
 
 [requires]
 python_version = "3.8"

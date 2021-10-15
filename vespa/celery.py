@@ -2,6 +2,8 @@ import os
 
 from celery import Celery
 
+from panoptes_client import Panoptes, Project
+
 from django.conf import settings
 from django.db.models import Q
 
@@ -26,6 +28,15 @@ def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(settings.PERIODIC_TASK_INTERVAL, queue_json_generations.s())
     sender.add_periodic_task(settings.PERIODIC_TASK_INTERVAL, calculate_magnitudes.s())
     sender.add_periodic_task(settings.PERIODIC_TASK_INTERVAL, set_locations.s())
+
+@app.on_after_fork.connect
+@app.on_after_finalize.connect
+def setup_zooniverse(sender, **kwargs):
+    if settings.ZOONIVERSE_CLIENT_ID and settings.ZOONIVERSE_CLIENT_SECRET:
+        Panoptes.connect(
+            client_id=settings.ZOONIVERSE_CLIENT_ID,
+            client_secret=settings.ZOONIVERSE_CLIENT_SECRET,
+        )
 
 @app.task
 def queue_image_generations():

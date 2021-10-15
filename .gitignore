@@ -116,3 +116,4 @@ exports/
 sources/
 fits/
 celerybeat-schedule
+local.env

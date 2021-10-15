@@ -20,9 +20,13 @@ services:
       - ./:/usr/src/app
     ports:
       - "8080:8080"
+    env_file:
+      - ./local.env
   celery:
     build:
       context: .
     volumes:
       - ./:/usr/src/app
+    env_file:
+      - ./local.env
     command: bash ./start_worker.sh

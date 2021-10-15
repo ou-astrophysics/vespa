@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -144,3 +146,6 @@ PERIODIC_TASK_INTERVAL = 120
 
 DATA_VERSION = 1.0
 FITS_DOWNLOAD_ATTEMPTS = 5
+
+ZOONIVERSE_CLIENT_ID = os.environ.get('ZOONIVERSE_CLIENT_ID')
+ZOONIVERSE_CLIENT_SECRET = os.environ.get('ZOONIVERSE_CLIENT_SECRET')
