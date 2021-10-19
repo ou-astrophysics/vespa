@@ -24,6 +24,7 @@ from django.views.generic.dates import ArchiveIndexView, YearArchiveView, MonthA
 from django.conf import settings
 from django.conf.urls.static import static
 
+import blog.feeds
 import blog.models
 import blog.views
 import starcatalogue.models
@@ -58,6 +59,7 @@ urlpatterns = [
         date_field="date_created",
         extra_context=blog_context,
     ), name='blog'),
+    path('blog/feed/', blog.feeds.ArticlesFeed(), name='blog_feed'),
     path('blog/<int:year>/', YearArchiveView.as_view(
         model=blog.models.Article,
         paginate_by=10,

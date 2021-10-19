@@ -10,6 +10,7 @@ blockquote {
     border-left: 0.5em #6c757d solid;
 }
 </style>
+<link rel="alternate" type="application/rss+xml" title="SuperWASP Blog" href="{% url 'blog_feed' %}">
 {% endblock %}
 
 {% block content %}
@@ -52,6 +53,7 @@ blockquote {
                 <li class="nav-item"><a href="{% url 'blog' year=date.year %}">{{ date|date:"Y" }}</a></li>
                 {% endfor %}
             </ol>
+            <p class="mt-4"><a href="{% url 'blog_feed' %}">RSS Feed</a></p>
         </div>
     </div>
 
