@@ -99,7 +99,7 @@ class ZooniverseSubjectAdmin(admin.ModelAdmin):
         'lightcurve__star__superwasp_id',
         'subject_set_id',
     )
-    list_filter = ('subject_set_id', 'metadata_version',)
+    list_filter = ('metadata_version', 'subject_set_id',)
     fields = (
         'lightcurve',
         'subject_set_id',
