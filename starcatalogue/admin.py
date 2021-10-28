@@ -87,18 +87,26 @@ admin.site.register(Star, StarAdmin)
 
 
 class ZooniverseSubjectAdmin(admin.ModelAdmin):
-    list_display = ('zooniverse_id', 'lightcurve', 'subject_set_id', 'retired_at')
+    list_display = (
+        'zooniverse_id',
+        'lightcurve',
+        'subject_set_id',
+        'retired_at',
+        'metadata_version',
+    )
     search_fields = (
         'zooniverse_id',
         'lightcurve__star__superwasp_id',
         'subject_set_id',
     )
-    list_filter = ('subject_set_id',)
+    list_filter = ('subject_set_id', 'metadata_version',)
     fields = (
         'lightcurve',
         'subject_set_id',
         'retired_at',
         'image_location',
+        'metadata_version',
+        'talk_url',
     )
     readonly_fields = fields
 

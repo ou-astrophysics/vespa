@@ -287,7 +287,7 @@
             <td>{{ lightcurve.get_period_uncertainty_display }}</td>
             <td>{{ lightcurve.star.ra }}</td>
             <td>{{ lightcurve.star.dec }}</td>
-            <td><a href="{% url 'view_source' lightcurve.star.superwasp_id %}#lightcurve-{{ lightcurve.pk }}"><img src="{{ lightcurve.thumbnail_location }}" alt="" style="width: 100px; height: auto;"></a></td>
+            <td><a href="{{ lightcurve.get_absolute_url }}"><img src="{{ lightcurve.thumbnail_location }}" alt="" style="width: 100px; height: auto;"></a></td>
         </tr>
     {% endfor %}
     </tbody>
@@ -327,7 +327,7 @@
           </div>
           <div class="col">
             <div class="card shadow-sm mb-4 float-right" style="max-width: 300px;">
-              <a href="{% url 'view_source' lightcurve.star.superwasp_id %}#lightcurve-{{ lightcurve.pk }}"><img src="{{ lightcurve.image_location }}" class="card-img-top"></a>
+              <a href="{{ lightcurve.get_absolute_url }}"><img src="{{ lightcurve.image_location }}" class="card-img-top"></a>
               <div class="card-body">
                 <p class="card-text">{{ lightcurve.get_classification_display }}, {{ lightcurve.natural_period }}</p>
               </div>

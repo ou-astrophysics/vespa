@@ -4,7 +4,9 @@ import urllib
 
 import numpy
 
+from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 import astropy.io.fits as fits
@@ -125,6 +127,11 @@ class Star(models.Model, ImageGenerator, JSONGenerator):
     
     def __str__(self):
         return self.superwasp_id
+
+    def get_absolute_url(self):
+        return reverse('view_source', kwargs={
+            'swasp_id': self.superwasp_id,
+        })
 
     @property
     def coords_str(self):
@@ -324,6 +331,12 @@ class FoldedLightcurve(models.Model, ImageGenerator):
     def __str__(self):
         return f'{self.star.superwasp_id}@{self.period_length} sec'
 
+    def get_absolute_url(self):
+        return f'{self.star.get_absolute_url()}#lightcurve-{ self.pk }'
+
+    def get_period_url(self):
+        return f'{self.star.get_absolute_url()}#period-{ self.period_length }'
+
     @property
     def natural_period(self):
         return naturaldelta(self.period_length)
@@ -360,12 +373,16 @@ class FoldedLightcurve(models.Model, ImageGenerator):
 
 
 class ZooniverseSubject(models.Model):
+    CURRENT_METADATA_VERSION = 1.0
+
     zooniverse_id = models.IntegerField(unique=True)
     lightcurve = models.OneToOneField(to=FoldedLightcurve, on_delete=models.CASCADE)
 
     subject_set_id = models.IntegerField(null=True)
     retired_at = models.DateTimeField(null=True)
     image_location = models.URLField(null=True)
+
+    metadata_version = models.FloatField(null=True)
 
     def __str__(self):
         return f'Subject {self.zooniverse_id}'
@@ -377,10 +394,33 @@ class ZooniverseSubject(models.Model):
                 self.image_location.replace('https://', ''),
             )
 
+    @property
+    def subject_metadata(self):
+        coords = self.lightcurve.star.superwasp_id.replace('1SWASP', '')
+        coords_quoted = urllib.parse.quote(coords)
+        ra = urllib.parse.quote(f'{coords[1:3]}:{coords[3:5]}:{coords[5:10]}')
+        dec = urllib.parse.quote(f'{coords[10:13]}:{coords[13:15]}:{coords[15:]}')
+
+        return {
+            '!CERiT': f'https://wasp.cerit-sc.cz/search?objid={coords_quoted}&radius=1&radiusUnit=deg&limit=10',
+            '!Simbad': f'http://simbad.u-strasbg.fr/simbad/sim-coo?Coord={ra}+{dec}&Radius=2&Radius.unit=arcmin&submit=submit+query',
+            '!ASAS-SN Photometry': f'https://asas-sn.osu.edu/photometry?ra={ra}&dec={dec}&radius=2',
+            '!VeSPA': f'https://{settings.ALLOWED_HOSTS[0]}{self.lightcurve.get_period_url()}',
+        }
+
+    @property
+    def talk_url(self):
+        return f'https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars/talk/subjects/{ self.zooniverse_id }'
+
+    def save_metadata(self):
+        save_zooniverse_metadata.delay(self.id)
+
+
 from .tasks import (
     download_fits,
     generate_lightcurve_images,
     generate_star_images,
     generate_star_json_files,
+    save_zooniverse_metadata,
 )
 from .exports import DataExport

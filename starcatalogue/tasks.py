@@ -17,9 +17,10 @@ from django.core.files.base import ContentFile
 
 from matplotlib import pyplot
 
+from panoptes_client import Subject
 from PIL import Image
 
-from .models import Star, FoldedLightcurve
+from .models import Star, FoldedLightcurve, ZooniverseSubject
 
 
 @shared_task
@@ -180,5 +181,20 @@ def generate_star_images(star_id):
     star.image_version = star.CURRENT_IMAGE_VERSION
     star.save()
     pyplot.close()
+
+
+@shared_task
+def save_zooniverse_metadata(vespa_subject_id):
+    vespa_subject = ZooniverseSubject.objects.get(id=vespa_subject_id)
+    zoo_subject = Subject.find(vespa_subject.zooniverse_id)
+
+    zoo_subject.metadata = vespa_subject.subject_metadata
+
+    if settings.ZOONIVESE_COMMIT_CHANGES:
+        zoo_subject.save()
+
+    vespa_subject.metadata_version = ZooniverseSubject.CURRENT_METADATA_VERSION
+    vespa_subject.save()
+
 
 from .exports import EXPORT_DATA_DESCRIPTION, gen_export_params_yaml_dict, gen_export_record_dict, DataExport
