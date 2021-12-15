@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load starcatalogue_tags %} 
+{% load starcatalogue_tags %}
 
 {% block title %}{{ object.superwasp_id }}{% endblock %}
 
@@ -11,7 +11,7 @@
 
 {% block content %}
 <div class="row mt-5">
-{% if object.image_location or object.json_file %}
+    {% if object.image_location or object.json_file %}
 
     <div class="col">
         <p id="main-light-curve"><img src="{{ object.image_location }}" alt=""></p>
@@ -20,20 +20,20 @@
     <div class="col-sm-4">
         <form id="main-plot-controls">
             <div class="form-group row">
-              <label for="foldingPeriodInput" class="col-sm-12 col-form-label">Folding period (seconds):</label>
+                <label for="foldingPeriodInput" class="col-sm-12 col-form-label">Folding period (seconds):</label>
             </div>
             <div class="form-group row">
-              <div class="col-sm-6">
-                <input type="text" class="form-control" id="foldingPeriodInput">
-              </div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="foldingPeriodInput">
+                </div>
 
-              <div class="col-sm-6">
-                <button type="submit" class="btn btn-primary plot-button" id="custom-plot-button">Plot</button>
-                <button type="submit" class="btn btn-primary plot-button" data-folding-period="">Reset</button>
-              </div>
+                <div class="col-sm-6">
+                    <button type="submit" class="btn btn-primary plot-button" id="custom-plot-button">Plot</button>
+                    <button type="submit" class="btn btn-primary plot-button" data-folding-period="">Reset</button>
+                </div>
             </div>
-          </form>
-          <div class="card" >
+        </form>
+        <div class="card">
             <ul class="list-group list-group-flush">
                 {% for lightcurve in object.lightcurves %}
                 <li class="list-group-item">
@@ -42,8 +42,10 @@
                             <img src="{{ lightcurve.image_location }}" class="card-img-top">
                         </div>
                         <div class="col-sm-6">
-                            <p class="card-text">{{ lightcurve.get_classification_display }}, {{ lightcurve.natural_period }}</p>
-                            <button type="submit" class="btn btn-primary plot-button"  data-folding-period="{{ lightcurve.period_length }}">Plot</button>
+                            <p class="card-text">{{ lightcurve.get_classification_display }}, {{
+                                lightcurve.natural_period }}</p>
+                            <button type="submit" class="btn btn-primary plot-button"
+                                data-folding-period="{{ lightcurve.period_length }}">Plot</button>
                             <a href="#lightcurve-{{ lightcurve.id }}" class="btn btn-primary">Details</a>
                         </div>
                     </div>
@@ -51,10 +53,10 @@
                 </li>
                 {% endfor %}
             </ul>
-          </div>
+        </div>
     </div>
 
-{% endif %}
+    {% endif %}
 </div>
 <div class="row mt-5">
     <div class="col">
@@ -73,28 +75,37 @@
                 </tr>
                 <tr>
                     <th scope="row">Minimum Magnitude</th>
-                    <td>{% if not object.min_magnitude|isnan %}{{ object.min_magnitude|floatformat:2 }}{% else %}Less than limit (V~15){% endif %}</td>
+                    <td>{% if not object.min_magnitude|isnan %}{{ object.min_magnitude|floatformat:2 }}{% else %}Less
+                        than limit (V~15){% endif %}</td>
                 </tr>
                 <tr>
                     <th scope="row">Maximum Magnitude</th>
-                    <td>{% if not object.max_magnitude|isnan %}{{ object.max_magnitude|floatformat:2 }}{% else %}Less than limit (V~15){% endif %}</td>
+                    <td>{% if not object.max_magnitude|isnan %}{{ object.max_magnitude|floatformat:2 }}{% else %}Less
+                        than limit (V~15){% endif %}</td>
                 </tr>
                 <tr>
                     <th scope="row">Mean Magnitude</th>
-                    <td>{% if not object.mean_magnitude|isnan %}{{ object.mean_magnitude|floatformat:2 }}{% else %}Less than limit (V~15){% endif %}</td>
+                    <td>{% if not object.mean_magnitude|isnan %}{{ object.mean_magnitude|floatformat:2 }}{% else %}Less
+                        than limit (V~15){% endif %}</td>
                 </tr>
                 <tr>
                     <th scope="row">Amplitude</th>
-                    <td>{% if not object.amplitude|isnan %}{{ object.amplitude|floatformat:2 }}{% else %}Less than limit (V~15){% endif %}</td>
+                    <td>{% if not object.amplitude|isnan %}{{ object.amplitude|floatformat:2 }}{% else %}Less than limit
+                        (V~15){% endif %}</td>
                 </tr>
                 {% if object.fits %}
                 <tr>
                     <th scope="row">Raw data</th>
-                    <td><a href="{{ object.fits.url }}"><i class="bi bi-download mr-2"></i> Download FITS ({{ object.fits_file_naturalsize }})</a></td>
+                    <td><a href="{{ object.fits.url }}"><i class="bi bi-download mr-2"></i> Download FITS ({{
+                            object.fits_file_naturalsize }})</a></td>
                 </tr>
                 {% endif %}
                 <tr>
-                    <th scope="row" style="max-width: 10em;"><p class="m-0 p-0">Links</p><p class="m-0 p-0"><small class="text-muted" ><strong>Note:</strong> Some objects may not exist in external catalogues.</small></p></th>
+                    <th scope="row" style="max-width: 10em;">
+                        <p class="m-0 p-0">Links</p>
+                        <p class="m-0 p-0"><small class="text-muted"><strong>Note:</strong> Some objects may not exist
+                                in external catalogues.</small></p>
+                    </th>
                     <td>
                         <ul class="list-unstyled">
                             <li><a href="{{ object.cerit_url }}">CERiT</a></li>
@@ -110,57 +121,61 @@
 
 
 {% for lightcurve in object.lightcurves %}
-    <h2 class="mt-5" id="lightcurve-{{ lightcurve.pk }}"><a href="#lightcurve-{{ lightcurve.pk }}"><i class="bi bi-link"></i></a> {{ object.superwasp_id }} folded at {{ lightcurve.natural_period }}</h2>
+<h2 class="mt-5" id="lightcurve-{{ lightcurve.pk }}"><a href="#lightcurve-{{ lightcurve.pk }}"><i
+            class="bi bi-link"></i></a> {{ object.superwasp_id }} folded at {{ lightcurve.natural_period }}</h2>
 
-    <div class="row mb-5">
-        <div class="col">
-            <img src="{{ lightcurve.image_location }}" alt="" style="width: 100%; max-height: auto;">
-        </div>
-        <div class="col">
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th scope="row">Period (sec)</th>
-                        <td>{{ lightcurve.period_length }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Majority Classification</th>
-                        <td>{{ lightcurve.get_classification_display }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Classification count</th>
-                        <td>{{ lightcurve.classification_count }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Folding flag</th>
-                        <td>{{ lightcurve.get_period_uncertainty_display }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Sigma</th>
-                        <td>{{ lightcurve.sigma }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Chi Squared</th>
-                        <td>{{ lightcurve.chi_squared }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Links</th>
-                        <td>
-                            <ul class="list-unstyled">
-                                <li><a href="https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars/talk/subjects/{{ lightcurve.zooniversesubject.zooniverse_id }}">Zooniverse Talk</a></li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<div class="row mb-5">
+    <div class="col">
+        <img src="{{ lightcurve.image_location }}" alt="" style="width: 100%; max-height: auto;">
     </div>
+    <div class="col">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="row">Period (sec)</th>
+                    <td>{{ lightcurve.period_length }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Majority Classification</th>
+                    <td>{{ lightcurve.get_classification_display }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Classification count</th>
+                    <td>{{ lightcurve.classification_count }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Folding flag</th>
+                    <td>{{ lightcurve.get_period_uncertainty_display }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Sigma</th>
+                    <td>{{ lightcurve.sigma }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Chi Squared</th>
+                    <td>{{ lightcurve.chi_squared }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Links</th>
+                    <td>
+                        <ul class="list-unstyled">
+                            <li><a
+                                    href="https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars/talk/subjects/{{ lightcurve.zooniversesubject.zooniverse_id }}">Zooniverse
+                                    Talk</a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endfor %}
 
 {% endblock %}
 
 {% block bodyEnd %}
-<script type="text/javascript" src="https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.js" crossorigin="anonymous" charset="utf-8"></script>
+<script type="text/javascript" src="https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.js"
+    crossorigin="anonymous" charset="utf-8"></script>
 <script type="text/javascript">
     var aladin = A.aladin('#aladin-lite-div', {
         survey: "P/DSS2/color",
@@ -170,115 +185,117 @@
     });
 </script>
 
+{% if object.json_file %}
+
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script type="text/javascript">
 
-var lc_data = null;
+    var lc_data = null;
 
-function plotLightcurve(plot_epochs = 1) {
-    var lc = d3.select("#main-light-curve");
-    lc.selectAll("*").remove();
-    var margin = {top: 10, right: 30, bottom: 60, left: 80},
-    width = lc.node().getBoundingClientRect().width - margin.left - margin.right,
-    height = width * 0.9 - margin.top - margin.bottom;
+    function plotLightcurve(plot_epochs = 1) {
+        var lc = d3.select("#main-light-curve");
+        lc.selectAll("*").remove();
+        var margin = { top: 10, right: 30, bottom: 60, left: 80 },
+            width = lc.node().getBoundingClientRect().width - margin.left - margin.right,
+            height = width * 0.9 - margin.top - margin.bottom;
 
-    var svg = lc
-        .append("svg")
+        var svg = lc
+            .append("svg")
             .attr("style", "width: 100%;")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
-        .append("g")
+            .append("g")
             .attr("transform",
-                  "translate(" + margin.left + "," + margin.top + ")");
+                "translate(" + margin.left + "," + margin.top + ")");
 
-    folding_period = d3.select("#foldingPeriodInput").property('value');
+        folding_period = d3.select("#foldingPeriodInput").property('value');
 
-    if ($.isNumeric(folding_period)) {
-        var scaled_x_data = lc_data['x'].map(x => (x * 86400 / folding_period) % 1);
-        var x_label = "Phase";
-    } else {
-        var scaled_x_data = lc_data['x'];
-        plot_epochs = 1;
-        var x_label = "Observation date (Julian date)";
-    }
-
-    var scaled_y_data = lc_data['y'].map(y => 15 - 2.5 * Math.log10(y));
-    var scaled_lc_data = d3.zip(scaled_x_data, scaled_y_data).filter(d => d[1] < 16);
-    var filtered_y_data = scaled_y_data.filter(d => d < 16);
-    var y_padding = (d3.max(filtered_y_data) - d3.min(filtered_y_data)) * 0.01
-    var y_domain = [d3.max(filtered_y_data) + y_padding, d3.min(filtered_y_data)];
-    var x_padding = (d3.max(scaled_x_data) - d3.min(scaled_x_data)) * 0.005
-
-    // Add X axis
-    var x = d3.scaleLinear()
-        .domain([d3.min(scaled_x_data) - x_padding, d3.max(scaled_x_data) * plot_epochs])
-        .range([ 0, width ]);
-    svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
-    svg.append("text")
-        .attr("class", "x label")
-        .attr("text-anchor", "middle")
-        .attr("x", width / 2)
-        .attr("y", height + margin.bottom / 2 + 10)
-        .text(x_label);
-
-    // Add Y axis
-    var y = d3.scaleLinear()
-        .domain(y_domain)
-        .range([ height, 0]);
-    svg.append("g")
-        .call(d3.axisLeft(y));
-    svg.append("text")
-        .attr("class", "y label")
-        .attr("text-anchor", "middle")
-        .attr("y", -margin.left / 2 - 10)
-        .attr("x", -height / 2)
-        .attr("dy", ".75em")
-        .attr("transform", "rotate(-90)")
-        .text("Magnitude");
-
-    for (i=0; i < plot_epochs; i++) {
-        // Add dots
-        svg.append('g')
-            .selectAll("dot")
-            .data(scaled_lc_data)
-            .enter()
-            .append("circle")
-            .attr("cx", function (d) { return x(d[0] + i); } )
-            .attr("cy", function (d) { return y(d[1]); } )
-            .attr("r", 0.5)
-            .style("fill", "#5597c4")
-    }
-}
-
-//Read the data
-d3.json("{{ object.json_file.url }}")
-    .then(function(data) {
-        lc_data = data["data"];
-        if (window.location.hash.startsWith('#period-')) {
-            period = window.location.hash.split('-')[1];
-            d3.select("#foldingPeriodInput").property('value', period);
-            d3.select('#custom-plot-button').attr('data-folding-period', period);
-            plotLightcurve(2);
+        if ($.isNumeric(folding_period)) {
+            var scaled_x_data = lc_data['x'].map(x => (x * 86400 / folding_period) % 1);
+            var x_label = "Phase";
         } else {
-            plotLightcurve();
+            var scaled_x_data = lc_data['x'];
+            plot_epochs = 1;
+            var x_label = "Observation date (Julian date)";
         }
-    });
 
-d3.select("#foldingPeriodInput").on('change', function() {
-     d3.select('#custom-plot-button').attr('data-folding-period', $(this).value);
-});
-d3.selectAll(".plot-button").on('click', function(e) { 
-    e.preventDefault();
-    d3.select("#foldingPeriodInput").property('value', $(this).attr('data-folding-period'));
-    if ($.isNumeric(d3.select("#foldingPeriodInput").property('value'))) {
-        window.location.hash = 'period-' + d3.select("#foldingPeriodInput").property('value');
-    } else {
-        window.location.hash = '';
+        var scaled_y_data = lc_data['y'].map(y => 15 - 2.5 * Math.log10(y));
+        var scaled_lc_data = d3.zip(scaled_x_data, scaled_y_data).filter(d => d[1] < 16);
+        var filtered_y_data = scaled_y_data.filter(d => d < 16);
+        var y_padding = (d3.max(filtered_y_data) - d3.min(filtered_y_data)) * 0.01
+        var y_domain = [d3.max(filtered_y_data) + y_padding, d3.min(filtered_y_data)];
+        var x_padding = (d3.max(scaled_x_data) - d3.min(scaled_x_data)) * 0.005
+
+        // Add X axis
+        var x = d3.scaleLinear()
+            .domain([d3.min(scaled_x_data) - x_padding, d3.max(scaled_x_data) * plot_epochs])
+            .range([0, width]);
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+        svg.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "middle")
+            .attr("x", width / 2)
+            .attr("y", height + margin.bottom / 2 + 10)
+            .text(x_label);
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+            .domain(y_domain)
+            .range([height, 0]);
+        svg.append("g")
+            .call(d3.axisLeft(y));
+        svg.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "middle")
+            .attr("y", -margin.left / 2 - 10)
+            .attr("x", -height / 2)
+            .attr("dy", ".75em")
+            .attr("transform", "rotate(-90)")
+            .text("Magnitude");
+
+        for (i = 0; i < plot_epochs; i++) {
+            // Add dots
+            svg.append('g')
+                .selectAll("dot")
+                .data(scaled_lc_data)
+                .enter()
+                .append("circle")
+                .attr("cx", function (d) { return x(d[0] + i); })
+                .attr("cy", function (d) { return y(d[1]); })
+                .attr("r", 0.5)
+                .style("fill", "#5597c4")
+        }
     }
-    plotLightcurve(2);
-});
 
+    //Read the data
+    d3.json("{{ object.json_file.url }}")
+        .then(function (data) {
+            lc_data = data["data"];
+            if (window.location.hash.startsWith('#period-')) {
+                period = window.location.hash.split('-')[1];
+                d3.select("#foldingPeriodInput").property('value', period);
+                d3.select('#custom-plot-button').attr('data-folding-period', period);
+                plotLightcurve(2);
+            } else {
+                plotLightcurve();
+            }
+        });
+
+    d3.select("#foldingPeriodInput").on('change', function () {
+        d3.select('#custom-plot-button').attr('data-folding-period', $(this).value);
+    });
+    d3.selectAll(".plot-button").on('click', function (e) {
+        e.preventDefault();
+        d3.select("#foldingPeriodInput").property('value', $(this).attr('data-folding-period'));
+        if ($.isNumeric(d3.select("#foldingPeriodInput").property('value'))) {
+            window.location.hash = 'period-' + d3.select("#foldingPeriodInput").property('value');
+        } else {
+            window.location.hash = '';
+        }
+        plotLightcurve(2);
+    });
 </script>
+{% endif %}
 {% endblock %}
