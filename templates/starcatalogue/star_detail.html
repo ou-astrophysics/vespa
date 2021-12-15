@@ -42,8 +42,8 @@
                             <img src="{{ lightcurve.image_location }}" class="card-img-top">
                         </div>
                         <div class="col-sm-6">
-                            <p class="card-text">{{ lightcurve.get_classification_display }}, {{
-                                lightcurve.natural_period }}</p>
+                            <p class="card-text">{{ lightcurve.get_classification_display }},
+                                {{ lightcurve.natural_period }}</p>
                             <button type="submit" class="btn btn-primary plot-button"
                                 data-folding-period="{{ lightcurve.period_length }}">Plot</button>
                             <a href="#lightcurve-{{ lightcurve.id }}" class="btn btn-primary">Details</a>
@@ -96,8 +96,8 @@
                 {% if object.fits %}
                 <tr>
                     <th scope="row">Raw data</th>
-                    <td><a href="{{ object.fits.url }}"><i class="bi bi-download mr-2"></i> Download FITS ({{
-                            object.fits_file_naturalsize }})</a></td>
+                    <td><a href="{{ object.fits.url }}"><i class="bi bi-download mr-2"></i> Download FITS
+                            ({{ object.fits_file_naturalsize }})</a></td>
                 </tr>
                 {% endif %}
                 <tr>
