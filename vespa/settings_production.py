@@ -11,6 +11,10 @@ ALLOWED_HOSTS = [
     'stem-superwasp-live',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://www.superwasp.org',
+]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
