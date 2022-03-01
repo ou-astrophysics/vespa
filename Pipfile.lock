@@ -156,11 +156,11 @@
         },
         "django-celery-results": {
             "hashes": [
-                "sha256:cc0285090a306f97f1d4b7929ed98af0475bf6db2568976b3387de4fbe812edc",
-                "sha256:d5f83fad9091e52cd6dbb3ca80632153ad14b6cdac4d73258e040f92717237cb"
+                "sha256:203cf7321081d09be91738aff715c97bcc769db8c727621049e2786118059dac",
+                "sha256:37b8734ad0038cdeabe9efb09721dfdbe1ff7bf6e1d81ff3e10a1eb23a2b321f"
             ],
             "index": "pypi",
-            "version": "==2.2.0"
+            "version": "==2.3.0"
         },
         "fonttools": {
             "hashes": [
