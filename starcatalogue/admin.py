@@ -6,6 +6,8 @@ from starcatalogue.models import (
     Star,
     FoldedLightcurve,
     ZooniverseSubject,
+    AggregatedClassification,
+    DataRelease,
 )
 
 
@@ -117,3 +119,34 @@ class ZooniverseSubjectAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ZooniverseSubject, ZooniverseSubjectAdmin)
+
+
+class DataReleaseAdmin(admin.ModelAdmin):
+    list_display = (
+        "version",
+        "active",
+        "created",
+    )
+
+
+admin.site.register(DataRelease, DataReleaseAdmin)
+
+
+class AggregatedClassificationAdmin(admin.ModelAdmin):
+    list_display = (
+        "lightcurve",
+        "data_release",
+        "classification",
+        "classification_count",
+    )
+    search_fields = ("lightcurve__star__superwasp_id",)
+    list_filter = ("classification", "period_uncertainty", "data_release__version")
+    fields = (
+        "classification",
+        "period_uncertainty",
+        "classification_count",
+    )
+    readonly_fields = fields
+
+
+admin.site.register(AggregatedClassification, AggregatedClassificationAdmin)
