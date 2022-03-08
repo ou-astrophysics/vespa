@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block pagetitle %}British Science Week 2022: Astronomy Needs You! {% endblock %}
+{% block title %}British Science Week 2022: Astronomy Needs You! {% endblock %}
+
+{% block content %}
+
+<div class="row mb-5">
+    <div class="col-8">
+        <h2>How you can be part of astronomy's big data revolution</h2>
+
+        <p>As part of British Science Week, we're hosting a live panel discussion and Q&amp;A where we will talk about
+            the connection between the coming &ldquo;big data&rdquo; era in astronomy and the increasing importance of
+            citizen science projects for training machine learning models.</p>
+
+        <p>Open University research student Adam McMaster will be joined by Stephen Serjeant, Hugh Dickinson, and
+            Beatriz Mingo to discuss black holes, machine learning, and citizen science. We will encourage the audience
+            to join us in working on one of our current projects, Black Hole Hunters.</p>
+
+        <p>The live stream will be available below:</p>
+
+        <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/xKgf1p8lr5o"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+
+        <h2 class="mt-5 mb-3">Check out our other citizen science projects</h2>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="card" style="width: 100%;">
+                        <img src="{% static '/images/skycoverage.png' %}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">SuperWASP Variable Stars</h5>
+                            <p class="card-text" style="height: 3em;">Discover the weirdest variable stars.</p>
+                            <a href="https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars"
+                                class="btn btn-primary">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" style="width: 100%">
+                        <img src="{% static '/images/rgz-lofar.jpg' %}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">Radio Galaxy Zoo LOFAR</h5>
+                            <p class="card-text">Find supermassive black holes and starforming
+                                galaxies.</p>
+                            <a href="https://www.zooniverse.org/projects/chrismrp/radio-galaxy-zoo-lofar"
+                                class="btn btn-primary">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card mb-5" style="width: 100%;">
+            <img src="{% static '/selflensingimages/lensing-artist-impression.jpg' %}" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">Black Hole Hunters</h5>
+                <p class="card-text">Search for hidden black holes!</p>
+                <a href="https://www.zooniverse.org/projects/hughdickinson/superwasp-black-hole-hunters"
+                    class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+
+        <div class="card" style="width: 100%;">
+            <img src="{% static '/images/60-sec-ai.png' %}" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title">60 Second Adventures in Artificial Intelligence</h5>
+                <p class="card-text">Learn more about machine learning and how we use it in our research.</p>
+                <a href="https://www.open.ac.uk/science/physical-science/news/60-second-adventures-artificial-intelligence"
+                    class="btn btn-primary">Watch Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
