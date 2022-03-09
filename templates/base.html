@@ -1,87 +1,114 @@
 {% load starcatalogue_tags %}
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
-        <title>{% block pagetitle %}SuperWASP Variable Stars{% endblock %}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        {% block headEnd %}{% endblock %}
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark static-top">
-            <a class="navbar-brand" href="{% url 'index' %}">SuperWASP</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-            <div class="collapse navbar-collapse" id="main-navbar">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    <title>{% block pagetitle %}SuperWASP Variable Stars{% endblock %}</title>
+
+    {% block headEnd %}{% endblock %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark static-top">
+        <a class="navbar-brand" href="{% url 'index' %}">SuperWASP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
+            aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-navbar">
             {% block nav %}
-                {% url 'vespa' as vespa_url %}
-                {% url 'exoplanets' as exoplanets_url %}
-                {% url 'about' as about_url %}
-                {% url 'black-hole-hunters' as black_hole_hunters_url %}
-                {% url 'blog' as blog_url %}
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item {% if request.path|startswith:about_url %}active{% endif %}"><a class="nav-link" href="{{ about_url }}">About</a></li>
-                    <li class="nav-item {% if request.path|startswith:exoplanets_url %}active{% endif %}"><a class="nav-link" href="{{ exoplanets_url }}">Exoplanets</a></li>
-                    <li class="nav-item dropdown {% if request.path|startswith:vespa_url %}active{% endif %}">
-                        <a class="nav-link dropdown-toggle" href="#" id="nav-links" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Variable Stars</a>
-                        <div class="dropdown-menu" aria-labelledby="nav-links">
-                            <a class="dropdown-item" href="{{ vespa_url }}">VeSPA: Variable Star Photometry Archive</a>
-                            <a class="dropdown-item" href="{% url 'data_releases' %}">Data Releases</a>
-                            <a class="dropdown-item" href="https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars">Zooniverse</a>
-                        </div>
-                    </li>
-                    <li class="nav-item {% if request.path|startswith:black_hole_hunters_url %}active{% endif %}"><a class="nav-link" href="{{ black_hole_hunters_url }}">Black Hole Hunters</a></li>
-                    <li class="nav-item {% if request.path|startswith:blog_url %}active{% endif %}"><a class="nav-link" href="{{ blog_url }}">Blog</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="nav-links" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Links</a>
-                        <div class="dropdown-menu" aria-labelledby="nav-links">
-                            <a class="dropdown-item" href="https://www.open.ac.uk/">Open University</a>
-                            <a class="dropdown-item" href="https://wasp-planets.net/">WASP Planets</a>
-                            <a class="dropdown-item" href="https://www.asterics2020.eu/">ASTERICS</a>
-                        </div>
-                    </li>
-                </ul>
+            {% url 'vespa' as vespa_url %}
+            {% url 'exoplanets' as exoplanets_url %}
+            {% url 'about' as about_url %}
+            {% url 'black-hole-hunters' as black_hole_hunters_url %}
+            {% url 'blog' as blog_url %}
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {% if request.path|startswith:about_url %}active{% endif %}"><a class="nav-link"
+                        href="{{ about_url }}">About</a></li>
+                <li class="nav-item {% if request.path|startswith:exoplanets_url %}active{% endif %}"><a
+                        class="nav-link" href="{{ exoplanets_url }}">Exoplanets</a></li>
+                <li class="nav-item dropdown {% if request.path|startswith:vespa_url %}active{% endif %}">
+                    <a class="nav-link dropdown-toggle" href="#" id="nav-links" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Variable Stars</a>
+                    <div class="dropdown-menu" aria-labelledby="nav-links">
+                        <a class="dropdown-item" href="{{ vespa_url }}">VeSPA: Variable Star Photometry Archive</a>
+                        <a class="dropdown-item" href="{% url 'data_releases' %}">Data Releases</a>
+                        <a class="dropdown-item"
+                            href="https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars">Zooniverse</a>
+                    </div>
+                </li>
+                <li class="nav-item {% if request.path|startswith:black_hole_hunters_url %}active{% endif %}"><a
+                        class="nav-link" href="{{ black_hole_hunters_url }}">Black Hole Hunters</a></li>
+                <li class="nav-item {% if request.path|startswith:blog_url %}active{% endif %}"><a class="nav-link"
+                        href="{{ blog_url }}">Blog</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="nav-links" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Links</a>
+                    <div class="dropdown-menu" aria-labelledby="nav-links">
+                        <a class="dropdown-item" href="https://www.open.ac.uk/">Open University</a>
+                        <a class="dropdown-item" href="https://wasp-planets.net/">WASP Planets</a>
+                        <a class="dropdown-item" href="https://www.asterics2020.eu/">ASTERICS</a>
+                    </div>
+                </li>
+            </ul>
             {% endblock %}
             <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'browse' %}">
-                <input class="form-control mr-sm-2" type="text" placeholder="Object ID or coordinates" aria-label="Search" name="search" value="{% if search %}{{ search }}{% endif %}">
+                <input class="form-control mr-sm-2" type="text" placeholder="Object ID or coordinates"
+                    aria-label="Search" name="search" value="{% if search %}{{ search }}{% endif %}">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-              </form>
-            </div>
-        </nav>
+            </form>
+        </div>
+    </nav>
 
 
-        <main role="main" class="container">
+    <main role="main" class="container">
 
-            <h1 class="display-3">{% block title %}{% endblock %}</h1>
+        <h1 class="display-3">{% block title %}{% endblock %}</h1>
 
-            {% block content %}
-            {% endblock %}
-
-
-            <div class="jumbotron">
-                <h2 class="display-4">Acknowledgements</h2>
-
-                <p class="lead">The SuperWASP project is currently funded and operated by Warwick University and Keele University, and was originally set up by Queen’s University Belfast, the Universities of Keele, St. Andrews and Leicester, the Open University, the Isaac Newton Group, the Instituto de Astrofisica de Canarias, the South African Astronomical Observatory and by STFC.</p>
-
-                <p class="lead">The Zooniverse project on SuperWASP Variable Stars is led by Andrew Norton (The Open University) and builds on work he has done with his former postgraduate students Les Thomas, Stan Payne, Marcus Lohr, Paul Greer, and Heidi Thiemann, and current postgraduate student Adam McMaster.</p>
-
-                <p class="lead">The Zooniverse project on SuperWASP Variable Stars was developed with the help of the ASTERICS Horizon2020 project. ASTERICS is supported by the European Commission Framework Programme Horizon 2020 Research and Innovation action under grant agreement n.653477</p>
-
-                <p class="lead">VeSPA was designed and developed by Adam McMaster as part of his postgraduate work. This work is funded by STFC, DISCnet, and the Open University Space SRA. Server infrastructure was funded by the Open University Space SRA.</p>
-            </div>
-
-        </main>
-
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-
-        {% block bodyEnd %}
+        {% block content %}
         {% endblock %}
-    </body>
+
+
+        <div class="jumbotron">
+            <h2 class="display-4">Acknowledgements</h2>
+
+            <p class="lead">The SuperWASP project is currently funded and operated by Warwick University and Keele
+                University, and was originally set up by Queen’s University Belfast, the Universities of Keele, St.
+                Andrews and Leicester, the Open University, the Isaac Newton Group, the Instituto de Astrofisica de
+                Canarias, the South African Astronomical Observatory and by STFC.</p>
+
+            <p class="lead">The Zooniverse project on SuperWASP Variable Stars is led by Andrew Norton (The Open
+                University) and builds on work he has done with his former postgraduate students Les Thomas, Stan Payne,
+                Marcus Lohr, Paul Greer, and Heidi Thiemann, and current postgraduate student Adam McMaster.</p>
+
+            <p class="lead">The Zooniverse project on SuperWASP Variable Stars was developed with the help of the
+                ASTERICS Horizon2020 project. ASTERICS is supported by the European Commission Framework Programme
+                Horizon 2020 Research and Innovation action under grant agreement n.653477</p>
+
+            <p class="lead">VeSPA was designed and developed by Adam McMaster as part of his postgraduate work. This
+                work is funded by STFC, DISCnet, and the Open University Space SRA. Server infrastructure was funded by
+                the Open University Space SRA.</p>
+
+            {% block acknowledgementsEnd %}{% endblock %}
+        </div>
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+
+    {% block bodyEnd %}
+    {% endblock %}
+</body>
+
 </html>
