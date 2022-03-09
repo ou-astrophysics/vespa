@@ -10,7 +10,8 @@
     <div class="col">
       <div class="btn-group filterBar">
         <div class="btn-group">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="searchButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="searchButton"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Search
           </button>
           <div class="dropdown-menu px-3" aria-labelledby="searchButton">
@@ -18,18 +19,25 @@
               <div class="input-group-prepend">
                 <span class="input-group-text" id="search-label">Object name or coordinates</span>
               </div>
-              <input type="text" name="search" class="form-control" placeholder="e.g. &quot;RR Lyrae&quot; or &quot;19h25m27s +42d47m03s&quot;" value="{% if search %}{{ search }}{% endif %}" aria-label="Object name or coordinates" aria-describedby="search-label" data-toggle="tooltip" data-placement="right" title="Enter any object name/ID or coordinates in any format">
-            </div>    
+              <input type="text" name="search" class="form-control"
+                placeholder="e.g. &quot;RR Lyrae&quot; or &quot;19h25m27s +42d47m03s&quot;"
+                value="{% if search %}{{ search }}{% endif %}" aria-label="Object name or coordinates"
+                aria-describedby="search-label" data-toggle="tooltip" data-placement="right"
+                title="Enter any object name/ID or coordinates in any format">
+            </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="radius-label">Radius (degrees)</span>
               </div>
-              <input type="text" name="search_radius" class="form-control" placeholder="0.1" value="{% if search_radius %}{{ search_radius }}{% endif %}" aria-label="Radius (degrees)" aria-describedby="radius-label">
-            </div> 
+              <input type="text" name="search_radius" class="form-control" placeholder="0.1"
+                value="{% if search_radius %}{{ search_radius }}{% endif %}" aria-label="Radius (degrees)"
+                aria-describedby="radius-label">
+            </div>
           </div>
         </div>
         <div class="btn-group">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             Sort
           </button>
           <div class="dropdown-menu px-3" aria-labelledby="sortButton">
@@ -37,43 +45,50 @@
               <div class="row align-items-start" style="width: 450px;">
                 <div class="col pl-0">
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="distance" id="sort_distance" {% if sort == 'distance' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="distance" id="sort_distance" {% if
+                      sort=='distance' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_distance">
                       Radial Distance
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="star__superwasp_id" id="sort_swasp_id" {% if sort == 'star__superwasp_id' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="star__superwasp_id"
+                      id="sort_swasp_id" {% if sort=='star__superwasp_id' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_swasp_id">
                       SuperWASP ID
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="star___mean_magnitude" id="sort_mean_magnitude" {% if sort == 'star___mean_magnitude' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="star___mean_magnitude"
+                      id="sort_mean_magnitude" {% if sort=='star___mean_magnitude' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_mean_magnitude">
                       Mean magnitude
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="star___amplitude" id="sort_amplitude" {% if sort == 'star___amplitude' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="star___amplitude"
+                      id="sort_amplitude" {% if sort=='star___amplitude' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_amplitude">
                       Amplitude
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="period_length" id="sort_period" {% if sort == 'period_length' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="period_length" id="sort_period" {%
+                      if sort=='period_length' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_period">
                       Period
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="classification" id="sort_classification" {% if sort == 'classification' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="classification"
+                      id="sort_classification" {% if sort=='classification' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_classification">
                       Majority Classification
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="classification_count" id="sort_classification_count" {% if sort == 'classification_count' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="classification_count"
+                      id="sort_classification_count" {% if sort=='classification_count' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_classification_count">
                       Classification Count
                     </label>
@@ -81,13 +96,15 @@
                 </div>
                 <div class="col pr-0">
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="order" value="asc" id="order_asc" {% if order == 'asc' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="order" value="asc" id="order_asc" {% if
+                      order=='asc' %}checked{% endif %}>
                     <label class="form-check-label" for="order_asc">
                       Ascending
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="order" value="desc" id="order_desc" {% if order == 'desc' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="order" value="desc" id="order_desc" {% if
+                      order=='desc' %}checked{% endif %}>
                     <label class="form-check-label" for="order_desc">
                       Descending
                     </label>
@@ -98,7 +115,8 @@
           </div>
         </div>
         <div class="btn-group">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="magnitudeButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="magnitudeButton"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Magnitude
           </button>
           <div class="dropdown-menu px-3" aria-labelledby="magnitudeButton">
@@ -110,15 +128,19 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="mag-min-label">Min</span>
                     </div>
-                    <input type="text" name="min_magnitude" class="form-control" placeholder="" value="{% if min_magnitude %}{{ min_magnitude }}{% endif %}" aria-label="Minimum magnitude" aria-describedby="mag-min-label">
-                  </div>    
-                  
+                    <input type="text" name="min_magnitude" class="form-control" placeholder=""
+                      value="{% if min_magnitude %}{{ min_magnitude }}{% endif %}" aria-label="Minimum magnitude"
+                      aria-describedby="mag-min-label">
+                  </div>
+
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="mag-max-label">Max</span>
                     </div>
-                    <input type="text" name="max_magnitude" class="form-control" placeholder="" value="{% if max_magnitude %}{{ max_magnitude }}{% endif %}" aria-label="Maximum magnitude" aria-describedby="mag-max-label">
-                  </div> 
+                    <input type="text" name="max_magnitude" class="form-control" placeholder=""
+                      value="{% if max_magnitude %}{{ max_magnitude }}{% endif %}" aria-label="Maximum magnitude"
+                      aria-describedby="mag-max-label">
+                  </div>
                 </div>
                 <div class="col pr-0">
                   <h6>Amplitude</h6>
@@ -126,22 +148,27 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="amp-min-label">Min</span>
                     </div>
-                    <input type="text" name="min_amplitude" class="form-control" placeholder="" value="{% if min_amplitude %}{{ min_amplitude }}{% endif %}" aria-label="Minimum amplitude" aria-describedby="amp-min-label">
-                  </div>    
-                  
+                    <input type="text" name="min_amplitude" class="form-control" placeholder=""
+                      value="{% if min_amplitude %}{{ min_amplitude }}{% endif %}" aria-label="Minimum amplitude"
+                      aria-describedby="amp-min-label">
+                  </div>
+
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="amp-max-label">Max</span>
                     </div>
-                    <input type="text" name="max_amplitude" class="form-control" placeholder="" value="{% if max_amplitude %}{{ max_amplitude }}{% endif %}" aria-label="Maximum amplitude" aria-describedby="amp-max-label">
-                  </div> 
+                    <input type="text" name="max_amplitude" class="form-control" placeholder=""
+                      value="{% if max_amplitude %}{{ max_amplitude }}{% endif %}" aria-label="Maximum amplitude"
+                      aria-describedby="amp-max-label">
+                  </div>
                 </div>
               </div>
-            </div>      
+            </div>
           </div>
         </div>
         <div class="btn-group">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="periodButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="periodButton"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Period
           </button>
           <div class="dropdown-menu px-3" aria-labelledby="periodButton">
@@ -152,24 +179,30 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="period-min-label">Min (sec)</span>
                     </div>
-                    <input type="text" name="min_period" class="form-control" placeholder="" value="{% if min_period %}{{ min_period }}{% endif %}" aria-label="Minimum period" aria-describedby="period-min-label">
+                    <input type="text" name="min_period" class="form-control" placeholder=""
+                      value="{% if min_period %}{{ min_period }}{% endif %}" aria-label="Minimum period"
+                      aria-describedby="period-min-label">
                   </div>
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="period-max-label">Max (sec)</span>
                     </div>
-                    <input type="text" name="max_period" class="form-control" placeholder="" value="{% if max_period %}{{ max_period }}{% endif %}" aria-label="Maximum period" aria-describedby="period-max-label">
-                  </div> 
+                    <input type="text" name="max_period" class="form-control" placeholder=""
+                      value="{% if max_period %}{{ max_period }}{% endif %}" aria-label="Maximum period"
+                      aria-describedby="period-max-label">
+                  </div>
                 </div>
                 <div class="col pr-0">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="certain_period" id="certain_period" {% if certain_period == 'on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="certain_period" id="certain_period" {% if
+                      certain_period=='on' %}checked {% endif %}>
                     <label class="form-check-label" for="certain_period">
                       Certain
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="uncertain_period" id="uncertain_period" {% if uncertain_period == 'on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="uncertain_period" id="uncertain_period" {% if
+                      uncertain_period=='on' %}checked {% endif %}>
                     <label class="form-check-label" for="uncertain_period">
                       Uncertain
                     </label>
@@ -180,7 +213,8 @@
           </div>
         </div>
         <div class="btn-group">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="typeButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="typeButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             Classification
           </button>
           <div class="dropdown-menu px-3" aria-labelledby="typeButton">
@@ -192,44 +226,53 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="classifications-min-label">Min</span>
                     </div>
-                    <input type="text" name="min_classifications" class="form-control" placeholder="" value="{% if min_classifications %}{{ min_classifications }}{% endif %}" aria-label="Minimum classification count" aria-describedby="classifications-min-label">
-                  </div>    
-                  
+                    <input type="text" name="min_classifications" class="form-control" placeholder=""
+                      value="{% if min_classifications %}{{ min_classifications }}{% endif %}"
+                      aria-label="Minimum classification count" aria-describedby="classifications-min-label">
+                  </div>
+
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="classifications-max-label">Max</span>
                     </div>
-                    <input type="text" name="max_classifications" class="form-control" placeholder="" value="{% if max_classifications %}{{ max_classifications }}{% endif %}" aria-label="Maximum classification count" aria-describedby="classifications-max-label">
-                  </div> 
+                    <input type="text" name="max_classifications" class="form-control" placeholder=""
+                      value="{% if max_classifications %}{{ max_classifications }}{% endif %}"
+                      aria-label="Maximum classification count" aria-describedby="classifications-max-label">
+                  </div>
                 </div>
                 <div class="col pr-0">
                   <h6>Variable Type</h6>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="type_pulsator" id="type_pulsator" {% if type_pulsator == 'on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="type_pulsator" id="type_pulsator" {% if
+                      type_pulsator=='on' %}checked {% endif %}>
                     <label class="form-check-label" for="type_pulsator">
                       Pulsator
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="type_rotator" id="type_rotator" {% if type_rotator == 'on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="type_rotator" id="type_rotator" {% if
+                      type_rotator=='on' %}checked {% endif %}>
                     <label class="form-check-label" for="type_rotator">
                       Rotator
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="type_eaeb" id="type_eaeb" {% if type_eaeb == 'on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="type_eaeb" id="type_eaeb" {% if
+                      type_eaeb=='on' %}checked {% endif %}>
                     <label class="form-check-label" for="type_eaeb">
                       EA/EB
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="type_ew"  id="type_ew" {% if type_ew == 'on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="type_ew" id="type_ew" {% if type_ew=='on'
+                      %}checked {% endif %}>
                     <label class="form-check-label" for="type_ew">
                       EW
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="type_unknown" id="type_unknown" {% if type_unknown == 'on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="type_unknown" id="type_unknown" {% if
+                      type_unknown=='on' %}checked {% endif %}>
                     <label class="form-check-label" for="type_unknown">
                       Unknown
                     </label>
@@ -260,146 +303,151 @@
 </div>
 
 <div class="row mt-2">
-  <div class="col mt-2 lead">{{ result_count|intcomma }} result{{ result_count|pluralize }}{% if search and coords %} within {{ search_radius }} deg of {% hours coords.ra %} {{ coords.dec }}{% elif search and not coords %}. Could not determine coordinates.{% endif %}</div>
+  <div class="col mt-2 lead">{{ result_count|intcomma }} result{{ result_count|pluralize }}{% if search and coords %}
+    within {{ search_radius }} deg of {% hours coords.ra %} {{ coords.dec }}{% elif search and not coords %}. Could not
+    determine coordinates.{% endif %}</div>
   {% include "starcatalogue/pagination.html" %}
 </div>
-  {% if object_list %}
-  <table class="table table-striped d-none" id="compactView">
-    <thead>
-        <tr>
-            <th scope="col">SuperWASP ID</th>
-            <th scope="col">Mean Magnitude</th>
-            <th scope="col">Period (seconds)</th>
-            <th scope="col">Majority Classification</th>
-            <th scope="col">Folding flag</th>
-            <th scope="col">RA</th>
-            <th scope="col">Dec</th>
-            <th scope="col">Lightcurve</th>
-        </tr>
-    </thead>
-    <tbody>
-      {% for lightcurve in object_list %}
-        <tr>
-            <td><a href="{% url 'view_source' lightcurve.star.superwasp_id %}">{{ lightcurve.star.superwasp_id }}</a></td>
-            <td>{{ lightcurve.star.mean_magnitude|floatformat:2 }}</td>
-            <td>{{ lightcurve.period_length }}<br>~{{ lightcurve.natural_period }}</td>
-            <td>{{ lightcurve.get_classification_display }}</td>
-            <td>{{ lightcurve.get_period_uncertainty_display }}</td>
-            <td>{{ lightcurve.star.ra }}</td>
-            <td>{{ lightcurve.star.dec }}</td>
-            <td><a href="{{ lightcurve.get_absolute_url }}"><img src="{{ lightcurve.thumbnail_location }}" alt="" style="width: 100px; height: auto;"></a></td>
-        </tr>
+{% if object_list %}
+<table class="table table-striped d-none" id="compactView">
+  <thead>
+    <tr>
+      <th scope="col">SuperWASP ID</th>
+      <th scope="col">Mean Magnitude</th>
+      <th scope="col">Period (seconds)</th>
+      <th scope="col">Majority Classification</th>
+      <th scope="col">Folding flag</th>
+      <th scope="col">RA</th>
+      <th scope="col">Dec</th>
+      <th scope="col">Lightcurve</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for lightcurve in object_list %}
+    <tr>
+      <td><a href="{% url 'view_source' lightcurve.star.superwasp_id %}">{{ lightcurve.star.superwasp_id }}</a></td>
+      <td>{{ lightcurve.star.mean_magnitude|floatformat:2 }}</td>
+      <td>{{ lightcurve.period_length }}<br>~{{ lightcurve.natural_period }}</td>
+      <td>{{ lightcurve.get_classification_display }}</td>
+      <td>{{ lightcurve.get_period_uncertainty_display }}</td>
+      <td>{{ lightcurve.star.ra }}</td>
+      <td>{{ lightcurve.star.dec }}</td>
+      <td><a href="{{ lightcurve.get_absolute_url }}"><img src="{{ lightcurve.thumbnail_location }}" alt=""
+            style="width: 100px; height: auto;"></a></td>
+    </tr>
     {% endfor %}
-    </tbody>
+  </tbody>
 </table>
-    <div class="list-group mb-5" id="expandedView">
-      {% for lightcurve in object_list %}
-      <div class="list-group-item list-group-item-action">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1"><a href="{% url 'view_source' lightcurve.star.superwasp_id %}">{{ lightcurve.star.superwasp_id }}</a></h5>
-          <small>{{ lightcurve.period_length }} second period, ~{{ lightcurve.natural_period }}</small>
-        </div>
-        <small>{{ lightcurve.star.ra }} {{ lightcurve.star.dec }}</small>
-        <div class="row mt-3">
-          <div class="col">
-            <table class="table">
-              <tr>
-                <th scope="row">Mean magnitude</th>
-                <td>{{ lightcurve.star.mean_magnitude|floatformat:2 }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Amplitude</th>
-                <td>{{ lightcurve.star.amplitude|floatformat:2 }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Folding flag</th>
-                <td>{{ lightcurve.get_period_uncertainty_display }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Classification count</th>
-                <td>{{ lightcurve.classification_count }}</td>
-              </tr>
-              {% if search %}<tr>
-                <th scope="row">Distance from search</th>
-                <td>{% degrees lightcurve.distance %}</td>
-              </tr>{% endif %}
-            </table>
-          </div>
-          <div class="col">
-            <div class="card shadow-sm mb-4 float-right" style="max-width: 300px;">
-              <a href="{{ lightcurve.get_absolute_url }}"><img src="{{ lightcurve.image_location }}" class="card-img-top"></a>
-              <div class="card-body">
-                <p class="card-text">{{ lightcurve.get_classification_display }}, {{ lightcurve.natural_period }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+<div class="list-group mb-5" id="expandedView">
+  {% for lightcurve in object_list %}
+  <div class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1"><a href="{% url 'view_source' lightcurve.star.superwasp_id %}">{{ lightcurve.star.superwasp_id
+          }}</a></h5>
+      <small>{{ lightcurve.period_length }} second period, ~{{ lightcurve.natural_period }}</small>
     </div>
-      {% endfor %}
-    </div>
-  {% else %}
+    <small>{{ lightcurve.star.ra }} {{ lightcurve.star.dec }}</small>
     <div class="row mt-3">
-      <div class="col text-center">
-        <h2>No results found</h2>
-        <p><i class="bi bi-search" style="font-size: xxx-large;"></i></p>
-        <p class="lead">There were no results{% if search %} for <strong>&quot;{{ search }}&quot;</strong>{% endif %}.</p>
-        <p>Please try another search or choose less specific filtering options.</p>
+      <div class="col">
+        <table class="table">
+          <tr>
+            <th scope="row">Mean magnitude</th>
+            <td>{{ lightcurve.star.mean_magnitude|floatformat:2 }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Amplitude</th>
+            <td>{{ lightcurve.star.amplitude|floatformat:2 }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Folding flag</th>
+            <td>{{ lightcurve.get_period_uncertainty_display }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Classification count</th>
+            <td>{{ lightcurve.classification_count }}</td>
+          </tr>
+          {% if search %}<tr>
+            <th scope="row">Distance from search</th>
+            <td>{% degrees lightcurve.distance %}</td>
+          </tr>{% endif %}
+        </table>
       </div>
-
+      <div class="col">
+        <div class="card shadow-sm mb-4 float-right" style="max-width: 300px;">
+          <a href="{{ lightcurve.get_absolute_url }}"><img src="{{ lightcurve.image_location }}"
+              class="card-img-top"></a>
+          <div class="card-body">
+            <p class="card-text">{{ lightcurve.get_classification_display }}, {{ lightcurve.natural_period }}</p>
+          </div>
+        </div>
+      </div>
     </div>
-  {% endif %}
-  <div class="row mt-2">
-    {% include "starcatalogue/pagination.html" %}
   </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="row mt-3">
+  <div class="col text-center">
+    <h2>No results found</h2>
+    <p><i class="bi bi-search" style="font-size: xxx-large;"></i></p>
+    <p class="lead">There were no results{% if search %} for <strong>&quot;{{ search }}&quot;</strong>{% endif %}.</p>
+    <p>Please try another search or choose less specific filtering options.</p>
+  </div>
+
+</div>
+{% endif %}
+<div class="row mt-2">
+  {% include "starcatalogue/pagination.html" %}
+</div>
 
 {% endblock %}
 
 {% block headEnd %}
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 {% endblock %}
 
 {% block bodyEnd %}
 <script type="text/javascript">
-// Stop the dropdowns closing when you click inside them
-$(document).on('click', '.filterBar .dropdown-menu', function (e) {
-  e.stopPropagation();
-});
+  // Stop the dropdowns closing when you click inside them
+  $(document).on('click', '.filterBar .dropdown-menu', function (e) {
+    e.stopPropagation();
+  });
 
-// Keep the export form in sync with the filtering form
-// So the user doesn't need to hit "apply" before exporting
-$('#export_form input').each(function (){
-  if (this.type == 'hidden') {
-    $(`#filter_form input[name='${this.name}']`).on('input', function() {
-      if(this.type == 'text') {
-        $(`#export_form input[name='${this.name}']`).val($(this).val());
-      } else if (this.type == 'checkbox') {
-        if ($(this).checked) {
-          $(`#export_form input[name='${this.name}']`).val('on');
-        } else {
-          $(`#export_form input[name='${this.name}']`).val('off');
+  // Keep the export form in sync with the filtering form
+  // So the user doesn't need to hit "apply" before exporting
+  $('#export_form input').each(function () {
+    if (this.type == 'hidden') {
+      $(`#filter_form input[name='${this.name}']`).on('input', function () {
+        if (this.type == 'text') {
+          $(`#export_form input[name='${this.name}']`).val($(this).val());
+        } else if (this.type == 'checkbox') {
+          if ($(this).checked) {
+            $(`#export_form input[name='${this.name}']`).val('on');
+          } else {
+            $(`#export_form input[name='${this.name}']`).val('off');
+          }
         }
-      }
-    })
-  }
-});
+      })
+    }
+  });
 
-// Toggling between views
-$(`#compactSwitch`).on('change.bootstrapSwitch', function(e) {
-  Cookies.set('compactView', e.target.checked);
-  if (e.target.checked) {
-    $(`#expandedView`).addClass('d-none');
-    $(`#compactView`).removeClass('d-none');
-  } else {
-    $(`#compactView`).addClass('d-none');
-    $(`#expandedView`).removeClass('d-none');
-  }
-})
+  // Toggling between views
+  $(`#compactSwitch`).on('change.bootstrapSwitch', function (e) {
+    Cookies.set('compactView', e.target.checked);
+    if (e.target.checked) {
+      $(`#expandedView`).addClass('d-none');
+      $(`#compactView`).removeClass('d-none');
+    } else {
+      $(`#compactView`).addClass('d-none');
+      $(`#expandedView`).removeClass('d-none');
+    }
+  })
 
-$(document).ready(function() {
-  if (Cookies.get('compactView') == 'true') {
-    $(`#compactSwitch`).click();
-  }
-  $('[data-toggle="tooltip"]').tooltip();
-});
+  $(document).ready(function () {
+    if (Cookies.get('compactView') == 'true') {
+      $(`#compactSwitch`).click();
+    }
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 </script>
 {% endblock %}
