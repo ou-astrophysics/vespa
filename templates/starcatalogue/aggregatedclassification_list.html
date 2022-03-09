@@ -45,50 +45,50 @@
               <div class="row align-items-start" style="width: 450px;">
                 <div class="col pl-0">
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="distance" id="sort_distance" {% if
-                      sort=='distance' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="distance" id="sort_distance"
+                      {% if sort == 'distance' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_distance">
                       Radial Distance
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="star__superwasp_id"
-                      id="sort_swasp_id" {% if sort=='star__superwasp_id' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="lightcurve__star__superwasp_id"
+                      id="sort_swasp_id" {% if sort == 'lightcurve__star__superwasp_id' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_swasp_id">
                       SuperWASP ID
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="star___mean_magnitude"
-                      id="sort_mean_magnitude" {% if sort=='star___mean_magnitude' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="lightcurve__star___mean_magnitude"
+                      id="sort_mean_magnitude" {% if sort == 'lightcurve__star___mean_magnitude' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_mean_magnitude">
                       Mean magnitude
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="star___amplitude"
-                      id="sort_amplitude" {% if sort=='star___amplitude' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="lightcurve__star___amplitude"
+                      id="sort_amplitude" {% if sort == 'lightcurve__star___amplitude' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_amplitude">
                       Amplitude
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="sort" value="period_length" id="sort_period" {%
-                      if sort=='period_length' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="sort" value="lightcurve__period_length"
+                      id="sort_period" {% if sort == 'lightcurve__period_length' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_period">
                       Period
                     </label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="sort" value="classification"
-                      id="sort_classification" {% if sort=='classification' %}checked{% endif %}>
+                      id="sort_classification" {% if sort == 'classification' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_classification">
                       Majority Classification
                     </label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="sort" value="classification_count"
-                      id="sort_classification_count" {% if sort=='classification_count' %}checked{% endif %}>
+                      id="sort_classification_count" {% if sort == 'classification_count' %}checked{% endif %}>
                     <label class="form-check-label" for="sort_classification_count">
                       Classification Count
                     </label>
@@ -96,15 +96,15 @@
                 </div>
                 <div class="col pr-0">
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="order" value="asc" id="order_asc" {% if
-                      order=='asc' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="order" value="asc" id="order_asc"
+                      {% if order == 'asc' %}checked{% endif %}>
                     <label class="form-check-label" for="order_asc">
                       Ascending
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="order" value="desc" id="order_desc" {% if
-                      order=='desc' %}checked{% endif %}>
+                    <input class="form-check-input" type="radio" name="order" value="desc" id="order_desc"
+                      {% if order == 'desc' %}checked{% endif %}>
                     <label class="form-check-label" for="order_desc">
                       Descending
                     </label>
@@ -194,15 +194,15 @@
                 </div>
                 <div class="col pr-0">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="certain_period" id="certain_period" {% if
-                      certain_period=='on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="certain_period" id="certain_period"
+                      {% if certain_period == 'on' %}checked {% endif %}>
                     <label class="form-check-label" for="certain_period">
                       Certain
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="uncertain_period" id="uncertain_period" {% if
-                      uncertain_period=='on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="uncertain_period" id="uncertain_period"
+                      {% if uncertain_period == 'on' %}checked {% endif %}>
                     <label class="form-check-label" for="uncertain_period">
                       Uncertain
                     </label>
@@ -243,36 +243,36 @@
                 <div class="col pr-0">
                   <h6>Variable Type</h6>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="type_pulsator" id="type_pulsator" {% if
-                      type_pulsator=='on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="type_pulsator" id="type_pulsator"
+                      {% if type_pulsator == 'on' %}checked {% endif %}>
                     <label class="form-check-label" for="type_pulsator">
                       Pulsator
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="type_rotator" id="type_rotator" {% if
-                      type_rotator=='on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="type_rotator" id="type_rotator"
+                      {% if type_rotator == 'on' %}checked {% endif %}>
                     <label class="form-check-label" for="type_rotator">
                       Rotator
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="type_eaeb" id="type_eaeb" {% if
-                      type_eaeb=='on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="type_eaeb" id="type_eaeb"
+                      {% if type_eaeb == 'on' %}checked {% endif %}>
                     <label class="form-check-label" for="type_eaeb">
                       EA/EB
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="type_ew" id="type_ew" {% if type_ew=='on'
-                      %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="type_ew" id="type_ew"
+                      {% if type_ew == 'on' %}checked {% endif %}>
                     <label class="form-check-label" for="type_ew">
                       EW
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="type_unknown" id="type_unknown" {% if
-                      type_unknown=='on' %}checked {% endif %}>
+                    <input class="form-check-input" type="checkbox" name="type_unknown" id="type_unknown"
+                      {% if type_unknown == 'on' %}checked {% endif %}>
                     <label class="form-check-label" for="type_unknown">
                       Unknown
                     </label>
@@ -323,61 +323,68 @@
     </tr>
   </thead>
   <tbody>
-    {% for lightcurve in object_list %}
+    {% for aggregated_classification in object_list %}
     <tr>
-      <td><a href="{% url 'view_source' lightcurve.star.superwasp_id %}">{{ lightcurve.star.superwasp_id }}</a></td>
-      <td>{{ lightcurve.star.mean_magnitude|floatformat:2 }}</td>
-      <td>{{ lightcurve.period_length }}<br>~{{ lightcurve.natural_period }}</td>
-      <td>{{ lightcurve.get_classification_display }}</td>
-      <td>{{ lightcurve.get_period_uncertainty_display }}</td>
-      <td>{{ lightcurve.star.ra }}</td>
-      <td>{{ lightcurve.star.dec }}</td>
-      <td><a href="{{ lightcurve.get_absolute_url }}"><img src="{{ lightcurve.thumbnail_location }}" alt=""
+      <td><a
+          href="{% url 'view_source' aggregated_classification.lightcurve.star.superwasp_id %}">{{ aggregated_classification.lightcurve.star.superwasp_id }}</a>
+      </td>
+      <td>{{ aggregated_classification.lightcurve.star.mean_magnitude|floatformat:2 }}</td>
+      <td>{{ aggregated_classification.lightcurve.period_length }}<br>~{{ lightcurve.natural_period }}</td>
+      <td>{{ aggregated_classification.get_classification_display }}</td>
+      <td>{{ aggregated_classification.get_period_uncertainty_display }}</td>
+      <td>{{ aggregated_classification.lightcurve.star.ra }}</td>
+      <td>{{ aggregated_classification.lightcurve.star.dec }}</td>
+      <td><a href="{{ aggregated_classification.lightcurve.get_absolute_url }}"><img
+            src="{{ aggregated_classification.lightcurve.thumbnail_location }}" alt=""
             style="width: 100px; height: auto;"></a></td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 <div class="list-group mb-5" id="expandedView">
-  {% for lightcurve in object_list %}
+  {% for aggregated_classification in object_list %}
   <div class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1"><a href="{% url 'view_source' lightcurve.star.superwasp_id %}">{{ lightcurve.star.superwasp_id
-          }}</a></h5>
-      <small>{{ lightcurve.period_length }} second period, ~{{ lightcurve.natural_period }}</small>
+      <h5 class="mb-1"><a
+          href="{% url 'view_source' aggregated_classification.lightcurve.star.superwasp_id %}">{{ aggregated_classification.lightcurve.star.superwasp_id }}</a>
+      </h5>
+      <small>{{ aggregated_classification.lightcurve.period_length }} second period,
+        ~{{ aggregated_classification.lightcurve.natural_period }}</small>
     </div>
-    <small>{{ lightcurve.star.ra }} {{ lightcurve.star.dec }}</small>
+    <small>{{ aggregated_classification.lightcurve.star.ra }}
+      {{ aggregated_classification.lightcurve.star.dec }}</small>
     <div class="row mt-3">
       <div class="col">
         <table class="table">
           <tr>
             <th scope="row">Mean magnitude</th>
-            <td>{{ lightcurve.star.mean_magnitude|floatformat:2 }}</td>
+            <td>{{ aggregated_classification.lightcurve.star.mean_magnitude|floatformat:2 }}</td>
           </tr>
           <tr>
             <th scope="row">Amplitude</th>
-            <td>{{ lightcurve.star.amplitude|floatformat:2 }}</td>
+            <td>{{ aggregated_classification.lightcurve.star.amplitude|floatformat:2 }}</td>
           </tr>
           <tr>
             <th scope="row">Folding flag</th>
-            <td>{{ lightcurve.get_period_uncertainty_display }}</td>
+            <td>{{ aggregated_classification.get_period_uncertainty_display }}</td>
           </tr>
           <tr>
             <th scope="row">Classification count</th>
-            <td>{{ lightcurve.classification_count }}</td>
+            <td>{{ aggregated_classification.classification_count }}</td>
           </tr>
           {% if search %}<tr>
             <th scope="row">Distance from search</th>
-            <td>{% degrees lightcurve.distance %}</td>
+            <td>{% degrees aggregated_classification.distance %}</td>
           </tr>{% endif %}
         </table>
       </div>
       <div class="col">
         <div class="card shadow-sm mb-4 float-right" style="max-width: 300px;">
-          <a href="{{ lightcurve.get_absolute_url }}"><img src="{{ lightcurve.image_location }}"
-              class="card-img-top"></a>
+          <a href="{{ aggregated_classification.lightcurve.get_absolute_url }}"><img
+              src="{{ aggregated_classification.lightcurve.image_location }}" class="card-img-top"></a>
           <div class="card-body">
-            <p class="card-text">{{ lightcurve.get_classification_display }}, {{ lightcurve.natural_period }}</p>
+            <p class="card-text">{{ aggregated_classification.get_classification_display }},
+              {{ aggregated_classification.lightcurve.natural_period }}</p>
           </div>
         </div>
       </div>

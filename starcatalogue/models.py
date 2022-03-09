@@ -185,8 +185,12 @@ class Star(models.Model, ImageGenerator, JSONGenerator):
         self.save()
 
     @property
-    def lightcurves(self):
-        return self.foldedlightcurve_set.all().order_by("period_length")
+    def lightcurve_classifications(self):
+        return (
+            AggregatedClassification.get_latest()
+            .filter(lightcurve__star=self)
+            .order_by("lightcurve__period_length")
+        )
 
     @property
     def fits(self):
@@ -363,6 +367,12 @@ class FoldedLightcurve(models.Model, ImageGenerator):
         return f"{self.star.get_absolute_url()}#period-{ self.period_length }"
 
     @property
+    def latest_aggregated_classification(self):
+        return self.aggregatedclassification_set.filter(
+            data_release=DataRelease.get_latest()
+        ).first()
+
+    @property
     def natural_period(self):
         return naturaldelta(self.period_length)
 
@@ -489,6 +499,10 @@ class AggregatedClassification(models.Model):
     classification = models.IntegerField(choices=CLASSIFICATION_CHOICES)
     period_uncertainty = models.IntegerField(choices=PERIOD_UNCERTAINTY_CHOICES)
     classification_count = models.IntegerField()
+
+    @classmethod
+    def get_latest(cls, active=True):
+        return cls.objects.filter(data_release=DataRelease.get_latest(active=active))
 
 
 from .tasks import (

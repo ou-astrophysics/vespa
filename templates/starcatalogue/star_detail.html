@@ -35,17 +35,18 @@
         </form>
         <div class="card">
             <ul class="list-group list-group-flush">
-                {% for lightcurve in object.lightcurves %}
+                {% for aggregated_classification in object.lightcurve_classifications %}
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-sm-6">
-                            <img src="{{ lightcurve.image_location }}" class="card-img-top">
+                            <img src="{{ aggregated_classification.lightcurve.image_location }}" class="card-img-top">
                         </div>
                         <div class="col-sm-6">
-                            <p class="card-text">{{ lightcurve.get_classification_display }},
-                                {{ lightcurve.natural_period }}</p>
+                            <p class="card-text">
+                                {{ aggregated_classification.get_classification_display }},
+                                {{ aggregated_classification.lightcurve.natural_period }}</p>
                             <button type="submit" class="btn btn-primary plot-button"
-                                data-folding-period="{{ lightcurve.period_length }}">Plot</button>
+                                data-folding-period="{{ aggregated_classification.lightcurve.period_length }}">Plot</button>
                             <a href="#lightcurve-{{ lightcurve.id }}" class="btn btn-primary">Details</a>
                         </div>
                     </div>
@@ -120,40 +121,42 @@
 </div>
 
 
-{% for lightcurve in object.lightcurves %}
+{% for aggregated_classification in object.lightcurve_classifications %}
 <h2 class="mt-5" id="lightcurve-{{ lightcurve.pk }}"><a href="#lightcurve-{{ lightcurve.pk }}"><i
-            class="bi bi-link"></i></a> {{ object.superwasp_id }} folded at {{ lightcurve.natural_period }}</h2>
+            class="bi bi-link"></i></a> {{ object.superwasp_id }} folded at
+    {{ aggregated_classification.lightcurve.natural_period }}</h2>
 
 <div class="row mb-5">
     <div class="col">
-        <img src="{{ lightcurve.image_location }}" alt="" style="width: 100%; max-height: auto;">
+        <img src="{{ aggregated_classification.lightcurve.image_location }}" alt=""
+            style="width: 100%; max-height: auto;">
     </div>
     <div class="col">
         <table class="table">
             <tbody>
                 <tr>
                     <th scope="row">Period (sec)</th>
-                    <td>{{ lightcurve.period_length }}</td>
+                    <td>{{ aggregated_classification.lightcurve.period_length }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Majority Classification</th>
-                    <td>{{ lightcurve.get_classification_display }}</td>
+                    <td>{{ aggregated_classification.get_classification_display }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Classification count</th>
-                    <td>{{ lightcurve.classification_count }}</td>
+                    <td>{{ aggregated_classification.classification_count }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Folding flag</th>
-                    <td>{{ lightcurve.get_period_uncertainty_display }}</td>
+                    <td>{{ aggregated_classification.get_period_uncertainty_display }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Sigma</th>
-                    <td>{{ lightcurve.sigma }}</td>
+                    <td>{{ aggregated_classification.lightcurve.sigma }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Chi Squared</th>
-                    <td>{{ lightcurve.chi_squared }}</td>
+                    <td>{{ aggregated_classification.lightcurve.chi_squared }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Links</th>
