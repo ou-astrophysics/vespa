@@ -466,6 +466,10 @@ class DataRelease(models.Model):
         result = result.order_by("-version")
         return result.first()
 
+    @property
+    def full_export(self):
+        return self.dataexport_set.filter(in_data_archive=True).first()
+
     def __str__(self):
         return f"Data release {self.version}"
 

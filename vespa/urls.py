@@ -71,8 +71,8 @@ urlpatterns = [
     path(
         "vespa/data-releases/",
         ListView.as_view(
-            queryset=starcatalogue.exports.DataExport.objects.filter(
-                in_data_archive=True
+            queryset=starcatalogue.models.DataRelease.objects.filter(
+                active=True
             ).order_by("-created"),
             template_name="starcatalogue/data_releases.html",
         ),
