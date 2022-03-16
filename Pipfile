@@ -27,6 +27,7 @@ sentry-sdk = "*"
 ujson = "*"
 markdown = "*"
 panoptes-client = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.8"
