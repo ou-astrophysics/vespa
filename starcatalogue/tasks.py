@@ -146,9 +146,7 @@ def generate_lightcurve_images(lightcurve_id):
         alpha=0.5,
         s=1,
     )
-    plot.set_title(
-        f"{lightcurve.star.superwasp_id} Period {lightcurve.period_length}s ({lightcurve.get_classification_display()})"
-    )
+    plot.set_title(f"{lightcurve.star.superwasp_id} Period {lightcurve.period_length}s")
     image_data = ContentFile(b"")
     fig.savefig(image_data)
     lightcurve.image_file.save(f"lightcurve-{lightcurve.id}.png", image_data)
@@ -394,6 +392,8 @@ def prepare_data_release(data_release_id):
         )
 
     data_release.aggregation_finished = datetime.datetime.now()
+    data_release.save()
+
 
 from .exports import (
     EXPORT_DATA_DESCRIPTION,

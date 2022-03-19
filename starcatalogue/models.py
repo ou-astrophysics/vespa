@@ -314,7 +314,7 @@ class Star(models.Model, ImageGenerator, JSONGenerator):
 
 
 class FoldedLightcurve(models.Model, ImageGenerator):
-    CURRENT_IMAGE_VERSION = 0.91
+    CURRENT_IMAGE_VERSION = 1.0
 
     star = models.ForeignKey(to=Star, on_delete=models.CASCADE)
 
