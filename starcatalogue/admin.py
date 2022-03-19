@@ -128,7 +128,13 @@ class DataReleaseAdmin(admin.ModelAdmin):
         "pending_stars",
     )
     readonly_fields = ("aggregation_finished", "pending_stars")
-    fields = ("version", "active", "aggregation_finished", "pending_stars")
+    fields = (
+        "version",
+        "active",
+        "active_at",
+        "aggregation_finished",
+        "pending_stars",
+    )
 
 
 admin.site.register(DataRelease, DataReleaseAdmin)

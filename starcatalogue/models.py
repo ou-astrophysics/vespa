@@ -434,7 +434,7 @@ class DataRelease(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     aggregation_finished = models.DateTimeField(null=True)
-    active_at = models.DateTimeField(null=True)
+    active_at = models.DateTimeField(null=True, blank=True)
 
     @classmethod
     def get_latest(cls, active=True):

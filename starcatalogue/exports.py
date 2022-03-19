@@ -4,8 +4,6 @@
 
 import uuid
 
-from celery.result import AsyncResult
-
 from django.conf import settings
 from django.db import models
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
@@ -274,14 +272,8 @@ class GenerateExportView(View):
                 search=request.POST.get("search", None),
                 search_radius=search_radius,
             )
-            if export.export_status in (
-                export.STATUS_PENDING,
-                export.STATUS_FAILED,
-            ) or (
-                export.export_status == export.STATUS_RUNNING
-                and AsyncResult(export.celery_task_id).ready()
-            ):
-                export.celery_task_id = generate_export.delay(export.id).id
+            if export.export_status == DataExport.STATUS_FAILED:
+                export.export_status = DataExport.STATUS_PENDING
                 export.save()
             return HttpResponseRedirect(
                 reverse("view_export", kwargs={"pk": export.id.hex})
