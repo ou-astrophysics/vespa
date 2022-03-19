@@ -451,8 +451,12 @@ class ZooniverseSubject(models.Model):
         save_zooniverse_metadata.delay(self.id)
 
 
+def get_next_data_release_version():
+    return DataRelease.get_latest().version + 1
+
+
 class DataRelease(models.Model):
-    version = models.FloatField()
+    version = models.FloatField(default=get_next_data_release_version)
 
     active = models.BooleanField(default=False)
 
