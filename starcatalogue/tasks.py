@@ -1,4 +1,5 @@
 import csv
+import datetime
 import io
 import urllib
 import yaml
@@ -392,6 +393,7 @@ def prepare_data_release(data_release_id):
             ),
         )
 
+    data_release.aggregation_finished = datetime.datetime.now()
 
 from .exports import (
     EXPORT_DATA_DESCRIPTION,

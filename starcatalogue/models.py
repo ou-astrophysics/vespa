@@ -433,6 +433,7 @@ class DataRelease(models.Model):
     active = models.BooleanField(default=False)
 
     created = models.DateTimeField(auto_now_add=True)
+    aggregation_finished = models.DateTimeField(null=True)
 
     @classmethod
     def get_latest(cls, active=True):
@@ -445,6 +446,15 @@ class DataRelease(models.Model):
     @property
     def full_export(self):
         return self.dataexport_set.filter(in_data_archive=True).first()
+
+    def pending_stars(self):
+        return (
+            self.aggregatedclassification_set.filter(
+                lightcurve__star__fits_error_count__lt=settings.FITS_DOWNLOAD_ATTEMPTS
+            )
+            .filter(lightcurve__star__stats_version=None)
+            .count()
+        )
 
     def __str__(self):
         return f"Data release {self.version}"
