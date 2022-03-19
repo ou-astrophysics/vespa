@@ -314,28 +314,6 @@ class Star(models.Model, ImageGenerator, JSONGenerator):
 
 
 class FoldedLightcurve(models.Model, ImageGenerator):
-    PULSATOR = 1
-    EA_EB = 2
-    EW = 3
-    ROTATOR = 4
-    UNKNOWN = 5
-    JUNK = 6
-    CLASSIFICATION_CHOICES = [
-        (PULSATOR, "Pulsator"),
-        (EA_EB, "EA/EB"),
-        (EW, "EW"),
-        (ROTATOR, "Rotator"),
-        (UNKNOWN, "Unknown"),
-        (JUNK, "Junk"),
-    ]
-
-    CERTAIN = 0
-    UNCERTAIN = 1
-    PERIOD_UNCERTAINTY_CHOICES = [
-        (CERTAIN, "Certain"),
-        (UNCERTAIN, "Uncertain"),
-    ]
-
     CURRENT_IMAGE_VERSION = 0.91
 
     star = models.ForeignKey(to=Star, on_delete=models.CASCADE)
@@ -344,12 +322,6 @@ class FoldedLightcurve(models.Model, ImageGenerator):
     period_length = models.FloatField(null=True)
     sigma = models.FloatField(null=True)
     chi_squared = models.FloatField(null=True)
-
-    classification = models.IntegerField(choices=CLASSIFICATION_CHOICES, null=True)
-    period_uncertainty = models.IntegerField(
-        choices=PERIOD_UNCERTAINTY_CHOICES, null=True
-    )
-    classification_count = models.IntegerField(null=True)
 
     image_file = models.ImageField(null=True, upload_to=lightcurve_upload_to)
     thumbnail_file = models.ImageField(null=True, upload_to=lightcurve_upload_to)
