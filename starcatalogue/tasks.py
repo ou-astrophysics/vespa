@@ -21,7 +21,13 @@ from matplotlib import pyplot
 from panoptes_client import Subject, Project
 from PIL import Image
 
-from .models import Star, FoldedLightcurve, ZooniverseSubject
+from .models import (
+    AggregatedClassification,
+    DataRelease,
+    Star,
+    FoldedLightcurve,
+    ZooniverseSubject,
+)
 
 
 @shared_task
@@ -208,26 +214,49 @@ def save_zooniverse_metadata(vespa_subject_id):
 @shared_task
 def prepare_data_release(data_release_id):
     # To do: Add generate=True to this when ready
-    print("requesting export")
     classification_export = Project(settings.ZOONIVERSE_PROJECT_ID).get_export(
         "classifications"
     )
-    print("parsing export")
-    # Can't load it all into pandas because of limited memory
-    classifications = {"subject_id": [], "classification": [], "period_certainty": []}
-    for row in classification_export.csv_dictreader():
-        if int(row["workflow_id"]) != settings.ZOONIVERSE_MAIN_WORKFLOW_ID:
-            continue
-        annotations = json.loads(row["annotations"])
-        classifications["classification"].append(annotations[0]["value"])
-        try:
-            classifications["period_certainty"].append(annotations[1]["value"])
-        except IndexError:
-            classifications["period_certainty"].append(None)
-        classifications["subject_id"].append(row["subject_ids"])
 
-    classifications = pandas.DataFrame(classifications)
-    print(classifications)
+    default_period_certainties = {
+        "Rotator": "Correct",
+        "Unknown": "Correct",
+        "Junk": "Wrong period",
+    }
+
+    # Can't load it all into pandas because of limited memory
+    try:
+        classifications = pandas.read_pickle("classifications.pkl")
+    except FileNotFoundError:
+        classifications = {
+            "subject_id": [],
+            "classification": [],
+            "period_certainty": [],
+        }
+        for row in classification_export.csv_dictreader():
+            # We count classifications from both workflows, to correctly aggregate subjects
+            # which were filtered as junk after receiving classifications in the main
+            # workflow.
+            if int(row["workflow_id"]) not in (
+                settings.ZOONIVERSE_MAIN_WORKFLOW_ID,
+                settings.ZOONIVERSE_JUNK_WORKFLOW_ID,
+            ):
+                continue
+            annotations = json.loads(row["annotations"])
+            if annotations[0]["value"] == "Real":
+                # We don't need these as they are subsequently classified in the main workflow
+                continue
+            classifications["classification"].append(annotations[0]["value"])
+            try:
+                classifications["period_certainty"].append(annotations[1]["value"])
+            except IndexError:
+                classifications["period_certainty"].append(
+                    default_period_certainties.get(annotations[0]["value"], None)
+                )
+            classifications["subject_id"].append(int(row["subject_ids"]))
+
+        classifications = pandas.DataFrame(classifications)
+        classifications.to_pickle("classifications.pkl")
 
     aggregated_classifications = classifications.pivot_table(
         columns=["classification"],
@@ -236,11 +265,16 @@ def prepare_data_release(data_release_id):
         aggfunc=len,
         fill_value=0,
     )
-    # aggregated_classifications["consensus"] = aggregated_classifications.apply(
-    #    lambda c: "Real" if c["Real"] > 0 else ("Junk" if c["Junk"] >= 3 else ""),
-    #    axis=1,
-    # )
-    print(aggregated_classifications)
+    aggregated_classifications["consensus class"] = aggregated_classifications[
+        [  # The ordering of columns matters here for tie breaking
+            "Junk",
+            "Pulsator",
+            "Rotator",
+            "EW type",
+            "EA/EB type",
+            "Unknown",
+        ]
+    ].idxmax(axis="columns")
 
     aggregated_period_certainties = classifications.pivot_table(
         columns=["period_certainty"],
@@ -249,7 +283,114 @@ def prepare_data_release(data_release_id):
         aggfunc=len,
         fill_value=0,
     )
-    print(aggregated_period_certainties)
+
+    aggregated_classifications = aggregated_classifications.join(
+        aggregated_period_certainties,
+    )
+
+    aggregated_classifications[
+        "consensus period certainty"
+    ] = aggregated_classifications[
+        # The ordering of columns matters here for tie breaking
+        ["Half correct period", "Correct period", "Wrong period"]
+    ].idxmax(
+        axis="columns"
+    )
+
+    aggregated_classifications = aggregated_classifications[
+        aggregated_classifications["consensus class"] != "Junk"
+    ]
+
+    zoo_lookup = pandas.read_csv(
+        settings.IMPORT_ROOT / "lookup.dat",
+        delim_whitespace=True,
+        header=None,
+    )
+    zoo_lookup.columns = [
+        "subject_id",
+        "SWASP ID",
+        "Period",
+        "Period Number",
+    ]
+    # Period in this file is rounded differently to the others
+    # So drop it here so it doesn't stop us from merging later
+    zoo_lookup.drop("Period", axis="columns", inplace=True)
+    zoo_lookup.set_index("subject_id", inplace=True)
+
+    periodicity_cat = pandas.read_csv(
+        settings.IMPORT_ROOT / "results_total.dat",
+        delim_whitespace=True,
+        header=None,
+    )
+    periodicity_cat.columns = [
+        "Camera Number",
+        "SWASP",
+        "ID",
+        "Period Number",
+        "Period",
+        "Sigma",
+        "Chi Squared",
+        "Period Flag",
+    ]
+    periodicity_cat = periodicity_cat[(periodicity_cat["Period Flag"] == 0)]
+    periodicity_cat["SWASP ID"] = periodicity_cat["SWASP"] + periodicity_cat["ID"]
+    periodicity_cat.drop(
+        ["Period Flag", "Camera Number", "SWASP", "ID"], axis="columns", inplace=True
+    )
+    periodicity_cat.set_index(["SWASP ID", "Period Number"], inplace=True)
+    aggregated_classifications = aggregated_classifications.join(zoo_lookup)
+
+    aggregated_classifications = aggregated_classifications.join(
+        periodicity_cat, on=("SWASP ID", "Period Number")
+    )
+
+    if settings.DATA_RELEASE_IMPORT_LIMIT:
+        aggregated_classifications = aggregated_classifications.head(
+            settings.DATA_RELEASE_IMPORT_LIMIT
+        )
+
+    CLASSIFICATION_LOOKUP = {
+        "EA/EB type": AggregatedClassification.EA_EB,
+        "EW type": AggregatedClassification.EW,
+        "Pulsator": AggregatedClassification.PULSATOR,
+        "Rotator": AggregatedClassification.ROTATOR,
+        "Unknown": AggregatedClassification.UNKNOWN,
+        "Wrong period": AggregatedClassification.UNCERTAIN,
+        "Correct period": AggregatedClassification.CERTAIN,
+        "Half correct period": AggregatedClassification.UNCERTAIN,
+    }
+
+    data_release = DataRelease.objects.get(id=data_release_id)
+
+    for subject_id, row in aggregated_classifications.iterrows():
+        star, _ = Star.objects.get_or_create(superwasp_id=row["SWASP ID"])
+        folded_lightcurve, _ = FoldedLightcurve.objects.get_or_create(
+            star=star,
+            period_number=row["Period Number"],
+            period_length=row["Period"],
+            sigma=row["Sigma"],
+            chi_squared=row["Chi Squared"],
+        )
+        ZooniverseSubject.objects.get_or_create(
+            zooniverse_id=subject_id, lightcurve=folded_lightcurve
+        )
+        AggregatedClassification.objects.create(
+            data_release=data_release,
+            lightcurve=folded_lightcurve,
+            classification=CLASSIFICATION_LOOKUP[row["consensus class"]],
+            period_uncertainty=CLASSIFICATION_LOOKUP[row["consensus period certainty"]],
+            classification_count=sum(
+                row[t]
+                for t in [
+                    "EA/EB type",
+                    "EW type",
+                    "Pulsator",
+                    "Rotator",
+                    "Unknown",
+                    "Junk",
+                ]
+            ),
+        )
 
 
 from .exports import (

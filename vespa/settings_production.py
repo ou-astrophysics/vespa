@@ -38,6 +38,7 @@ CELERY_BROKER_URL = (
 PERIODIC_TASK_INTERVAL = 3600
 
 ZOONIVERSE_COMMIT_CHANGES = True
+DATA_RELEASE_IMPORT_LIMIT = None
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
