@@ -23,7 +23,7 @@
                 <h5 class="card-header">Data version {{ release.version }}</h5>
                 <div class="card-body">
                     {% if export %}
-                    <h6 class="card-subtitle mb-2 text-muted">Published {{ release.created|date:"j F Y" }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Published {{ release.active_at|date:"j F Y" }}</h6>
                     {% if export.doi %}<p class="card-text"><a href="https://doi.org/{{ export.doi }}"><img
                                 src="https://zenodo.org/badge/DOI/{{ export.doi }}.svg" alt="DOI"></a></p>{% endif %}
                     <a href="{% url 'view_export' export.id %}" class="btn btn-primary">Download export</a>
