@@ -329,9 +329,6 @@ def prepare_data_release(data_release_id):
         "Period",
         "Period Number",
     ]
-    # Period in this file is rounded differently to the others
-    # So drop it here so it doesn't stop us from merging later
-    zoo_lookup.drop("Period", axis="columns", inplace=True)
     zoo_lookup.set_index("subject_id", inplace=True)
 
     periodicity_cat = pandas.read_csv(
@@ -351,14 +348,16 @@ def prepare_data_release(data_release_id):
     ]
     periodicity_cat = periodicity_cat[(periodicity_cat["Period Flag"] == 0)]
     periodicity_cat["SWASP ID"] = periodicity_cat["SWASP"] + periodicity_cat["ID"]
+    periodicity_cat["Original Period"] = periodicity_cat["Period"]
+    periodicity_cat["Period"] = round(periodicity_cat["Period"], 3)
     periodicity_cat.drop(
         ["Period Flag", "Camera Number", "SWASP", "ID"], axis="columns", inplace=True
     )
-    periodicity_cat.set_index(["SWASP ID", "Period Number"], inplace=True)
+    periodicity_cat.set_index(["SWASP ID", "Period", "Period Number"], inplace=True)
 
     aggregated_classifications = aggregated_classifications.join(zoo_lookup)
     aggregated_classifications = aggregated_classifications.join(
-        periodicity_cat, on=("SWASP ID", "Period Number")
+        periodicity_cat, on=("SWASP ID", "Period", "Period Number")
     )
     del zoo_lookup, periodicity_cat
 
@@ -385,7 +384,7 @@ def prepare_data_release(data_release_id):
         folded_lightcurve, _ = FoldedLightcurve.objects.get_or_create(
             star=star,
             period_number=row["Period Number"],
-            period_length=row["Period"],
+            period_length=row["Original Period"],
             sigma=row["Sigma"],
             chi_squared=row["Chi Squared"],
         )
