@@ -212,26 +212,33 @@ def save_zooniverse_metadata(vespa_subject_id):
 
 @shared_task
 def prepare_data_release(data_release_id):
-    # To do: Add generate=True to this when ready
-    classification_export = Project(settings.ZOONIVERSE_PROJECT_ID).get_export(
-        "classifications"
-    )
-
     default_period_certainties = {
         "Rotator": "Correct",
         "Unknown": "Correct",
         "Junk": "Wrong period",
     }
 
-    # Can't load it all into pandas because of limited memory
-    try:
-        classifications = pandas.read_pickle("classifications.pkl")
-    except FileNotFoundError:
+    classifications = None
+
+    if settings.ZOONIVERSE_CACHE_EXPORT:
+        try:
+            classifications = pandas.read_pickle("classifications.pkl")
+        except FileNotFoundError:
+            classification_export = Project(settings.ZOONIVERSE_PROJECT_ID).get_export(
+                "classifications"
+            )
+    else:
+        classification_export = Project(settings.ZOONIVERSE_PROJECT_ID).get_export(
+            "classifications", generate=True
+        )
+
+    if classifications is None:
         classifications = {
             "subject_id": [],
             "classification": [],
             "period_certainty": [],
         }
+        # Can't load it all into pandas because of limited memory
         for row in classification_export.csv_dictreader():
             # We count classifications from both workflows, to correctly aggregate subjects
             # which were filtered as junk after receiving classifications in the main
@@ -258,7 +265,8 @@ def prepare_data_release(data_release_id):
         classifications.drop_duplicates(
             subset=["user_name", "subject_ids"], inplace=True
         )
-        classifications.to_pickle("classifications.pkl")
+        if settings.ZOONIVERSE_CACHE_EXPORT:
+            classifications.to_pickle("classifications.pkl")
 
     aggregated_classifications = classifications.pivot_table(
         columns=["classification"],
