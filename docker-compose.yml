@@ -4,20 +4,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.postgres
-    environment: 
+    environment:
       POSTGRES_PASSWORD: "localdev"
       POSTGRES_USER: "vespa"
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
   rabbitmq:
     image: rabbitmq:3
-    environment: 
+    environment:
       RABBITMQ_DEFAULT_VHOST: "vespa"
   app:
     build:
       context: .
     volumes:
       - ./:/usr/src/app
+      - ../../superwasp-data:/opt/vespa/import
     ports:
       - "8080:8080"
     env_file:
@@ -27,6 +28,7 @@ services:
       context: .
     volumes:
       - ./:/usr/src/app
+      - ../../superwasp-data:/opt/vespa/import
     env_file:
       - ./local.env
     command: bash ./start_worker.sh

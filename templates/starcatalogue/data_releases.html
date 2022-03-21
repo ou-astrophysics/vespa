@@ -6,25 +6,38 @@
 
 {% block content %}
 
-<p>Each data release contains the metadata for periodic variable stars that have been classified by Citizen Scientists using the <a href="https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars">SuperWASP Variable Stars Zooniverse project</a>. A new release will be published approximately every 6 months.</p>
+<p>Each data release contains the metadata for periodic variable stars that have been classified by Citizen Scientists
+    using the <a href="https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars">SuperWASP Variable Stars
+        Zooniverse project</a>. A new release will be published approximately every 6 months.</p>
 
-<p>If you publish research based on VeSPA data, please consider citing <a href="https://doi.org/10.3847/2515-5172/ac2de8">Adam McMaster et al 2021 Res. Notes AAS 5 228</a> as well as the Zenodo publication for the specific data release you used.</p>
+<p>If you publish research based on VeSPA data, please consider citing <a
+        href="https://doi.org/10.3847/2515-5172/ac2de8">Adam McMaster et al 2021 Res. Notes AAS 5 228</a> as well as the
+    Zenodo publication for the specific data release you used.</p>
 
 <div class="container mb-5">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% for release in object_list %}
+        {% with export=release.full_export %}
         <div class="col">
             <div class="card" style="width: 18rem;">
-                <h5 class="card-header">Data version {{ release.data_version }}</h5>
-
+                <h5 class="card-header">Data version {{ release.version }}</h5>
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">Published {{ release.created|date:"j F Y" }}</h6>
-                    {% if release.doi %}<p class="card-text"><a href="https://doi.org/{{ release.doi }}"><img src="https://zenodo.org/badge/DOI/{{ release.doi }}.svg" alt="DOI"></a></p>{% endif %}
-                    <a href="{% url 'view_export' release.id %}" class="btn btn-primary">Download export</a>
-                    <p class="card-text small mt-1"><i class="bi bi-file-zip"></i> {{ release.export_file_naturalsize }}, {{ release.queryset.count|intcomma }} objects</p>
+                    {% if export %}
+                    <h6 class="card-subtitle mb-2 text-muted">Published {{ release.active_at|date:"j F Y" }}</h6>
+                    {% if export.doi %}<p class="card-text"><a href="https://doi.org/{{ export.doi }}"><img
+                                src="https://zenodo.org/badge/DOI/{{ export.doi }}.svg" alt="DOI"></a></p>{% endif %}
+                    <a href="{% url 'view_export' export.id %}" class="btn btn-primary">Download export</a>
+                    {% if export.export_file %}
+                    <p class="card-text small mt-1"><i class="bi bi-file-zip"></i>
+                        {{ export.export_file_naturalsize }}, {{ export.queryset.count|intcomma }} objects</p>
+                    {% endif %}
+                    {% else %}
+                    <p class="card-text">This release is still being prepared. Please check back soon.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
+        {% endwith %}
         {% endfor %}
     </div>
 </div>

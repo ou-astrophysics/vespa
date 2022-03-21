@@ -117,3 +117,4 @@ sources/
 fits/
 celerybeat-schedule
 local.env
+classifications.pkl

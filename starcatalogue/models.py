@@ -185,8 +185,12 @@ class Star(models.Model, ImageGenerator, JSONGenerator):
         self.save()
 
     @property
-    def lightcurves(self):
-        return self.foldedlightcurve_set.all().order_by("period_length")
+    def lightcurve_classifications(self):
+        return (
+            AggregatedClassification.get_latest()
+            .filter(lightcurve__star=self)
+            .order_by("lightcurve__period_length")
+        )
 
     @property
     def fits(self):
@@ -310,29 +314,7 @@ class Star(models.Model, ImageGenerator, JSONGenerator):
 
 
 class FoldedLightcurve(models.Model, ImageGenerator):
-    PULSATOR = 1
-    EA_EB = 2
-    EW = 3
-    ROTATOR = 4
-    UNKNOWN = 5
-    JUNK = 6
-    CLASSIFICATION_CHOICES = [
-        (PULSATOR, "Pulsator"),
-        (EA_EB, "EA/EB"),
-        (EW, "EW"),
-        (ROTATOR, "Rotator"),
-        (UNKNOWN, "Unknown"),
-        (JUNK, "Junk"),
-    ]
-
-    CERTAIN = 0
-    UNCERTAIN = 1
-    PERIOD_UNCERTAINTY_CHOICES = [
-        (CERTAIN, "Certain"),
-        (UNCERTAIN, "Uncertain"),
-    ]
-
-    CURRENT_IMAGE_VERSION = 0.91
+    CURRENT_IMAGE_VERSION = 1.0
 
     star = models.ForeignKey(to=Star, on_delete=models.CASCADE)
 
@@ -340,12 +322,6 @@ class FoldedLightcurve(models.Model, ImageGenerator):
     period_length = models.FloatField(null=True)
     sigma = models.FloatField(null=True)
     chi_squared = models.FloatField(null=True)
-
-    classification = models.IntegerField(choices=CLASSIFICATION_CHOICES, null=True)
-    period_uncertainty = models.IntegerField(
-        choices=PERIOD_UNCERTAINTY_CHOICES, null=True
-    )
-    classification_count = models.IntegerField(null=True)
 
     image_file = models.ImageField(null=True, upload_to=lightcurve_upload_to)
     thumbnail_file = models.ImageField(null=True, upload_to=lightcurve_upload_to)
@@ -361,6 +337,12 @@ class FoldedLightcurve(models.Model, ImageGenerator):
 
     def get_period_url(self):
         return f"{self.star.get_absolute_url()}#period-{ self.period_length }"
+
+    @property
+    def latest_aggregated_classification(self):
+        return self.aggregatedclassification_set.filter(
+            data_release=DataRelease.get_latest()
+        ).first()
 
     @property
     def natural_period(self):
@@ -441,12 +423,18 @@ class ZooniverseSubject(models.Model):
         save_zooniverse_metadata.delay(self.id)
 
 
+def get_next_data_release_version():
+    return DataRelease.get_latest().version + 1
+
+
 class DataRelease(models.Model):
-    version = models.FloatField()
+    version = models.FloatField(default=get_next_data_release_version)
 
     active = models.BooleanField(default=False)
 
     created = models.DateTimeField(auto_now_add=True)
+    aggregation_finished = models.DateTimeField(null=True)
+    active_at = models.DateTimeField(null=True, blank=True)
 
     @classmethod
     def get_latest(cls, active=True):
@@ -455,6 +443,19 @@ class DataRelease(models.Model):
             result = result.filter(active=True)
         result = result.order_by("-version")
         return result.first()
+
+    @property
+    def full_export(self):
+        return self.dataexport_set.filter(in_data_archive=True).first()
+
+    def pending_stars(self):
+        return (
+            self.aggregatedclassification_set.filter(
+                lightcurve__star__fits_error_count__lt=settings.FITS_DOWNLOAD_ATTEMPTS
+            )
+            .filter(lightcurve__star__stats_version=None)
+            .count()
+        )
 
     def __str__(self):
         return f"Data release {self.version}"
@@ -489,6 +490,10 @@ class AggregatedClassification(models.Model):
     classification = models.IntegerField(choices=CLASSIFICATION_CHOICES)
     period_uncertainty = models.IntegerField(choices=PERIOD_UNCERTAINTY_CHOICES)
     classification_count = models.IntegerField()
+
+    @classmethod
+    def get_latest(cls, active=True):
+        return cls.objects.filter(data_release=DataRelease.get_latest(active=active))
 
 
 from .tasks import (

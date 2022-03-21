@@ -39,10 +39,6 @@ def setup_periodic_tasks(sender, **kwargs):
         settings.PERIODIC_TASK_INTERVAL,
         set_zooniverse_metadata.s(),
     )
-    sender.add_periodic_task(
-        settings.PERIODIC_TASK_INTERVAL,
-        populate_aggregated_classifications.s(),
-    )
 
 
 @app.on_after_fork.connect
@@ -127,22 +123,3 @@ def set_zooniverse_metadata():
         | Q(metadata_version__lt=ZooniverseSubject.CURRENT_METADATA_VERSION)
     )[:1000]:
         subject.save_metadata()
-
-
-@app.task
-def populate_aggregated_classifications():
-    from starcatalogue.models import (
-        DataRelease,
-        AggregatedClassification,
-        FoldedLightcurve,
-    )
-
-    dr, _ = DataRelease.objects.get_or_create(version=1.0, active=True)
-    for lc in FoldedLightcurve.objects.filter(aggregatedclassification=None)[:1000]:
-        AggregatedClassification.objects.create(
-            data_release=dr,
-            lightcurve=lc,
-            classification=lc.classification,
-            period_uncertainty=lc.period_uncertainty,
-            classification_count=lc.classification_count,
-        )

@@ -42,14 +42,12 @@ admin.site.register(DataExport, DataExportAdmin)
 
 
 class FoldedLightcurveAdmin(admin.ModelAdmin):
-    list_display = ("star", "period_length", "classification", "classification_count")
+    list_display = ("star", "period_length")
     search_fields = ("star__superwasp_id",)
-    list_filter = ("classification", "period_uncertainty")
     fields = (
         ("star", "zooniversesubject"),
         ("period_number", "period_length"),
         ("sigma", "chi_squared"),
-        ("classification", "period_uncertainty", "classification_count"),
         ("image_file", "thumbnail_file", "image_version"),
     )
     readonly_fields = tuple(f for f in chain.from_iterable(fields))
@@ -126,6 +124,16 @@ class DataReleaseAdmin(admin.ModelAdmin):
         "version",
         "active",
         "created",
+        "aggregation_finished",
+        "pending_stars",
+    )
+    readonly_fields = ("aggregation_finished", "pending_stars")
+    fields = (
+        "version",
+        "active",
+        "active_at",
+        "aggregation_finished",
+        "pending_stars",
     )
 
 
