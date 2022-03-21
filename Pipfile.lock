@@ -121,7 +121,7 @@
                 "sha256:a0713dc7a1de3f06bc0df5a9567ad19ead2d3d5689b434768a6145bff77c0667",
                 "sha256:f184f0d851d96b6d29297354ed981b7dd71df7ff500d82fa6d11f0856bee8035"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.6.2'",
+            "markers": "python_full_version >= '3.6.2' and python_full_version < '4.0.0'",
             "version": "==0.3.0"
         },
         "click-plugins": {
@@ -164,11 +164,11 @@
         },
         "fonttools": {
             "hashes": [
-                "sha256:084dd1762f083a1bf49e41da1bfeafb475c9dce46265690a6bdd33290b9a63f4",
-                "sha256:6985cc5380c06db07fdc73ade15e6adbd4ce6ff850d7561ca00f97090b4b263d"
+                "sha256:2b288eae806800668cb5cdf52a37b5ac701c5adda2dd5c88b685581ce3385285",
+                "sha256:f8b35ed9ba189710994cec2c86b8eb5f0c49336698575e439a0d5671d3ca1ace"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==4.30.0"
+            "version": "==4.31.1"
         },
         "future": {
             "hashes": [
@@ -510,10 +510,10 @@
         },
         "pytz": {
             "hashes": [
-                "sha256:3672058bc3453457b622aab7a1c3bfd5ab0bdae451512f6cf25f64ed37f5b87c",
-                "sha256:acad2d8b20a1af07d4e4c9d2e9285c5ed9104354062f275f3fcd88dcef4f1326"
+                "sha256:1e760e2fe6a8163bc0b3d9a19c4f84342afa0a2affebfaa84b01b978a02ecaa7",
+                "sha256:e68985985296d9a66a881eb3193b0906246245294a881e7c8afe623866ac6a5c"
             ],
-            "version": "==2021.3"
+            "version": "==2022.1"
         },
         "pyyaml": {
             "hashes": [
@@ -607,11 +607,11 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:411a8495bd18cf13038e5749e4710beb4efa53da6351f67b4c2f307c2d9b6d49",
-                "sha256:aa52da941c56b5a76fd838f8e9e92a850bf893a9eb1e33ffce6c21431d07ee30"
+                "sha256:32af1a57954576709242beb8c373b3dbde346ac6bd616921def29d68846fb8c3",
+                "sha256:38fd16a92b5ef94203db3ece10e03bdaa291481dd7e00e77a148aa0302267d47"
             ],
             "index": "pypi",
-            "version": "==1.5.7"
+            "version": "==1.5.8"
         },
         "setuptools": {
             "hashes": [
@@ -698,7 +698,7 @@
                 "sha256:44ece4d53fb1706f667c9bd1c648f5469a2ec925fcf3a776667042d645472c14",
                 "sha256:aabaf16477806a5e1dd19aa41f8c2b7950dd3c746362d7e3223dbe6de6ac448e"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_full_version < '4.0.0'",
             "version": "==1.26.9"
         },
         "vine": {
