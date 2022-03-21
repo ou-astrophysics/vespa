@@ -237,6 +237,7 @@ def prepare_data_release(data_release_id):
             "subject_id": [],
             "classification": [],
             "period_certainty": [],
+            "user_name": [],
         }
         # Can't load it all into pandas because of limited memory
         for row in classification_export.csv_dictreader():
@@ -260,10 +261,11 @@ def prepare_data_release(data_release_id):
                     default_period_certainties.get(annotations[0]["value"], None)
                 )
             classifications["subject_id"].append(int(row["subject_ids"]))
+            classifications["user_name"].append(row["user_name"])
 
         classifications = pandas.DataFrame(classifications)
         classifications.drop_duplicates(
-            subset=["user_name", "subject_ids"], inplace=True
+            subset=["user_name", "subject_id"], inplace=True
         )
         if settings.ZOONIVERSE_CACHE_EXPORT:
             classifications.to_pickle("classifications.pkl")
