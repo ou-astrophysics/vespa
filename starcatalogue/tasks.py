@@ -293,7 +293,7 @@ def prepare_data_release(data_release_id):
 
     aggregated_period_certainties = classifications.pivot_table(
         columns=["period_certainty"],
-        values="period_certainty",
+        values="user_name",
         index="subject_id",
         aggfunc=len,
         fill_value=0,
