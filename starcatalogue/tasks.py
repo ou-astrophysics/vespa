@@ -255,6 +255,9 @@ def prepare_data_release(data_release_id):
             classifications["subject_id"].append(int(row["subject_ids"]))
 
         classifications = pandas.DataFrame(classifications)
+        classifications.drop_duplicates(
+            subset=["user_name", "subject_ids"], inplace=True
+        )
         classifications.to_pickle("classifications.pkl")
 
     aggregated_classifications = classifications.pivot_table(
