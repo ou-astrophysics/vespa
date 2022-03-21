@@ -299,6 +299,8 @@ def prepare_data_release(data_release_id):
         fill_value=0,
     )
 
+    del classifications
+
     aggregated_classifications = aggregated_classifications.join(
         aggregated_period_certainties,
     )
@@ -353,11 +355,12 @@ def prepare_data_release(data_release_id):
         ["Period Flag", "Camera Number", "SWASP", "ID"], axis="columns", inplace=True
     )
     periodicity_cat.set_index(["SWASP ID", "Period Number"], inplace=True)
-    aggregated_classifications = aggregated_classifications.join(zoo_lookup)
 
+    aggregated_classifications = aggregated_classifications.join(zoo_lookup)
     aggregated_classifications = aggregated_classifications.join(
         periodicity_cat, on=("SWASP ID", "Period Number")
     )
+    del zoo_lookup, periodicity_cat
 
     if settings.DATA_RELEASE_IMPORT_LIMIT:
         aggregated_classifications = aggregated_classifications.head(
