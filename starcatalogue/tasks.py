@@ -268,7 +268,10 @@ def prepare_data_release(data_release_id):
             subset=["user_name", "subject_id"], inplace=True
         )
         if settings.ZOONIVERSE_CACHE_EXPORT:
-            classifications.to_pickle("classifications.pkl")
+            try:
+                classifications.to_pickle("classifications.pkl")
+            except PermissionError:
+                pass
 
     aggregated_classifications = classifications.pivot_table(
         columns=["classification"],
