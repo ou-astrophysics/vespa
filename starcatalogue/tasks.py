@@ -272,7 +272,7 @@ def prepare_data_release(data_release_id):
                 classifications.to_pickle("classifications.pkl")
             except PermissionError:
                 pass
-    print(classifications)
+
     aggregated_classifications = classifications.pivot_table(
         columns=["classification"],
         values="user_name",
