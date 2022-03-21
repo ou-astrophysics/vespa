@@ -330,6 +330,11 @@ def prepare_data_release(data_release_id):
         "Period Number",
     ]
     zoo_lookup.set_index("subject_id", inplace=True)
+    # Lookup periods were rounded to 3 dp, but (presumably) due to floating point errors
+    # weren't always rounded consistently. To enable matching of records, we further
+    # round the periods to 2 dp.
+    PERIOD_MATCH_ROUNDING = 2
+    zoo_lookup["Period"] = round(zoo_lookup["Period"], PERIOD_MATCH_ROUNDING)
 
     periodicity_cat = pandas.read_csv(
         settings.IMPORT_ROOT / "results_total.dat",
@@ -349,7 +354,7 @@ def prepare_data_release(data_release_id):
     periodicity_cat = periodicity_cat[(periodicity_cat["Period Flag"] == 0)]
     periodicity_cat["SWASP ID"] = periodicity_cat["SWASP"] + periodicity_cat["ID"]
     periodicity_cat["Original Period"] = periodicity_cat["Period"]
-    periodicity_cat["Period"] = round(periodicity_cat["Period"], 3)
+    periodicity_cat["Period"] = round(periodicity_cat["Period"], PERIOD_MATCH_ROUNDING)
     periodicity_cat.drop(
         ["Period Flag", "Camera Number", "SWASP", "ID"], axis="columns", inplace=True
     )
