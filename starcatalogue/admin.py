@@ -41,6 +41,41 @@ class DataExportAdmin(admin.ModelAdmin):
 admin.site.register(DataExport, DataExportAdmin)
 
 
+class AggregatedClassificationAdmin(admin.ModelAdmin):
+    date_hierarchy = "created"
+    list_display = (
+        "lightcurve",
+        "created",
+        "data_release",
+        "classification",
+        "classification_count",
+    )
+    search_fields = ("lightcurve__star__superwasp_id",)
+    list_filter = ("classification", "period_uncertainty", "data_release__version")
+    fields = (
+        "lightcurve",
+        "created",
+        "data_release",
+        "classification",
+        "period_uncertainty",
+        "classification_count",
+    )
+    readonly_fields = fields
+
+
+admin.site.register(AggregatedClassification, AggregatedClassificationAdmin)
+
+
+class AggregatedClassificationInline(admin.StackedInline):
+    model = AggregatedClassification
+    fields = AggregatedClassificationAdmin.fields[1:]
+    readonly_fields = fields
+    extra = 0
+    max_num = 0
+    can_delete = False
+    show_change_link = True
+
+
 class FoldedLightcurveAdmin(admin.ModelAdmin):
     date_hierarchy = "created"
     list_display = (
@@ -53,13 +88,14 @@ class FoldedLightcurveAdmin(admin.ModelAdmin):
     )
     search_fields = ("star__superwasp_id",)
     fields = (
-        ("star", "zooniversesubject"),
+        ("star", "zooniversesubject", "created"),
         ("period_number", "period_length"),
         ("sigma", "chi_squared"),
         ("image_file", "thumbnail_file", "image_version"),
     )
     readonly_fields = tuple(f for f in chain.from_iterable(fields))
     list_filter = ("image_version",)
+    inlines = (AggregatedClassificationInline,)
 
 
 admin.site.register(FoldedLightcurve, FoldedLightcurveAdmin)
@@ -152,27 +188,3 @@ class DataReleaseAdmin(admin.ModelAdmin):
 
 
 admin.site.register(DataRelease, DataReleaseAdmin)
-
-
-class AggregatedClassificationAdmin(admin.ModelAdmin):
-    date_hierarchy = "created"
-    list_display = (
-        "lightcurve",
-        "created",
-        "data_release",
-        "classification",
-        "classification_count",
-    )
-    search_fields = ("lightcurve__star__superwasp_id",)
-    list_filter = ("classification", "period_uncertainty", "data_release__version")
-    fields = (
-        "data_release",
-        "lightcurve",
-        "classification",
-        "period_uncertainty",
-        "classification_count",
-    )
-    readonly_fields = fields
-
-
-admin.site.register(AggregatedClassification, AggregatedClassificationAdmin)
