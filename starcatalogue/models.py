@@ -1,5 +1,6 @@
 import datetime
 import logging
+import math
 import urllib
 
 import numpy
@@ -322,6 +323,9 @@ class FoldedLightcurve(models.Model, ImageGenerator):
     period_length = models.FloatField(null=True)
     sigma = models.FloatField(null=True)
     chi_squared = models.FloatField(null=True)
+    updated_period_length = models.FloatField(null=True)
+    updated_sigma = models.FloatField(null=True)
+    updated_chi_squared = models.FloatField(null=True)
 
     image_file = models.ImageField(null=True, upload_to=lightcurve_upload_to)
     thumbnail_file = models.ImageField(null=True, upload_to=lightcurve_upload_to)
@@ -353,10 +357,14 @@ class FoldedLightcurve(models.Model, ImageGenerator):
         return self.get_image_location()
 
     def get_image_location(self):
+        try:
+            zoo_image = self.zooniversesubject.image_location
+        except ZooniverseSubject.DoesNotExist:
+            zoo_image = None
         return self.get_or_generate_image(
             self.image_file,
             generate_lightcurve_images,
-            self.zooniversesubject.image_location,
+            zoo_image,
         )
 
     @property
@@ -364,15 +372,21 @@ class FoldedLightcurve(models.Model, ImageGenerator):
         return self.get_thumbnail_location()
 
     def get_thumbnail_location(self):
+        try:
+            zoo_thumbnail = self.zooniversesubject.thumbnail_location
+        except ZooniverseSubject.DoesNotExist:
+            zoo_thumbnail = None
         return self.get_or_generate_image(
             self.thumbnail_file,
             generate_lightcurve_images,
-            self.zooniversesubject.thumbnail_location,
+            zoo_thumbnail,
         )
 
     @property
     def timeseries(self):
         if not self.star.timeseries:
+            return
+        if not self.period_length or math.isnan(self.period_length):
             return
         return self.star.timeseries.fold(
             period=self.period_length * units.second,

@@ -42,7 +42,7 @@ admin.site.register(DataExport, DataExportAdmin)
 
 
 class FoldedLightcurveAdmin(admin.ModelAdmin):
-    list_display = ("star", "period_length")
+    list_display = ("star", "period_number", "period_length", "sigma", "chi_squared")
     search_fields = ("star__superwasp_id",)
     fields = (
         ("star", "zooniversesubject"),
@@ -51,6 +51,7 @@ class FoldedLightcurveAdmin(admin.ModelAdmin):
         ("image_file", "thumbnail_file", "image_version"),
     )
     readonly_fields = tuple(f for f in chain.from_iterable(fields))
+    list_filter = ("image_version",)
 
 
 admin.site.register(FoldedLightcurve, FoldedLightcurveAdmin)

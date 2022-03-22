@@ -16,6 +16,7 @@ from celery import shared_task
 
 from django.conf import settings
 from django.core.files.base import ContentFile
+from django.db.models import Q, F
 
 from matplotlib import pyplot
 
@@ -386,16 +387,41 @@ def prepare_data_release(data_release_id):
 
     for subject_id, row in aggregated_classifications.iterrows():
         star, _ = Star.objects.get_or_create(superwasp_id=row["SWASP ID"])
-        folded_lightcurve, _ = FoldedLightcurve.objects.get_or_create(
-            star=star,
-            period_number=row["Period Number"],
-            period_length=row["Original Period"],
-            sigma=row["Sigma"],
-            chi_squared=row["Chi Squared"],
-        )
-        ZooniverseSubject.objects.get_or_create(
-            zooniverse_id=subject_id, lightcurve=folded_lightcurve
-        )
+
+        try:
+            zoo_subject = ZooniverseSubject.objects.get(zooniverse_id=subject_id)
+            folded_lightcurve = zoo_subject.lightcurve
+        except ZooniverseSubject.DoesNotExist:
+            zoo_subject = None
+            # Because of earlier data issues there can be duplicate lightcurves, but it is
+            # safe to just use the first one and ignore the others
+            folded_lightcurve = FoldedLightcurve.objects.filter(
+                star=star, period_number=row["Period Number"]
+            ).first()
+
+        if folded_lightcurve is None:
+            folded_lightcurve = FoldedLightcurve.objects.create(
+                star=star,
+                period_number=row["Period Number"],
+                period_length=row["Original Period"],
+                sigma=row["Sigma"],
+                chi_squared=row["Chi Squared"],
+            )
+        elif (
+            folded_lightcurve.period_length != row["Original Period"]
+            or folded_lightcurve.sigma != row["Sigma"]
+            or folded_lightcurve.chi_squared != row["Chi Squared"]
+        ):
+            folded_lightcurve.updated_period_length = row["Original Period"]
+            folded_lightcurve.updated_sigma = row["Sigma"]
+            folded_lightcurve.updated_chi_squared = row["Chi Squared"]
+            folded_lightcurve.save()
+
+        if zoo_subject is None:
+            ZooniverseSubject.objects.get_or_create(
+                zooniverse_id=subject_id, lightcurve=folded_lightcurve
+            )
+
         AggregatedClassification.objects.create(
             data_release=data_release,
             lightcurve=folded_lightcurve,
@@ -415,6 +441,40 @@ def prepare_data_release(data_release_id):
         )
 
     data_release.aggregation_finished = datetime.datetime.now()
+    data_release.save()
+
+
+@shared_task
+def activate_data_release(data_release_id):
+    # This data import may have staged corrected metadata for lightcurves
+    # Move the staged metadata into the live fields
+    outdated_lightcurves = FoldedLightcurve.objects.exclude(
+        Q(updated_period_length=None)
+        | Q(updated_sigma=None)
+        | Q(updated_chi_squared=None)
+    )
+
+    outdated_lightcurves.update(
+        period_length=F("updated_period_length"),
+        sigma=F("updated_sigma"),
+        chi_squared=F("updated_chi_squared"),
+        image_version=None,
+    )
+
+    outdated_lightcurves.update(
+        updated_period_length=None,
+        updated_sigma=None,
+        updated_chi_squared=None,
+    )
+
+    data_release = DataRelease.objects.get(pk=data_release_id)
+    # Now pre-generate the full data export
+    DataExport.objects.create(
+        data_release=data_release,
+        data_version=data_release.version,
+        in_data_archive=True,
+    )
+    data_release.active_at = datetime.datetime.now()
     data_release.save()
 
 
