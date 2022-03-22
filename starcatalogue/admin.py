@@ -42,7 +42,15 @@ admin.site.register(DataExport, DataExportAdmin)
 
 
 class FoldedLightcurveAdmin(admin.ModelAdmin):
-    list_display = ("star", "period_number", "period_length", "sigma", "chi_squared")
+    date_hierarchy = "created"
+    list_display = (
+        "star",
+        "period_number",
+        "created",
+        "period_length",
+        "sigma",
+        "chi_squared",
+    )
     search_fields = ("star__superwasp_id",)
     fields = (
         ("star", "zooniversesubject"),
@@ -68,8 +76,10 @@ class FoldedLightcurveInline(admin.StackedInline):
 
 
 class StarAdmin(admin.ModelAdmin):
+    date_hierarchy = "created"
     list_display = (
         "superwasp_id",
+        "created",
         "image_version",
         "json_version",
         "stats_version",
@@ -90,8 +100,10 @@ admin.site.register(Star, StarAdmin)
 
 
 class ZooniverseSubjectAdmin(admin.ModelAdmin):
+    date_hierarchy = "created"
     list_display = (
         "zooniverse_id",
+        "created",
         "lightcurve",
         "subject_set_id",
         "retired_at",
@@ -121,6 +133,7 @@ admin.site.register(ZooniverseSubject, ZooniverseSubjectAdmin)
 
 
 class DataReleaseAdmin(admin.ModelAdmin):
+    date_hierarchy = "created"
     list_display = (
         "version",
         "active",
@@ -142,8 +155,10 @@ admin.site.register(DataRelease, DataReleaseAdmin)
 
 
 class AggregatedClassificationAdmin(admin.ModelAdmin):
+    date_hierarchy = "created"
     list_display = (
         "lightcurve",
+        "created",
         "data_release",
         "classification",
         "classification_count",

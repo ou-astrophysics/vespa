@@ -126,6 +126,8 @@ class Star(models.Model, ImageGenerator, JSONGenerator):
 
     location = SPointField(null=True)
 
+    created = models.DateTimeField(auto_now_add=True, null=True)
+
     @classmethod
     def outlier_clip(cls, flux):
         return sigma_clip(
@@ -333,6 +335,8 @@ class FoldedLightcurve(models.Model, ImageGenerator):
     image_version = models.FloatField(null=True)
     image_celery_started = models.DateTimeField(null=True)
 
+    created = models.DateTimeField(auto_now_add=True, null=True)
+
     def __str__(self):
         return f"{self.star.superwasp_id}@{self.period_length} sec"
 
@@ -404,6 +408,8 @@ class ZooniverseSubject(models.Model):
     image_location = models.URLField(null=True)
 
     metadata_version = models.FloatField(null=True)
+
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f"Subject {self.zooniverse_id}"
@@ -504,6 +510,8 @@ class AggregatedClassification(models.Model):
     classification = models.IntegerField(choices=CLASSIFICATION_CHOICES)
     period_uncertainty = models.IntegerField(choices=PERIOD_UNCERTAINTY_CHOICES)
     classification_count = models.IntegerField()
+
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     @classmethod
     def get_latest(cls, active=True):
