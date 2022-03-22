@@ -166,6 +166,8 @@ class AggregatedClassificationAdmin(admin.ModelAdmin):
     search_fields = ("lightcurve__star__superwasp_id",)
     list_filter = ("classification", "period_uncertainty", "data_release__version")
     fields = (
+        "data_release",
+        "lightcurve",
         "classification",
         "period_uncertainty",
         "classification_count",
