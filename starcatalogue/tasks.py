@@ -263,7 +263,7 @@ def prepare_data_release(data_release_id):
                 )
             classifications["subject_id"].append(int(row["subject_ids"]))
             classifications["user_name"].append(row["user_name"])
-
+        del classification_export
         classifications = pandas.DataFrame(classifications)
         classifications.drop_duplicates(
             subset=["user_name", "subject_id"], inplace=True
