@@ -89,8 +89,9 @@ class FoldedLightcurveAdmin(admin.ModelAdmin):
     search_fields = ("star__superwasp_id",)
     fields = (
         ("star", "zooniversesubject", "created"),
-        ("period_number", "period_length"),
-        ("sigma", "chi_squared"),
+        ("period_number",),
+        ("period_length", "sigma", "chi_squared"),
+        ("updated_period_length", "updated_sigma", "updated_chi_squared"),
         ("image_file", "thumbnail_file", "image_version"),
     )
     readonly_fields = tuple(f for f in chain.from_iterable(fields))
