@@ -333,8 +333,8 @@ def prepare_data_release(data_release_id):
     zoo_lookup.set_index("subject_id", inplace=True)
     # Lookup periods were rounded to 3 dp, but (presumably) due to floating point errors
     # weren't always rounded consistently. To enable matching of records, we further
-    # round the periods to 2 dp.
-    PERIOD_MATCH_ROUNDING = 2
+    # round the periods to 1 dp.
+    PERIOD_MATCH_ROUNDING = 1
     zoo_lookup["Period"] = round(zoo_lookup["Period"], PERIOD_MATCH_ROUNDING)
 
     periodicity_cat = pandas.read_csv(
