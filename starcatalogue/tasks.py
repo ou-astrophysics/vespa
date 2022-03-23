@@ -219,6 +219,8 @@ def prepare_data_release(data_release_id):
         "Junk": "Wrong period",
     }
 
+    data_release = DataRelease.objects.get(id=data_release_id)
+
     classifications = None
 
     if settings.ZOONIVERSE_CACHE_EXPORT:
@@ -230,7 +232,7 @@ def prepare_data_release(data_release_id):
             )
     else:
         classification_export = Project(settings.ZOONIVERSE_PROJECT_ID).get_export(
-            "classifications", generate=True
+            "classifications", generate=data_release.generate_export
         )
 
     if classifications is None:
@@ -382,8 +384,6 @@ def prepare_data_release(data_release_id):
         "Correct period": AggregatedClassification.CERTAIN,
         "Half correct period": AggregatedClassification.UNCERTAIN,
     }
-
-    data_release = DataRelease.objects.get(id=data_release_id)
 
     for subject_id, row in aggregated_classifications.iterrows():
         star, _ = Star.objects.get_or_create(superwasp_id=row["SWASP ID"])

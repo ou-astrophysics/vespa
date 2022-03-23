@@ -173,6 +173,7 @@ class DataReleaseAdmin(admin.ModelAdmin):
     date_hierarchy = "created"
     list_display = (
         "version",
+        "generate_export",
         "active",
         "created",
         "aggregation_finished",
@@ -180,11 +181,9 @@ class DataReleaseAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("aggregation_finished", "pending_stars")
     fields = (
-        "version",
-        "active",
-        "active_at",
-        "aggregation_finished",
-        "pending_stars",
+        ("version", "generate_export"),
+        ("active", "active_at"),
+        ("aggregation_finished", "pending_stars"),
     )
 
 

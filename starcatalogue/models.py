@@ -449,6 +449,7 @@ def get_next_data_release_version():
 
 class DataRelease(models.Model):
     version = models.FloatField(default=get_next_data_release_version)
+    generate_export = models.BooleanField(default=False)
 
     active = models.BooleanField(default=False)
 
