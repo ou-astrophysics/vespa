@@ -3,6 +3,7 @@ import datetime
 import io
 import urllib
 import yaml
+import time
 import zipfile
 import ujson as json
 
@@ -218,7 +219,9 @@ def prepare_data_release(data_release_id):
         "Unknown": "Correct period",
         "Junk": "Wrong period",
     }
-
+    # This task seems to hit a race condition sometimes where the DataRelease hasn't
+    # actually been saved yet
+    time.sleep(5)
     data_release = DataRelease.objects.get(id=data_release_id)
 
     classifications = None
