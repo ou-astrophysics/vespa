@@ -29,7 +29,7 @@ class DataExportAdmin(admin.ModelAdmin):
         ("min_period", "max_period"),
         ("min_magnitude", "max_magnitude"),
         ("min_amplitude", "max_amplitude"),
-        ("certain_period", "uncertain_period"),
+        ("certain_period", "uncertain_period", "half_period"),
         ("min_classifications", "max_classifications"),
         ("type_pulsator", "type_rotator", "type_ew", "type_eaeb", "type_unknown"),
         ("search", "search_radius"),
@@ -48,6 +48,7 @@ class AggregatedClassificationAdmin(admin.ModelAdmin):
         "created",
         "data_release",
         "classification",
+        "period_uncertainty",
         "classification_count",
     )
     search_fields = ("lightcurve__star__superwasp_id",)

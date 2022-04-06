@@ -500,9 +500,11 @@ class AggregatedClassification(models.Model):
 
     CERTAIN = 0
     UNCERTAIN = 1
+    HALF = 2
     PERIOD_UNCERTAINTY_CHOICES = [
         (CERTAIN, "Certain"),
         (UNCERTAIN, "Uncertain"),
+        (HALF, "Half"),
     ]
 
     data_release = models.ForeignKey(DataRelease, on_delete=models.CASCADE)

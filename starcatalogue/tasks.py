@@ -382,7 +382,7 @@ def prepare_data_release(data_release_id):
         "Unknown": AggregatedClassification.UNKNOWN,
         "Wrong period": AggregatedClassification.UNCERTAIN,
         "Correct period": AggregatedClassification.CERTAIN,
-        "Half correct period": AggregatedClassification.UNCERTAIN,
+        "Half correct period": AggregatedClassification.HALF,
     }
 
     for subject_id, row in aggregated_classifications.iterrows():

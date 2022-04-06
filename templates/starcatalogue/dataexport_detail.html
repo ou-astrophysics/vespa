@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load starcatalogue_tags %} 
+{% load starcatalogue_tags %}
 
 {% block title %}Data Export{% endblock %}
 
@@ -9,34 +9,41 @@
 <div class="row mt-5">
     <div class="col text-center">
         {% if object.export_status == object.STATUS_COMPLETE %}
-            <h2>Export ready to download</h2>
-            <p><i class="bi bi-check-circle" style="font-size: xxx-large;"></i></p>
-            <p class="lead"><i class="bi bi-download mr-2"></i><a href="{{ object.export_file.url }}">Download export ({{ object.export_file_naturalsize }})</a></p>
-            <p class="mt-5"><small>If you publish research based on VeSPA data, please consider citing <a href="https://doi.org/10.3847/2515-5172/ac2de8">Adam McMaster et al 2021 Res. Notes AAS 5 228</a> as well as the Zenodo publication for the specific <a href="{% url 'data_releases' %}">data release</a> you used.</small></p>
+        <h2>Export ready to download</h2>
+        <p><i class="bi bi-check-circle" style="font-size: xxx-large;"></i></p>
+        <p class="lead"><i class="bi bi-download mr-2"></i><a href="{{ object.export_file.url }}">Download export
+                ({{ object.export_file_naturalsize }})</a></p>
+        <p class="mt-5"><small>If you publish research based on VeSPA data, please consider citing <a
+                    href="https://doi.org/10.3847/2515-5172/ac2de8">Adam McMaster et al 2021 Res. Notes AAS 5 228</a> as
+                well as the Zenodo publication for the specific <a href="{% url 'data_releases' %}">data release</a> you
+                used.</small></p>
         {% elif object.export_status == object.STATUS_FAILED %}
-            <h2>Export failed</h2>
-            <p><i class="bi bi-exclamation-circle" style="font-size: xxx-large;"></i></p>
-            <p class="lead">Something went wrong while generating your export.</p>
-            <form action="{% url 'generate_export' %}" method="POST">
-                {% csrf_token %}
-                {% export_hidden_inputs object %}
-                <div class="col">
-                  <input type="submit" value="Retry" class="btn btn-secondary">
-                </div>
-              </form>
+        <h2>Export failed</h2>
+        <p><i class="bi bi-exclamation-circle" style="font-size: xxx-large;"></i></p>
+        <p class="lead">Something went wrong while generating your export.</p>
+        <form action="{% url 'generate_export' %}" method="POST">
+            {% csrf_token %}
+            {% export_hidden_inputs object %}
+            <div class="col">
+                <input type="submit" value="Retry" class="btn btn-secondary">
+            </div>
+        </form>
         {% elif object.export_status == object.STATUS_RUNNING %}
-            <h2>Generating export</h2>
-            <div class="spinner-border my-5" role="status" >
-                <span class="sr-only">Generating...</span>
-            </div>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: {{ object.progress|floatformat:0 }}%;" aria-valuenow="{{ object.progress|floatformat:0 }}" aria-valuemin="0" aria-valuemax="100">{{ object.progress|floatformat:0 }}%</div>
-            </div>
-            <p class="lead">This page will update automatically when the export is ready. You can also bookmark the page and come back later rather than keeping it open.</p>
+        <h2>Generating export</h2>
+        <div class="spinner-border my-5" role="status">
+            <span class="sr-only">Generating...</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ object.progress|floatformat:0 }}%;"
+                aria-valuenow="{{ object.progress|floatformat:0 }}" aria-valuemin="0" aria-valuemax="100">
+                {{ object.progress|floatformat:0 }}%</div>
+        </div>
+        <p class="lead">This page will update automatically when the export is ready. You can also bookmark the page and
+            come back later rather than keeping it open.</p>
         {% elif object.export_status == object.STATUS_PENDING %}
-            <h2>Export queued</h2>
-            <p><i class="bi bi-pause-circle" style="font-size: xxx-large;"></i></p>
-            <p class="lead">Your export is in the queue. We'll start generating it soon.</p>
+        <h2>Export queued</h2>
+        <p><i class="bi bi-pause-circle" style="font-size: xxx-large;"></i></p>
+        <p class="lead">Your export is in the queue. We'll start generating it soon.</p>
         {% endif %}
     </div>
 
@@ -44,82 +51,86 @@
         <h2>Export Parameters</h2>
         <table class="table">
             <tbody>
-            <tr>
-                <th scope="row">Data Version</th>
-                <td>{{ object.data_version }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Object Count</th>
-                <td>{{ object.queryset.count }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Minimum Magnitude</th>
-                <td>{{ object.min_magnitude }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Maximum Magnitude</th>
-                <td>{{ object.max_magnitude }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Minimum Amplitude</th>
-                <td>{{ object.min_amplitude }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Maximum Amplitude</th>
-                <td>{{ object.max_amplitude }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Minimum Period</th>
-                <td>{{ object.min_period }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Maximum Period</th>
-                <td>{{ object.max_period }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Minimum Classification Count</th>
-                <td>{{ object.min_classifications }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Maximum Classification Count</th>
-                <td>{{ object.max_classifications }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Include Certain Periods</th>
-                <td>{{ object.certain_period }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Include Uncertain Periods</th>
-                <td>{{ object.uncertain_period }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Include Pulsators</th>
-                <td>{{ object.type_pulsator }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Include Rotators</th>
-                <td>{{ object.type_rotator }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Include EWs</th>
-                <td>{{ object.type_ew }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Include EA/EBs</th>
-                <td>{{ object.type_eaeb }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Include Unknown</th>
-                <td>{{ object.type_unknown }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Search Query</th>
-                <td>{{ object.search }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Search Radius</th>
-                <td>{{ object.search_radius }}{% if object.search_radius %} degrees{% endif %}</td>
-            </tr>
+                <tr>
+                    <th scope="row">Data Version</th>
+                    <td>{{ object.data_version }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Object Count</th>
+                    <td>{{ object.queryset.count }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Minimum Magnitude</th>
+                    <td>{{ object.min_magnitude }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Maximum Magnitude</th>
+                    <td>{{ object.max_magnitude }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Minimum Amplitude</th>
+                    <td>{{ object.min_amplitude }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Maximum Amplitude</th>
+                    <td>{{ object.max_amplitude }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Minimum Period</th>
+                    <td>{{ object.min_period }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Maximum Period</th>
+                    <td>{{ object.max_period }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Minimum Classification Count</th>
+                    <td>{{ object.min_classifications }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Maximum Classification Count</th>
+                    <td>{{ object.max_classifications }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Include Certain Periods</th>
+                    <td>{{ object.certain_period }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Include Uncertain Periods</th>
+                    <td>{{ object.uncertain_period }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Include Half Periods</th>
+                    <td>{{ object.half_period }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Include Pulsators</th>
+                    <td>{{ object.type_pulsator }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Include Rotators</th>
+                    <td>{{ object.type_rotator }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Include EWs</th>
+                    <td>{{ object.type_ew }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Include EA/EBs</th>
+                    <td>{{ object.type_eaeb }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Include Unknown</th>
+                    <td>{{ object.type_unknown }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Search Query</th>
+                    <td>{{ object.search }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Search Radius</th>
+                    <td>{{ object.search_radius }}{% if object.search_radius %} degrees{% endif %}</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -127,11 +138,11 @@
 {% endblock %}
 
 {% block bodyEnd %}
-    {% if object.export_status == object.STATUS_RUNNING or object.export_status == object.STATUS_PENDING %}
-        <script type="text/javascript">
-            setTimeout(function(){
-            location.reload();
-        },3000);
-        </script>
-    {% endif %}
+{% if object.export_status == object.STATUS_RUNNING or object.export_status == object.STATUS_PENDING %}
+<script type="text/javascript">
+    setTimeout(function () {
+        location.reload();
+    }, 3000);
+</script>
+{% endif %}
 {% endblock %}

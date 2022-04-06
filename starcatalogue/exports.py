@@ -16,6 +16,7 @@ from humanize import naturalsize
 from .models import DataRelease, export_upload_to
 
 
+# Params where the model field doesn't use choices
 BASIC_EXPORT_PARAMS = (
     "min_period",
     "max_period",
@@ -23,15 +24,17 @@ BASIC_EXPORT_PARAMS = (
     "max_magnitude",
     "min_amplitude",
     "max_amplitude",
-    "certain_period",
     "search",
     "search_radius",
     "min_classifications",
     "max_classifications",
 )
+# Params where the model field does use choices, so we will
+# sometimes want the human-readable value (i.e. "on" instead of True)
 DISPLAYABLE_EXPORT_PARAMS = (
     "certain_period",
     "uncertain_period",
+    "half_period",
     "type_pulsator",
     "type_rotator",
     "type_ew",
@@ -42,6 +45,17 @@ EXPORT_PARAMS = BASIC_EXPORT_PARAMS + DISPLAYABLE_EXPORT_PARAMS
 
 
 def gen_export_params_dict(obj, displayable=False):
+    """
+    Given an export object, returns a dict of parameters mapped to their values.
+
+    Arguments:
+        - obj: The Export instance or a RequestContext instance.
+        - displayable: Bool. If True, will return the human-readable field value
+          where relevant (i.e. for fields with choices). Has no effect if obj is
+          a RequestContext.
+
+    Returns: A dict of export parameters mapped to their values.
+    """
     if type(obj) == RequestContext:
         get_attr = lambda o, p: o.get(p)
         IS_CONTEXT = True
@@ -92,6 +106,7 @@ class DataExport(models.Model):
     max_amplitude = models.FloatField(null=True)
     certain_period = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
     uncertain_period = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
+    half_period = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
     min_classifications = models.IntegerField(null=True)
     max_classifications = models.IntegerField(null=True)
     type_pulsator = models.BooleanField(choices=CHECKBOX_CHOICES, default=True)
@@ -152,7 +167,10 @@ EXPORT_DATA_DESCRIPTION = {
     "Amplitude": "The absolute difference between max and min magnitude",
     "Classification": "The candidate variable star type",
     "Classification count": "How many Zooniverse classifications this entry received",
-    "Folding flag": "Whether the correctness of this period is certain or uncertain (based on Zooniverse classifications)",
+    "Folding flag": (
+        "Whether the correctness of this period is certain, uncertain, "
+        "or half the correct period (based on Zooniverse classifications)"
+    ),
     "Sigma": "Sigma error estimate from original period search",
     "Chi squared": "Chi squared error estimate from original period search",
     "FITS URL": "The URL of the FITS file containing unfolded photometry data",
@@ -253,6 +271,9 @@ class GenerateExportView(View):
                 ],
                 uncertain_period=DataExport.CHECKBOX_CHOICES_DICT[
                     request.POST.get("uncertain_period", "on")
+                ],
+                half_period=DataExport.CHECKBOX_CHOICES_DICT[
+                    request.POST.get("half_period", "on")
                 ],
                 type_pulsator=DataExport.CHECKBOX_CHOICES_DICT[
                     request.POST.get("type_pulsator", "on")

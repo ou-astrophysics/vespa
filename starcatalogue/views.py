@@ -48,10 +48,12 @@ class StarListView(ListView):
 
         self.certain_period = params.get("certain_period", "off")
         self.uncertain_period = params.get("uncertain_period", "off")
+        self.half_period = params.get("half_period", "off")
 
         uncertainty_map = {
             AggregatedClassification.CERTAIN: self.certain_period,
             AggregatedClassification.UNCERTAIN: self.uncertain_period,
+            AggregatedClassification.HALF: self.half_period,
         }
 
         enabled_uncertainties = [k for k, v in uncertainty_map.items() if v == "on"]
@@ -60,6 +62,7 @@ class StarListView(ListView):
             enabled_uncertainties = uncertainty_map.keys()
             self.certain_period = "on"
             self.uncertain_period = "on"
+            self.half_period = "on"
 
         qs = qs.filter(period_uncertainty__in=enabled_uncertainties)
 
@@ -247,6 +250,7 @@ class StarListView(ListView):
         context["max_amplitude"] = self.max_amplitude
         context["certain_period"] = self.certain_period
         context["uncertain_period"] = self.uncertain_period
+        context["half_period"] = self.half_period
         context["min_classifications"] = self.min_classifications
         context["max_classifications"] = self.max_classifications
         context["type_pulsator"] = self.type_pulsator
