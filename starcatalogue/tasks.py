@@ -213,9 +213,9 @@ def save_zooniverse_metadata(vespa_subject_id):
 
 @shared_task
 def prepare_data_release(data_release_id):
-    default_period_certainties = {
-        "Rotator": "Correct",
-        "Unknown": "Correct",
+    period_certainty_overrides = {
+        "Rotator": "Correct period",
+        "Unknown": "Correct period",
         "Junk": "Wrong period",
     }
 
@@ -253,16 +253,18 @@ def prepare_data_release(data_release_id):
             ):
                 continue
             annotations = json.loads(row["annotations"])
-            if annotations[0]["value"] == "Real":
+            classification = annotations[0]["value"]
+            if classification == "Real":
                 # We don't need these as they are subsequently classified in the main workflow
                 continue
-            classifications["classification"].append(annotations[0]["value"])
+            classifications["classification"].append(classification)
             try:
-                classifications["period_certainty"].append(annotations[1]["value"])
+                period_certainty = annotations[1]["value"]
             except IndexError:
-                classifications["period_certainty"].append(
-                    default_period_certainties.get(annotations[0]["value"], None)
-                )
+                period_certainty = None
+            classifications["period_certainty"].append(
+                period_certainty_overrides.get(classification, period_certainty)
+            )
             classifications["subject_id"].append(int(row["subject_ids"]))
             classifications["user_name"].append(row["user_name"])
         del classification_export
@@ -422,11 +424,16 @@ def prepare_data_release(data_release_id):
                 zooniverse_id=subject_id, lightcurve=folded_lightcurve
             )
 
+        if row["consensus class"] in period_certainty_overrides:
+            period_certainty = period_certainty_overrides[row["consensus class"]]
+        else:
+            period_certainty = row["consensus period certainty"]
+
         AggregatedClassification.objects.create(
             data_release=data_release,
             lightcurve=folded_lightcurve,
             classification=CLASSIFICATION_LOOKUP[row["consensus class"]],
-            period_uncertainty=CLASSIFICATION_LOOKUP[row["consensus period certainty"]],
+            period_uncertainty=CLASSIFICATION_LOOKUP[period_certainty],
             classification_count=sum(
                 row[t]
                 for t in [
