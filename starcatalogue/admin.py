@@ -120,8 +120,10 @@ class StarAdmin(admin.ModelAdmin):
         "image_version",
         "json_version",
         "stats_version",
+        "fits_error_count",
     )
     search_fields = ("superwasp_id",)
+    list_filter = ("fits_error_count",)
     fields = (
         "stats_version",
         ("_min_magnitude", "_mean_magnitude", "_max_magnitude", "_amplitude"),
