@@ -423,16 +423,17 @@ def prepare_data_release(data_release_id):
         if row["consensus class"] in period_certainty_overrides:
             period_certainty = period_certainty_overrides[row["consensus class"]]
         else:
+            column_order = [
+                f"{row['consensus class']} Correct period",
+                f"{row['consensus class']} Wrong period",
+            ]
+            if row["consensus class"] != "Pulsator":
+                column_order = [
+                    f"{row['consensus class']} Half correct period",
+                ] + column_order
             period_certainty = (
-                row[
-                    [
-                        # The ordering of columns matters here for tie breaking
-                        f"{row['consensus class']} Half correct period",
-                        f"{row['consensus class']} Correct period",
-                        f"{row['consensus class']} Wrong period",
-                    ]
-                ]
-                .idxmax(axis="columns")
+                pandas.to_numeric(row[column_order])
+                .idxmax()
                 .replace(f"{row['consensus class']} ", "")
             )
 
