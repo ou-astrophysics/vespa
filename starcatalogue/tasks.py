@@ -262,8 +262,10 @@ def prepare_data_release(data_release_id):
                 period_certainty = annotations[1]["value"]
             except IndexError:
                 period_certainty = None
+            # Prepend primary classification to period certainty vote so we can count votes for
+            # each primary class separately.
             classifications["period_certainty"].append(
-                period_certainty_overrides.get(classification, period_certainty)
+                f"{classification} {period_certainty_overrides.get(classification, period_certainty)}"
             )
             classifications["subject_id"].append(int(row["subject_ids"]))
             classifications["user_name"].append(row["user_name"])
@@ -308,15 +310,6 @@ def prepare_data_release(data_release_id):
 
     aggregated_classifications = aggregated_classifications.join(
         aggregated_period_certainties,
-    )
-
-    aggregated_classifications[
-        "consensus period certainty"
-    ] = aggregated_classifications[
-        # The ordering of columns matters here for tie breaking
-        ["Half correct period", "Correct period", "Wrong period"]
-    ].idxmax(
-        axis="columns"
     )
 
     aggregated_classifications = aggregated_classifications[
@@ -427,7 +420,18 @@ def prepare_data_release(data_release_id):
         if row["consensus class"] in period_certainty_overrides:
             period_certainty = period_certainty_overrides[row["consensus class"]]
         else:
-            period_certainty = row["consensus period certainty"]
+            period_certainty = (
+                row[
+                    [
+                        # The ordering of columns matters here for tie breaking
+                        f"{row['consensus class']} Half correct period",
+                        f"{row['consensus class']} Correct period",
+                        f"{row['consensus class']} Wrong period",
+                    ]
+                ]
+                .idxmax(axis="columns")
+                .replace(f"{row['consensus class']} ", "")
+            )
 
         AggregatedClassification.objects.create(
             data_release=data_release,
