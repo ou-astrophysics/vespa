@@ -1,4 +1,5 @@
 import os
+from decimal import Decimal
 
 from celery import Celery
 
@@ -62,14 +63,20 @@ def queue_image_generations():
     ]:
         star.get_image_location()
 
-    for lightcurve in FoldedLightcurve.objects.filter(
-        star__fits_error_count__lt=settings.FITS_DOWNLOAD_ATTEMPTS
-    ).filter(
-        Q(image_version=None)
-        | Q(image_version__lt=FoldedLightcurve.CURRENT_IMAGE_VERSION)
-    )[
-        :1000
-    ]:
+    for lightcurve in (
+        FoldedLightcurve.objects.filter(
+            star__fits_error_count__lt=settings.FITS_DOWNLOAD_ATTEMPTS
+        )
+        .filter(
+            Q(image_version=None)
+            | Q(image_version__lt=FoldedLightcurve.CURRENT_IMAGE_VERSION)
+        )
+        .filter(
+            ~Q(sigma=Decimal("NaN"))
+            & ~Q(chi_squared=Decimal("NaN"))
+            & ~Q(period_length=Decimal("NaN"))
+        )[:1000]
+    ):
         lightcurve.get_image_location()
 
 

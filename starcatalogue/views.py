@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from astropy.coordinates import SkyCoord
 from astropy.coordinates.name_resolve import NameResolveError
 from astropy import units as u
@@ -24,6 +26,12 @@ class StarListView(ListView):
 
         qs = AggregatedClassification.objects.filter(
             data_release=DataRelease.get_latest()
+        )
+
+        qs = qs.filter(
+            ~Q(lightcurve__sigma=Decimal("NaN"))
+            & ~Q(lightcurve__chi_squared=Decimal("NaN"))
+            & ~Q(lightcurve__period_length=Decimal("NaN"))
         )
 
         try:
