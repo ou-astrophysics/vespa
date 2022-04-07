@@ -295,6 +295,7 @@ class GenerateExportView(View):
             )
             if export.export_status == DataExport.STATUS_FAILED:
                 export.export_status = DataExport.STATUS_PENDING
+                export.celery_task_id = None
                 export.save()
             return HttpResponseRedirect(
                 reverse("view_export", kwargs={"pk": export.id.hex})
