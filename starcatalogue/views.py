@@ -20,13 +20,14 @@ from starcatalogue.fields import Distance
 class StarListView(ListView):
     paginate_by = 20
 
-    def get_queryset(self, params=None):
+    def get_queryset(self, params=None, data_release=None):
         if params is None:
             params = self.request.GET
 
-        qs = AggregatedClassification.objects.filter(
-            data_release=DataRelease.get_latest()
-        )
+        if data_release is None:
+            data_release = DataRelease.get_latest()
+
+        qs = AggregatedClassification.objects.filter(data_release=data_release)
 
         qs = qs.filter(
             ~Q(lightcurve__sigma=Decimal("NaN"))

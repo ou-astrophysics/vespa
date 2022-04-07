@@ -136,7 +136,9 @@ class DataExport(models.Model):
 
     @property
     def queryset(self):
-        return StarListView().get_queryset(params=self.queryset_params)
+        return StarListView().get_queryset(
+            params=self.queryset_params, data_release=self.data_release
+        )
 
     @property
     def export_file_naturalsize(self):
