@@ -61,6 +61,11 @@ urlpatterns = [
         name="british-science-week",
     ),
     path(
+        "get-involved/",
+        TemplateView.as_view(template_name="waspstatic/get-involved.html"),
+        name="get-involved",
+    ),
+    path(
         "vespa/",
         starcatalogue.views.StarListView.as_view(
             template_name="starcatalogue/index.html"

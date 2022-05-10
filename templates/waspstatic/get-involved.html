@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block pagetitle %}Get Involved: Help us find black holes and variable stars!{% endblock %}
+{% block title %}Get Involved: Help us find black holes and variable stars!{% endblock %}
+
+{% block content %}
+
+<div class="row mb-3">
+    <div class="col-12">
+        <h2 class="mt-3">We're repurposing data from the SuperWASP Exoplanet search to find new things and we need your
+            help!</h2>
+        <p class="lead">Check out our projects and see what you could find!</p>
+    </div>
+</div>
+<div class="row mb-5">
+    <div class="col-8">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <img src="{% static '/images/skycoverage.png' %}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">SuperWASP Variable Stars</h5>
+                            <p class="card-text">Discover the weirdest variable stars.</p>
+                            <a href="https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars"
+                                class="btn btn-primary">Get Started</a>
+                            <a href="https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars"
+                                class="btn btn-primary"><i class="bi bi-twitter" aria-label="Twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-5">
+                        <img src="{% static '/selflensingimages/lensing-artist-impression.jpg' %}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">Black Hole Hunters</h5>
+                            <p class="card-text">Search for hidden black holes.</p>
+                            <a href="https://www.zooniverse.org/projects/hughdickinson/superwasp-black-hole-hunters"
+                                class="btn btn-primary">Get Started</a>
+                            <a href="https://twitter.com/BlackHoleHunter" class="btn btn-primary"><i
+                                    class="bi bi-twitter" aria-label="Twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
