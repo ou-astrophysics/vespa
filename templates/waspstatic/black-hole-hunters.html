@@ -8,61 +8,69 @@
 {% block content %}
 
 <p>As well as stars and planets, SuperWASP can be used to find more exotic types
-of astrophysical objects. The <a href="https://www.zooniverse.org/projects/hughdickinson/superwasp-black-hole-hunters">SuperWASP: Black Hole Hunters</a>
-project was set up to search for extremely rare signs that a hidden black hole
-is orbiting a normal star in a binary system. This page explains a little about
-the astrophysical processes that let us detect these elusive black holes and
-about the scientfic motivations for the project.</p>
+	of astrophysical objects. The <a
+		href="https://www.zooniverse.org/projects/hughdickinson/superwasp-black-hole-hunters">SuperWASP: Black Hole
+		Hunters</a>
+	project was set up to search for extremely rare signs that a hidden black hole
+	is orbiting a normal star in a binary system. This page explains a little about
+	the astrophysical processes that let us detect these elusive black holes and
+	about the scientfic motivations for the project.</p>
 
 <h2>The Galaxy’s missing black holes and neutron stars</h2>
 
 <p>Black holes and neutron stars (referred to as &ldquo;compact objects&rdquo;) are the end-products
-of stars which are at least eight times more massive than our Sun, and which die in
-a violent super-nova explosion. Unlike our Sun, the vast majority of stars live with
-a companion in a binary (though triple systems are also common). Should the supernova
-explosion &ndash; which leaves behind the neutron star or black hole &ndash; not tear the
-binary system apart, then we're left with a compact object and &ldquo;normal&rdquo; star orbiting
-around their common centre of mass. Over a very long period of time, the orbital
-separation of the binary can shrink and the compact object can accrete material
-from the companion star. This phase of accretion is only a very small fraction of
-the system’s lifetime, but has allowed us to locate about 30 binary systems containing
-black holes and 100-200 containing neutron stars. However, these numbers are dwarfed
-into insignificance when we consider that computer-based simulations of our Galaxy
-predict hundreds of thousands of binary systems should be present but not actively
-accreting. These black holes and neutron stars are surely out there, but how do we
-go about finding them?</p>
+	of stars which are at least eight times more massive than our Sun, and which die in
+	a violent super-nova explosion. Unlike our Sun, the vast majority of stars live with
+	a companion in a binary (though triple systems are also common). Should the supernova
+	explosion &ndash; which leaves behind the neutron star or black hole &ndash; not tear the
+	binary system apart, then we're left with a compact object and &ldquo;normal&rdquo; star orbiting
+	around their common centre of mass. Over a very long period of time, the orbital
+	separation of the binary can shrink and the compact object can accrete material
+	from the companion star. This phase of accretion is only a very small fraction of
+	the system’s lifetime, but has allowed us to locate about 30 binary systems containing
+	black holes and 100-200 containing neutron stars. However, these numbers are dwarfed
+	into insignificance when we consider that computer-based simulations of our Galaxy
+	predict hundreds of thousands of binary systems should be present but not actively
+	accreting. These black holes and neutron stars are surely out there, but how do we
+	go about finding them?</p>
 
 
 <h2>Self-lensing: a method to locate hidden black holes</h2>
 
 <div class="float-right mx-2 w-50" id="figure-1">
-		<a href="{% static '/selflensingimages/lensing_schematic_wide.jpg' %}"><img src="{% static '/selflensingimages/lensing_schematic_wide.jpg' %}" alt="A schematic image of the self-lensing process" class="img-fluid img-thumbnail"></a>
-		<p><b>Figure 1:</b> The light from a star is magnified when
-			the black hole passes in front of it. This creates a distinctive peak in the
-			lightcurve.</p>
+	<a href="{% static '/selflensingimages/lensing_schematic_wide.jpg' %}"><img
+			src="{% static '/selflensingimages/lensing_schematic_wide.jpg' %}"
+			alt="A schematic image of the self-lensing process" class="img-fluid img-thumbnail"></a>
+	<p><b>Figure 1:</b> The light from a star is magnified when
+		the black hole passes in front of it. This creates a distinctive peak in the
+		lightcurve.</p>
 </div>
 
 <p>When a foreground object such as a black hole or neutron star passes in front of
-a much more distant, normal background star, we observe the effect of &ldquo;micro-lensing&rdquo;.
-Lensing more generally occurs due to the curvature of space-time caused by the
-mass of the compact object or &ldquo;lens&rdquo; bending the paths of photons from the source
-such that the source appears to have a larger area and is therefore brighter. If
-we could observe a lens passing directly in front of a source we would observe what’s
-called an &ldquo;Einstein ring&rdquo; and the time it takes is spends passing in front of the
-source and acting as a lens, is called the &ldquo;Einstein crossing time&rdquo;. Microlensing
-is an important tool in modern astronomy as it can be used to constrain the nature
-of dark matter and even search for exoplanets.</p>
+	a much more distant, normal background star, we observe the effect of &ldquo;micro-lensing&rdquo;.
+	Lensing more generally occurs due to the curvature of space-time caused by the
+	mass of the compact object or &ldquo;lens&rdquo; bending the paths of photons from the source
+	such that the source appears to have a larger area and is therefore brighter. If
+	we could observe a lens passing directly in front of a source we would observe what’s
+	called an &ldquo;Einstein ring&rdquo; and the time it takes is spends passing in front of the
+	source and acting as a lens, is called the &ldquo;Einstein crossing time&rdquo;. Microlensing
+	is an important tool in modern astronomy as it can be used to constrain the nature
+	of dark matter and even search for exoplanets.</p>
 
 <p>A special case of lensing takes place when we observe a binary system containing
-a normal star and compact object, close to edge-on. As the compact object passes
-in front of its binary companion on an orbital period, the normal star's light
-will be lensed and we will detect a characteristic periodic increase in the light
-(see <a href="#figure-1">Figure 1</a>). If we can estimate the mass and radius of the normal star, then
-knowledge of the period and magnification leads us to a direct estimate for the
-mass of the compact object. This effect is called self-lensing and has been shown
-to work as white dwarfs have already; the stage is now set to discover neutron
-stars and black holes which are not accreting and otherwise hidden from us.</p>
+	a normal star and compact object, close to edge-on. As the compact object passes
+	in front of its binary companion on an orbital period, the normal star's light
+	will be lensed and we will detect a characteristic periodic increase in the light
+	(see <a href="#figure-1">Figure 1</a>). If we can estimate the mass and radius of the normal star, then
+	knowledge of the period and magnification leads us to a direct estimate for the
+	mass of the compact object. This effect is called self-lensing and has been shown
+	to work as white dwarfs have already; the stage is now set to discover neutron
+	stars and black holes which are not accreting and otherwise hidden from us.</p>
 
+{% endblock %}
 
-
+{% block acknowledgementsEnd %}
+<p class="lead">Black Hole Hunters was developed with support from the ESCAPE project. ESCAPE - The European Science
+	Cluster of Astronomy & Particle Physics ESFRI Research Infrastructures has received funding from the European
+	Union’s Horizon 2020 research and innovation programme under the Grant Agreement n° 824064.</p>
 {% endblock %}
