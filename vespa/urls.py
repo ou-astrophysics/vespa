@@ -16,7 +16,7 @@ Including another URLconf
 from typing import List
 from django.contrib import admin
 from django.urls import path
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView
 from django.views.generic.dates import (
@@ -62,7 +62,9 @@ urlpatterns = [
     ),
     path(
         "get-involved/",
-        TemplateView.as_view(template_name="waspstatic/get-involved.html"),
+        RedirectView.as_view(
+            url="https://www.zooniverse.org/projects/hughdickinson/superwasp-black-hole-hunters"
+        ),
         name="get-involved",
     ),
     path(
