@@ -122,7 +122,7 @@
                 "sha256:a0713dc7a1de3f06bc0df5a9567ad19ead2d3d5689b434768a6145bff77c0667",
                 "sha256:f184f0d851d96b6d29297354ed981b7dd71df7ff500d82fa6d11f0856bee8035"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.6.2'",
+            "markers": "python_full_version >= '3.6.2' and python_full_version < '4.0.0'",
             "version": "==0.3.0"
         },
         "click-plugins": {
@@ -634,11 +634,11 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:60b13757d6344a94bf0ccb3c0a006c4de77daab09871b30fbbd05d5ec24e54fb",
-                "sha256:f185c53496d79b280fe5d9d21e6572aee1ab802d3354eb12314d216cfbaa8d30"
+                "sha256:011155f11ab828a977fe8a60c5b534c30f49d70c9938362536d206bb230bb519",
+                "sha256:9921e76e29135aa1fa65fe231aaaef47355f85470c5ec59ce32715e22e6340b6"
             ],
             "index": "pypi",
-            "version": "==1.9.0"
+            "version": "==1.9.2"
         },
         "setuptools": {
             "hashes": [
@@ -725,7 +725,7 @@
                 "sha256:c33ccba33c819596124764c23a97d25f32b28433ba0dedeb77d873a38722c9bc",
                 "sha256:ea6e8fb210b19d950fab93b60c9009226c63a28808bc8386e05301e25883ac0a"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5' and python_version < '4'",
+            "markers": "python_version >= '3.5'",
             "version": "==1.26.11"
         },
         "vine": {
@@ -839,7 +839,7 @@
                 "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7",
                 "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
             ],
-            "markers": "python_version < '4.0' and python_full_version >= '3.6.1'",
+            "markers": "python_version < '4' and python_full_version >= '3.6.1'",
             "version": "==5.10.1"
         },
         "lazy-object-proxy": {
@@ -1026,7 +1026,7 @@
                 "sha256:69e0675671a2eed1c08a53f342c955c4ead5d373a10f756219bf39f3d4f0018a",
                 "sha256:d1b49c3e460f5910b22d799b13513504acb4f5fcaee01660ee66f07bd45a271c"
             ],
-            "markers": "python_version >= '3.6' and python_version < '4.0'",
+            "markers": "python_version >= '3.6' and python_version < '4'",
             "version": "==0.11.2"
         },
         "typing-extensions": {
