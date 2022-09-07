@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "waspstatic",
     "django_celery_results",
     "blog",
+    "visittracker",
 ]
 
 MIDDLEWARE = [

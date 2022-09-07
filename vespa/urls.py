@@ -35,6 +35,7 @@ import blog.models
 import blog.views
 import starcatalogue.models
 import starcatalogue.views
+import visittracker.views
 import waspstatic.views
 
 blog_context = {
@@ -62,7 +63,7 @@ urlpatterns = [
     ),
     path(
         "get-involved/",
-        RedirectView.as_view(
+        visittracker.views.TrackedRedirectView.as_view(
             url="https://www.zooniverse.org/projects/hughdickinson/superwasp-black-hole-hunters"
         ),
         name="get-involved",
