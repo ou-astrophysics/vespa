@@ -64,7 +64,16 @@ urlpatterns = [
     path(
         "get-involved/",
         visittracker.views.TrackedRedirectView.as_view(
-            url="https://www.zooniverse.org/projects/hughdickinson/superwasp-black-hole-hunters"
+            url="https://www.zooniverse.org/projects/hughdickinson/superwasp-black-hole-hunters",
+            source="bhh-get-involved",
+        ),
+        name="get-involved",
+    ),
+    path(
+        "get-started/",
+        visittracker.views.TrackedRedirectView.as_view(
+            url="https://www.zooniverse.org/projects/ajnorton/superwasp-variable-stars",
+            source="svs-get-started",
         ),
         name="get-involved",
     ),
