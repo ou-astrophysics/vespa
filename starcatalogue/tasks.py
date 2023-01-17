@@ -83,7 +83,12 @@ def download_fits(star_id):
         quote_via=urllib.parse.quote,
     )
     fits_url = f"http://wasp.warwick.ac.uk/lcextract?{encoded_params}"
-    fits_data = urllib.request.urlopen(fits_url, timeout=30)
+    try:
+        fits_data = urllib.request.urlopen(fits_url, timeout=30)
+    except urllib.request.HTTPError:
+        star.fits_error_count += 1
+        star.save()
+        return
     star.fits_file.save(f"{star.superwasp_id}.fits", fits_data)
     star.save()
 
