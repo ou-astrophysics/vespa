@@ -268,30 +268,38 @@ class GenerateExportView(View):
                 max_amplitude=max_amplitude,
                 min_classifications=min_classifications,
                 max_classifications=max_classifications,
-                certain_period=DataExport.CHECKBOX_CHOICES_DICT[
-                    request.POST.get("certain_period", "on")
-                ],
-                uncertain_period=DataExport.CHECKBOX_CHOICES_DICT[
-                    request.POST.get("uncertain_period", "on")
-                ],
-                half_period=DataExport.CHECKBOX_CHOICES_DICT[
-                    request.POST.get("half_period", "on")
-                ],
-                type_pulsator=DataExport.CHECKBOX_CHOICES_DICT[
-                    request.POST.get("type_pulsator", "on")
-                ],
-                type_eaeb=DataExport.CHECKBOX_CHOICES_DICT[
-                    request.POST.get("type_eaeb", "on")
-                ],
-                type_ew=DataExport.CHECKBOX_CHOICES_DICT[
-                    request.POST.get("type_ew", "on")
-                ],
-                type_rotator=DataExport.CHECKBOX_CHOICES_DICT[
-                    request.POST.get("type_rotator", "on")
-                ],
-                type_unknown=DataExport.CHECKBOX_CHOICES_DICT[
-                    request.POST.get("type_unknown", "on")
-                ],
+                certain_period=DataExport.CHECKBOX_CHOICES_DICT.get(
+                    request.POST.get("certain_period", "on"),
+                    True,
+                ),
+                uncertain_period=DataExport.CHECKBOX_CHOICES_DICT.get(
+                    request.POST.get("uncertain_period", "on"),
+                    True,
+                ),
+                half_period=DataExport.CHECKBOX_CHOICES_DICT.get(
+                    request.POST.get("half_period", "on"),
+                    True,
+                ),
+                type_pulsator=DataExport.CHECKBOX_CHOICES_DICT.get(
+                    request.POST.get("type_pulsator", "on"),
+                    True,
+                ),
+                type_eaeb=DataExport.CHECKBOX_CHOICES_DICT.get(
+                    request.POST.get("type_eaeb", "on"),
+                    True,
+                ),
+                type_ew=DataExport.CHECKBOX_CHOICES_DICT.get(
+                    request.POST.get("type_ew", "on"),
+                    True,
+                ),
+                type_rotator=DataExport.CHECKBOX_CHOICES_DICT.get(
+                    request.POST.get("type_rotator", "on"),
+                    True,
+                ),
+                type_unknown=DataExport.CHECKBOX_CHOICES_DICT.get(
+                    request.POST.get("type_unknown", "on"),
+                    True,
+                ),
                 search=request.POST.get("search", None),
                 search_radius=search_radius,
             )
