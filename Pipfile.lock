@@ -924,12 +924,12 @@
         },
         "seaborn": {
             "hashes": [
-                "sha256:374645f36509d0dcab895cba5b47daf0586f77bfe3b36c97c607db7da5be0139",
-                "sha256:ebf15355a4dba46037dfd65b7350f014ceb1f13c05e814eda2c9f5fd731afc08"
+                "sha256:0e76abd2ec291c655b516703c6a022f0fd5afed26c8e714e8baef48150f73598",
+                "sha256:70d740828c48de0f402bb17234e475eda687e3c65f4383ea25d0cc4728f7772e"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.7'",
-            "version": "==0.12.2"
+            "markers": "python_version >= '3.8'",
+            "version": "==0.13.0"
         },
         "sentry-sdk": {
             "hashes": [
