@@ -15,8 +15,8 @@ def to_tuple(inval):
         val = make_tuple(inval)
     except (ValueError, SyntaxError):
         raise ValidationError('Invalid input: "{0}"'.format(inval))
-    if not isinstance(val, collections.Iterable):
-        raise ValidationError('Value must be a tuple')
+    if not isinstance(val, collections.abc.Iterable):
+        raise ValidationError("Value must be a tuple")
     return val
 
 
@@ -24,7 +24,7 @@ def parse_spoint(point, to_deg):
     if not isinstance(point, tuple):
         point = to_tuple(point)
     if len(point) != 2:
-        raise ValidationError('Point has exactly two values: (ra, dec)')
+        raise ValidationError("Point has exactly two values: (ra, dec)")
     if to_deg:
         return tuple(math.degrees(i) for i in point)
     else:
@@ -32,10 +32,10 @@ def parse_spoint(point, to_deg):
 
 
 class SPointField(models.Field):
-    description = 'A pgsphere spoint as a tuple (ra, dec) in degrees'
+    description = "A pgsphere spoint as a tuple (ra, dec) in degrees"
 
     def db_type(self, connection):
-        return 'spoint'
+        return "spoint"
 
     def to_python(self, value):
         if value is None:
@@ -53,36 +53,36 @@ class SPointField(models.Field):
         return str(parse_spoint(value, to_deg=False))
 
     def get_prep_lookup(self, lookup_type, value):
-        if lookup_type == 'inradius':
+        if lookup_type == "inradius":
             # value will be a tuple ((ra, dec), radius)
             point, radius = value
-            return '<{0}, {1}>'.format(
-                tuple(math.radians(x) for x in point),
-                math.radians(radius)
+            return "<{0}, {1}>".format(
+                tuple(math.radians(x) for x in point), math.radians(radius)
             )
         else:
-            raise TypeError('Lookup type %r not supported.' % lookup_type)
+            raise TypeError("Lookup type %r not supported." % lookup_type)
 
 
 @SPointField.register_lookup
 class SPointIn(models.Lookup):
-    lookup_name = 'inradius'
+    lookup_name = "inradius"
 
     def as_sql(self, compiler, connection):
         lhs, params = self.process_lhs(compiler, connection)
         rhs, rhs_params = self.process_rhs(compiler, connection)
         params.extend(rhs_params)
-        return '%s @ scircle %s' % (lhs, rhs), params
+        return "%s @ scircle %s" % (lhs, rhs), params
 
     def process_rhs(self, compiler, connection):
         _, (((ra, dec), radius),) = super().process_rhs(compiler, connection)
         ra, dec = parse_spoint((ra, dec), to_deg=False)
         radius = math.radians(radius)
-        return ('(spoint(%s, %s), %s)', (ra, dec, radius))
+        return ("(spoint(%s, %s), %s)", (ra, dec, radius))
+
 
 class Distance(Func):
-    template = '%(expressions)s'
-    arg_joiner = '<->'
+    template = "%(expressions)s"
+    arg_joiner = "<->"
     arity = 2
     output_field = models.FloatField()
 
@@ -90,7 +90,7 @@ class Distance(Func):
         self,
         compiler,
         connection,
-        function=None, 
+        function=None,
         template=None,
         arg_joiner=None,
         **extra_context,
@@ -105,7 +105,7 @@ class Distance(Func):
         )
 
         lhs, rhs = sql.split(self.arg_joiner)
-        rhs = 'spoint(%s, %s)'
+        rhs = "spoint(%s, %s)"
         sql = self.arg_joiner.join((lhs, rhs))
 
         ra, dec = parse_spoint((ra, dec), to_deg=False)
