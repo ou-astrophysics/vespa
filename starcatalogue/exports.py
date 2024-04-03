@@ -118,7 +118,7 @@ class DataExport(models.Model):
     search_radius = models.FloatField(null=True)
 
     in_data_archive = models.BooleanField(default=False)
-    doi = models.CharField(max_length=22, null=True, blank=True)
+    doi = models.CharField(max_length=30, null=True, blank=True)
 
     data_version = models.FloatField()
     data_release = models.ForeignKey(DataRelease, on_delete=models.CASCADE, null=True)
