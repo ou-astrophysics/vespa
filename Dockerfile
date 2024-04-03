@@ -1,9 +1,9 @@
-FROM python:3.8
+FROM python:3.10
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-    netcat-traditional \
-    postgresql-client \
+  netcat-traditional \
+  postgresql-client \
   && rm -rf /var/lib/apt/lists/*
 
 RUN pip install \
