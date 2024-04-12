@@ -25,12 +25,12 @@ class Command(BaseCommand):
 
             star = Star.objects.get_or_create(superwasp_id=superwasp_id)
             lightcurve = FoldedLightcurve.objects.get_or_create(
-                star=star,
+                star__id=star.id,
                 period_number=period_number,
             )
 
             ZooniverseSubject.objects.get_or_create(
-                zooniverse_id=subject_id, lightcurve=lightcurve
+                zooniverse_id=subject_id, lightcurve__id=lightcurve.id
             )
 
             imported_total += 1
