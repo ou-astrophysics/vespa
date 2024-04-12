@@ -26,7 +26,7 @@ class Command(BaseCommand):
 
             star, _ = Star.objects.get_or_create(superwasp_id=superwasp_id)
             lightcurve, _ = FoldedLightcurve.objects.get_or_create(
-                star__id=star.id,
+                star=star,
                 period_number=period_number,
             )
             if lightcurve.period_length is None:
@@ -34,7 +34,7 @@ class Command(BaseCommand):
                 lightcurve.save()
 
             ZooniverseSubject.objects.get_or_create(
-                zooniverse_id=subject_id, lightcurve__id=lightcurve.id
+                zooniverse_id=subject_id, lightcurve=lightcurve
             )
 
             imported_total += 1
