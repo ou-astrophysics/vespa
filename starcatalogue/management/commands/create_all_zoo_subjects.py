@@ -18,6 +18,7 @@ class Command(BaseCommand):
             try:
                 subject_id = int(row[0])
                 superwasp_id = row[1]
+                period_length = float(row[2])
                 period_number = int(row[3])
             except IndexError:
                 print("Warning: Skipping row {} due to IndexError".format(count))
@@ -28,6 +29,9 @@ class Command(BaseCommand):
                 star__id=star.id,
                 period_number=period_number,
             )
+            if lightcurve.period_length is None:
+                lightcurve.period_length = period_length
+                lightcurve.save()
 
             ZooniverseSubject.objects.get_or_create(
                 zooniverse_id=subject_id, lightcurve__id=lightcurve.id
