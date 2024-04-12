@@ -23,8 +23,8 @@ class Command(BaseCommand):
                 print("Warning: Skipping row {} due to IndexError".format(count))
                 continue
 
-            star = Star.objects.get_or_create(superwasp_id=superwasp_id)
-            lightcurve = FoldedLightcurve.objects.get_or_create(
+            star, _ = Star.objects.get_or_create(superwasp_id=superwasp_id)
+            lightcurve, _ = FoldedLightcurve.objects.get_or_create(
                 star__id=star.id,
                 period_number=period_number,
             )
