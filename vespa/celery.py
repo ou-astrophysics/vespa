@@ -125,8 +125,12 @@ def set_locations():
 def set_zooniverse_metadata():
     from starcatalogue.models import ZooniverseSubject
 
-    for subject in ZooniverseSubject.objects.filter(
+    for subject in ZooniverseSubject.objects.exclude(
+        lightcurve__cnn_junk_prediction=None
+    ).filter(
         Q(metadata_version=None)
         | Q(metadata_version__lt=ZooniverseSubject.CURRENT_METADATA_VERSION)
-    )[:1000]:
+    )[
+        :10000
+    ]:
         subject.save_metadata()

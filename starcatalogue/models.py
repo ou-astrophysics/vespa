@@ -329,6 +329,8 @@ class FoldedLightcurve(models.Model, ImageGenerator):
     updated_sigma = models.FloatField(null=True)
     updated_chi_squared = models.FloatField(null=True)
 
+    cnn_junk_prediction = models.FloatField(null=True)
+
     image_file = models.ImageField(null=True, upload_to=lightcurve_upload_to)
     thumbnail_file = models.ImageField(null=True, upload_to=lightcurve_upload_to)
     images_celery_task_id = models.UUIDField(null=True)
@@ -398,7 +400,7 @@ class FoldedLightcurve(models.Model, ImageGenerator):
 
 
 class ZooniverseSubject(models.Model):
-    CURRENT_METADATA_VERSION = 1.0
+    CURRENT_METADATA_VERSION = 2.0
 
     zooniverse_id = models.IntegerField(unique=True)
     lightcurve = models.OneToOneField(to=FoldedLightcurve, on_delete=models.CASCADE)
@@ -433,6 +435,7 @@ class ZooniverseSubject(models.Model):
             "!Simbad": f"http://simbad.u-strasbg.fr/simbad/sim-coo?Coord={ra}+{dec}&Radius=2&Radius.unit=arcmin&submit=submit+query",
             "!ASAS-SN Photometry": f"https://asas-sn.osu.edu/photometry?ra={ra}&dec={dec}&radius=2",
             "!VeSPA": f"https://{settings.ALLOWED_HOSTS[0]}{self.lightcurve.get_period_url()}",
+            "Junk Prediction": self.lightcurve.cnn_junk_prediction,
         }
 
     @property

@@ -86,12 +86,13 @@ class FoldedLightcurveAdmin(admin.ModelAdmin):
         "period_length",
         "sigma",
         "chi_squared",
+        "cnn_junk_prediction",
     )
     search_fields = ("star__superwasp_id",)
     fields = (
         ("star", "zooniversesubject", "created"),
         ("period_number",),
-        ("period_length", "sigma", "chi_squared"),
+        ("period_length", "sigma", "chi_squared", "cnn_junk_prediction"),
         ("updated_period_length", "updated_sigma", "updated_chi_squared"),
         ("image_file", "thumbnail_file", "image_version"),
     )

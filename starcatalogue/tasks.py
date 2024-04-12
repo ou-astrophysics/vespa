@@ -206,6 +206,10 @@ def generate_star_images(star_id):
 @shared_task
 def save_zooniverse_metadata(vespa_subject_id):
     vespa_subject = ZooniverseSubject.objects.get(id=vespa_subject_id)
+
+    if vespa_subject.lightcurve.cnn_junk_prediction is None:
+        return
+
     zoo_subject = Subject.find(vespa_subject.zooniverse_id)
 
     zoo_subject.metadata = vespa_subject.subject_metadata
