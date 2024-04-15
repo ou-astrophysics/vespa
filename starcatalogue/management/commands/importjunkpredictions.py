@@ -21,7 +21,7 @@ class Command(BaseCommand):
         updated = 0
         for n, lc in enumerate(qs, start=1):
             try:
-                image_filename = f"{lc.star.superwasp_id}_P{lc.period_number}.gif"
+                image_filename = f"{lc.star.superwasp_id}_P{lc.period_number}_fold.gif"
                 try:
                     lc.cnn_junk_prediction = df.loc[image_filename]["prediction"]
                 except KeyError:
