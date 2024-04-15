@@ -16,25 +16,23 @@ class Command(BaseCommand):
         df = pandas.read_pickle(options["file"][0])
         imported_total = 0
         lcs = []
-        total = len(df)
+        qs = FoldedLightcurve.objects.filter(cnn_junk_prediction=None)
+        total = qs.count()
         updated = 0
-        for n, (i, row) in enumerate(df.iterrows(), start=1):
-            superwasp_id, period_number, _ = i.replace(".gif", "").split("_")
-            period_number = int(period_number.replace("P", ""))
+        for n, lc in enumerate(qs, start=1):
             try:
-                lcs.append(
-                    FoldedLightcurve.objects.get(
-                        star__superwasp_id=superwasp_id, period_number=period_number
-                    )
-                )
-                lcs[-1].cnn_junk_prediction = row["prediction"]
-            except FoldedLightcurve.DoesNotExist:
-                pass
-            if n % 100 == 0 or n == total:
-                print(f"\r{n} / {total} ({(n / total) * 100:.2f}%)", end="")
-                if len(lcs) > 0:
-                    updated += FoldedLightcurve.objects.bulk_update(
-                        lcs, ["cnn_junk_prediction"]
-                    )
-                    lcs = []
+                image_filename = f"{lc.star.superwasp_id}_P{lc.period_number}.gif"
+                try:
+                    lc.cnn_junk_prediction = df.loc[image_filename]["prediction"]
+                except KeyError:
+                    continue
+                lcs.append(lc)
+            finally:
+                if n % 100 == 0 or n == total:
+                    print(f"\r{n} / {total} ({(n / total) * 100:.2f}%)", end="")
+                    if len(lcs) > 0:
+                        updated += FoldedLightcurve.objects.bulk_update(
+                            lcs, ["cnn_junk_prediction"]
+                        )
+                        lcs = []
         print(f"\nUpdated {updated}")
