@@ -19,7 +19,7 @@ class Command(BaseCommand):
         qs = FoldedLightcurve.objects.filter(cnn_junk_prediction=None)
         total = qs.count()
         updated = 0
-        for n, lc in enumerate(qs, start=1):
+        for n, lc in enumerate(qs.iterator(), start=1):
             try:
                 image_filename = f"{lc.star.superwasp_id}_P{lc.period_number}_fold.gif"
                 try:
