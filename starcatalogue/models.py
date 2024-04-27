@@ -400,7 +400,7 @@ class FoldedLightcurve(models.Model, ImageGenerator):
 
 
 class ZooniverseSubject(models.Model):
-    CURRENT_METADATA_VERSION = 2.0
+    CURRENT_METADATA_VERSION = 2.1
 
     zooniverse_id = models.IntegerField(unique=True)
     lightcurve = models.OneToOneField(to=FoldedLightcurve, on_delete=models.CASCADE)
