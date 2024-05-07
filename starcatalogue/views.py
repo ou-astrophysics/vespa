@@ -273,6 +273,7 @@ class StarListView(ListView):
         context["sort"] = self.sort
         context["order"] = self.order
         context["result_count"] = self.result_count
+        context["data_release"] = DataRelease.get_latest()
 
         return context
 
