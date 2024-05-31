@@ -368,6 +368,7 @@ def prepare_data_release(data_release_id):
         ["Period Flag", "Camera Number", "SWASP", "ID"], axis="columns", inplace=True
     )
     periodicity_cat.set_index(["SWASP ID", "Period", "Period Number"], inplace=True)
+    periodicity_cat.drop_duplicates(inplace=True)
 
     aggregated_classifications = aggregated_classifications.join(zoo_lookup)
     aggregated_classifications = aggregated_classifications.join(
