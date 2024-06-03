@@ -28,6 +28,7 @@ ujson = "*"
 markdown = "*"
 panoptes-client = "*"
 pandas = "*"
+requests = "<2.32.2"
 
 [requires]
 python_version = "3.10"
