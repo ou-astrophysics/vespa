@@ -35,7 +35,12 @@ from .models import (
 
 @shared_task
 def generate_export(export_id):
-    export = DataExport.objects.get(id=export_id)
+    for attempt in range(5):
+        try:
+            export = DataExport.objects.get(id=export_id)
+            break
+        except DataExport.DoesNotExist:
+            time.sleep(10)
     if export.export_status in (export.STATUS_RUNNING, export.STATUS_COMPLETE):
         return
 
