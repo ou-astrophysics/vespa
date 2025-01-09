@@ -118,3 +118,4 @@ fits/
 celerybeat-schedule
 local.env
 classifications.pkl
+.DS_Store
