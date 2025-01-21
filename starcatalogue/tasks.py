@@ -94,10 +94,11 @@ def download_fits(star_id):
         f"batch_*/{fits_file_name}"
     )
     unlink_missing = False
-    if len(missing_paths) > 0:
-        with open(missing_paths[0], "rb") as fits_f:
+    for missing_path in missing_paths:
+        with open(missing_path, "rb") as fits_f:
             fits_data = fits_f.read()
         unlink_missing = True
+        break
     else:
         fits_url = f"http://wasp.warwick.ac.uk/lcextract?{encoded_params}"
         try:
