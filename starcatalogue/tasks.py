@@ -90,7 +90,7 @@ def download_fits(star_id):
         quote_via=urllib.parse.quote,
     )
     fits_file_name = f"{star.superwasp_id}.fits"
-    missing_paths = (Path(settings.media_root) / "missing").glob(
+    missing_paths = (Path(settings.MEDIA_ROOT) / "missing").glob(
         f"batch_*/{fits_file_name}"
     )
     unlink_missing = False
