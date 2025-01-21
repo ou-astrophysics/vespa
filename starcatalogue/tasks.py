@@ -16,6 +16,7 @@ from astropy.units import Quantity
 from celery import shared_task
 
 from django.conf import settings
+from django.core.files import File
 from django.core.files.base import ContentFile
 from django.db.models import Q, F
 
@@ -94,21 +95,27 @@ def download_fits(star_id):
         f"batch_*/{fits_file_name}"
     )
     unlink_missing = False
-    for missing_path in missing_paths:
-        with open(missing_path, "rb") as fits_f:
-            fits_data = fits_f.read()
-        unlink_missing = True
-        break
-    else:
-        fits_url = f"http://wasp.warwick.ac.uk/lcextract?{encoded_params}"
-        try:
-            fits_data = urllib.request.urlopen(fits_url, timeout=30)
-        except urllib.request.HTTPError:
-            star.fits_error_count += 1
-            star.save()
-            return
-    star.fits_file.save(fits_file_name, fits_data)
-    star.save()
+    open_file = False
+    try:
+        for missing_path in missing_paths:
+            fits_f = open(missing_path, "rb")
+            open_file = True
+            fits_data = File(fits_f)
+            unlink_missing = True
+            break
+        else:
+            fits_url = f"http://wasp.warwick.ac.uk/lcextract?{encoded_params}"
+            try:
+                fits_data = urllib.request.urlopen(fits_url, timeout=30)
+            except urllib.request.HTTPError:
+                star.fits_error_count += 1
+                star.save()
+                return
+        star.fits_file.save(fits_file_name, fits_data)
+        star.save()
+    finally:
+        if open_file:
+            fits_f.close()
 
     if unlink_missing:
         missing_paths[0].unlink()
