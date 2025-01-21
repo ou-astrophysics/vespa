@@ -101,7 +101,7 @@ def download_fits(star_id):
             fits_f = open(missing_path, "rb")
             open_file = True
             fits_data = File(fits_f)
-            unlink_missing = True
+            unlink_missing = missing_path
             break
         else:
             fits_url = f"http://wasp.warwick.ac.uk/lcextract?{encoded_params}"
@@ -117,8 +117,8 @@ def download_fits(star_id):
         if open_file:
             fits_f.close()
 
-    if unlink_missing:
-        missing_paths[0].unlink()
+    if unlink_missing is not False:
+        unlink_missing.unlink()
 
     star.get_image_location()
     star.calculate_magnitudes()
