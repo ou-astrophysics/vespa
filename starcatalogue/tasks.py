@@ -21,6 +21,8 @@ from django.db.models import Q, F
 
 from matplotlib import pyplot
 
+from pathlib import Path
+
 from panoptes_client import Subject, Project
 from PIL import Image
 
@@ -87,15 +89,28 @@ def download_fits(star_id):
         {"objid": star.superwasp_id.replace("1SWASP", "1SWASP ")},
         quote_via=urllib.parse.quote,
     )
-    fits_url = f"http://wasp.warwick.ac.uk/lcextract?{encoded_params}"
-    try:
-        fits_data = urllib.request.urlopen(fits_url, timeout=30)
-    except urllib.request.HTTPError:
-        star.fits_error_count += 1
-        star.save()
-        return
-    star.fits_file.save(f"{star.superwasp_id}.fits", fits_data)
+    fits_file_name = f"{star.superwasp_id}.fits"
+    missing_paths = (Path(settings.media_root) / "missing").glob(
+        f"batch_*/{fits_file_name}"
+    )
+    unlink_missing = False
+    if len(missing_paths) > 0:
+        with open(missing_paths[0], "rb") as fits_f:
+            fits_data = fits_f.read()
+        unlink_missing = True
+    else:
+        fits_url = f"http://wasp.warwick.ac.uk/lcextract?{encoded_params}"
+        try:
+            fits_data = urllib.request.urlopen(fits_url, timeout=30)
+        except urllib.request.HTTPError:
+            star.fits_error_count += 1
+            star.save()
+            return
+    star.fits_file.save(fits_file_name, fits_data)
     star.save()
+
+    if unlink_missing:
+        missing_paths[0].unlink()
 
     star.get_image_location()
     star.calculate_magnitudes()
