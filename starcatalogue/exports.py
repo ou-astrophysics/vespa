@@ -120,6 +120,8 @@ class DataExport(models.Model):
     in_data_archive = models.BooleanField(default=False)
     doi = models.CharField(max_length=30, null=True, blank=True)
 
+    _object_count = models.IntegerField(null=True)
+
     data_version = models.FloatField()
     data_release = models.ForeignKey(DataRelease, on_delete=models.CASCADE, null=True)
 
@@ -133,6 +135,13 @@ class DataExport(models.Model):
     progress = models.FloatField(default=0.0)
 
     created = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def object_count(self):
+        if self._object_count is None:
+            self._object_count = self.queryset.count()
+            self.save()
+        return self._object_count
 
     @property
     def queryset(self):

@@ -29,7 +29,7 @@
                     <a href="{% url 'view_export' export.id %}" class="btn btn-primary">Download export</a>
                     {% if export.export_file %}
                     <p class="card-text small mt-1"><i class="bi bi-file-zip"></i>
-                        {{ export.export_file_naturalsize }}, {{ export.queryset.count|intcomma }} objects</p>
+                        {{ export.export_file_naturalsize }}, {{ export.object_count|intcomma }} objects</p>
                     {% endif %}
                     {% else %}
                     <p class="card-text">This release is still being prepared. Please check back soon.</p>
