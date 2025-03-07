@@ -14,10 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from typing import List
 from django.contrib import admin
 from django.urls import path
-from django.views.generic.base import TemplateView, RedirectView
+from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView
 from django.views.generic.dates import (
@@ -112,7 +111,7 @@ urlpatterns = [
         name="generate_export",
     ),
     path(
-        "vespa/export/<str:pk>/",
+        "vespa/export/<uuid:pk>/",
         DetailView.as_view(model=starcatalogue.models.DataExport),
         name="view_export",
     ),
