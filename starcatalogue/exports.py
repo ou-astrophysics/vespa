@@ -6,9 +6,9 @@ import uuid
 
 from django.conf import settings
 from django.db import models
-from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponseBadRequest, Http404
 from django.template import RequestContext
-from django.urls import reverse
+from django.urls import reverse, NoReverseMatch
 from django.views import View
 
 from humanize import naturalsize
@@ -316,9 +316,12 @@ class GenerateExportView(View):
                 export.export_status = DataExport.STATUS_PENDING
                 export.celery_task_id = None
                 export.save()
-            return HttpResponseRedirect(
-                reverse("view_export", kwargs={"pk": export.id.hex})
-            )
+            try:
+                return HttpResponseRedirect(
+                    reverse("view_export", kwargs={"pk": export.id.hex})
+                )
+            except NoReverseMatch:
+                raise Http404
         except (ValueError, TypeError):
             return HttpResponseBadRequest("Bad Request")
 
