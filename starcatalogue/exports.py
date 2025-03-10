@@ -318,7 +318,7 @@ class GenerateExportView(View):
                 export.save()
             try:
                 return HttpResponseRedirect(
-                    reverse("view_export", kwargs={"pk": export.id.hex})
+                    reverse("view_export", kwargs={"pk": export.id})
                 )
             except NoReverseMatch:
                 raise Http404
