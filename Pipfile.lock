@@ -290,20 +290,20 @@
         },
         "django": {
             "hashes": [
-                "sha256:11b28fa4b00e59d0def004e9ee012fefbb1065a5beb39ee838983fd24493ad4f",
-                "sha256:42e92a1dd2810072bcc40a39a212b693f94406d0ba0749e68eb642f31dc770b4"
+                "sha256:1a47f7a7a3d43ce64570d350e008d2949abe8c7e21737b351b6a1611277c6d89",
+                "sha256:91ceed4e3a6db5aedced65e3c8f963118ea9ba753fc620831c77074e620e7d83"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.10'",
-            "version": "==5.1.8"
+            "version": "==5.2"
         },
         "django-celery-results": {
             "hashes": [
-                "sha256:0da4cd5ecc049333e4524a23fcfc3460dfae91aa0a60f1fae4b6b2889c254e01",
-                "sha256:3ecb7147f773f34d0381bac6246337ce4cf88a2ea7b82774ed48e518b67bb8fd"
+                "sha256:9abcd836ae6b61063779244d8887a88fe80bbfaba143df36d3cb07034671277c",
+                "sha256:b9ccdca2695b98c7cbbb8dea742311ba9a92773d71d7b4944a676e69a7df1c73"
             ],
             "index": "pypi",
-            "version": "==2.5.1"
+            "version": "==2.6.0"
         },
         "fonttools": {
             "hashes": [
@@ -947,11 +947,11 @@
         },
         "typing-extensions": {
             "hashes": [
-                "sha256:0a4ac55a5820789d87e297727d229866c9650f6521b64206413c4fbada24d95b",
-                "sha256:c8dd92cc0d6425a97c18fbb9d1954e5ff92c1ca881a309c45f06ebc0b79058e5"
+                "sha256:a439e7c04b49fec3e5d3e2beaa21755cadbbdc391694e28ccdd36ca4a1408f8c",
+                "sha256:e6c81219bd689f51865d9e372991c540bda33a0379d5573cddb9a3a23f7caaef"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==4.13.0"
+            "version": "==4.13.2"
         },
         "tzdata": {
             "hashes": [
