@@ -13,7 +13,7 @@ pytest-pythonpath = "*"
 pylint = "*"
 
 [packages]
-django = ">=4.0,<6.0"
+django = ">=4.0,<5.2" # Postgres 13 not supported in Django 5.2
 gunicorn = "*"
 psycopg2 = "*"
 astropy = "*"

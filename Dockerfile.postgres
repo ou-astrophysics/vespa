@@ -1,7 +1,7 @@
 FROM postgres:13
 
 RUN apt-get update \
-      && apt-cache showpkg postgresql-$PG_MAJOR-pgsphere \
-      && apt-get install -y --no-install-recommends \
-           postgresql-$PG_MAJOR-pgsphere \
-      && rm -rf /var/lib/apt/lists/*
+     && apt-cache showpkg postgresql-$PG_MAJOR-pgsphere \
+     && apt-get install -y --no-install-recommends \
+     postgresql-$PG_MAJOR-pgsphere \
+     && rm -rf /var/lib/apt/lists/*
