@@ -191,11 +191,13 @@ class StarListView(ListView):
             if self.coords is None:
                 try:
                     self.coords = SkyCoord(self.search)
-                except (ValueError, UnicodeDecodeError, u.UnitsError):
+                except (ValueError, u.UnitsError):
                     try:
                         self.coords = SkyCoord.from_name(self.search, parse=True)
                     except NameResolveError:
                         pass
+                except UnicodeDecodeError:
+                    pass
 
             if self.coords is None:
                 qs = qs.none()
