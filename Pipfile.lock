@@ -670,11 +670,11 @@
         },
         "panoptes-client": {
             "hashes": [
-                "sha256:5ce51086db307f6d233c0007873e62ef3ecedc069d8dc7d3fef118018b8787d0",
-                "sha256:d9f5f402396c25125b93ffcdc05b9983a8c9e956a589236c1cd8ba8b2989f86d"
+                "sha256:11ccd9e5f0c19897636c70d437165d32fa4d79f399f8c2b009599d86babb104d",
+                "sha256:325b67673c5bfa63651db00b62c3c9c0a617b6a44a55a453151082d96fe27b2b"
             ],
             "index": "pypi",
-            "version": "==1.7.0"
+            "version": "==1.7.1"
         },
         "pillow": {
             "hashes": [
@@ -908,7 +908,6 @@
                 "sha256:27babd3cda2a6d50b30443204ee89830707d396671944c998b5975b031ac2b2c",
                 "sha256:27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422"
             ],
-            "index": "pypi",
             "markers": "python_version >= '3.8'",
             "version": "==2.32.4"
         },
