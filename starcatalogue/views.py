@@ -194,7 +194,7 @@ class StarListView(ListView):
                 except (ValueError, u.UnitsError):
                     try:
                         self.coords = SkyCoord.from_name(self.search, parse=True)
-                    except (NameResolveError, UnicodeDecodeError):
+                    except (NameResolveError, UnicodeDecodeError, ValueError):
                         pass
                 except UnicodeDecodeError:
                     pass
