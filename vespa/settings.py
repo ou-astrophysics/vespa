@@ -88,7 +88,7 @@ WSGI_APPLICATION = "vespa.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "HOST": "db",
+        "HOST": "db18",
         "NAME": "vespa",
         "USER": "vespa",
         "PASSWORD": "localdev",

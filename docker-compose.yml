@@ -8,8 +8,17 @@ services:
       POSTGRES_USER: "vespa"
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
+  db18:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres18
+    environment:
+      POSTGRES_PASSWORD: "localdev"
+      POSTGRES_USER: "vespa"
+    volumes:
+      - ./postgres_data18:/var/lib/postgresql
   rabbitmq:
-    image: rabbitmq:3
+    image: rabbitmq:4.2
     environment:
       RABBITMQ_DEFAULT_VHOST: "vespa"
   app:

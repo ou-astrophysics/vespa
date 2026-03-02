@@ -43,7 +43,9 @@ podman pod create --name vespa -p 80:80
 
 podman run -d --restart=always --pod=vespa --name vespa-postgres --label "io.containers.autoupdate=image" -v /opt/vespa/psql:/var/lib/postgresql/data:z --env-file /opt/vespa/postgres.env ghcr.io/ou-astrophysics/vespa-postgresql:latest
 
-podman run -d --restart=always --pod=vespa --name vespa-rabbitmq --label "io.containers.autoupdate=image" -v /opt/vespa/rabbitmq/:/var/lib/rabbitmq/:z --env-file /opt/vespa/rabbitmq.env docker.io/rabbitmq:3.8
+podman run -d --restart=always --pod=vespa --name vespa-postgres --label "io.containers.autoupdate=image" -v /opt/vespa/psql18:/var/lib/postgresql:z --env-file /opt/vespa/postgres.env ghcr.io/ou-astrophysics/vespa-postgresql18:latest
+
+podman run -d --restart=always --pod=vespa --name vespa-rabbitmq --label "io.containers.autoupdate=image" -v /opt/vespa/rabbitmq/:/var/lib/rabbitmq/:z --env-file /opt/vespa/rabbitmq.env docker.io/rabbitmq:4.2
 
 podman run -d --restart=always --pod=vespa --name vespa-nginx --label "io.containers.autoupdate=image" -v /opt/vespa/nginx.conf:/etc/nginx/nginx.conf:ro -v /opt/vespa/static/:/opt/vespa/static:z -v /srv/www/superwasp-live/media:/opt/vespa/media -v /src/www/superwasp-live/nginx-logs:/var/log/nginx -v /srv/www/superwasp-live/awstats/html:/opt/vespa/stats -v /opt/vespa/awstats.htpasswd:/etc/nginx/awstats.htpasswd docker.io/nginx:1
 
