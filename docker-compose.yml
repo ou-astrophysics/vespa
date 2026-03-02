@@ -1,13 +1,4 @@
 services:
-  db:
-    build:
-      context: .
-      dockerfile: Dockerfile.postgres
-    environment:
-      POSTGRES_PASSWORD: "localdev"
-      POSTGRES_USER: "vespa"
-    volumes:
-      - ./postgres_data:/var/lib/postgresql/data
   db18:
     build:
       context: .
