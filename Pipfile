@@ -13,7 +13,7 @@ pytest-pythonpath = "*"
 pylint = "*"
 
 [packages]
-django = ">5.2,<6"
+django = ">=5.2.14,<6"
 gunicorn = "*"
 psycopg2 = "*"
 astropy = "*"
