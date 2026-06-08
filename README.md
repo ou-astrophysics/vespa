@@ -19,10 +19,10 @@ You can also use docker-compose:
 docker-compose build && docker-compose up
 ```
 
-Or without Docker, install Pipenv in you Python environment and run:
+Or without Docker, install uv and run:
 
 ```
-pipenv install
+uv sync
 ./start_server.sh
 ```
 
