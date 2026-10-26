@@ -9,7 +9,7 @@ services:
     volumes:
       - ./postgres_data18:/var/lib/postgresql
   rabbitmq:
-    image: rabbitmq:4.2
+    image: rabbitmq:4
     environment:
       RABBITMQ_DEFAULT_VHOST: "vespa"
   app:

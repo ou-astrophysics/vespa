@@ -2,9 +2,9 @@
 name = "vespa"
 version = "0.1.0"
 description = "The SuperWASP Variable Star Photometry Archive."
-requires-python = ">=3.10,<3.11"
+requires-python = ">=3.14,<4"
 dependencies = [
-    "django>=5.2.17,<6",
+    "django>=5.2.18,<6",
     "gunicorn",
     "psycopg2",
     "astropy",

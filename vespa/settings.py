@@ -143,6 +143,10 @@ MEDIA_URL = "/media/"
 CELERY_BROKER_URL = "amqp://guest:guest@rabbitmq/vespa"
 CELERY_RESULT_BACKEND = "django-db"
 
+# RabbitMQ 4.3+ rejects non-durable, non-exclusive queues by default.
+CELERY_CONTROL_QUEUE_EXCLUSIVE = True
+CELERY_EVENT_QUEUE_EXCLUSIVE = True
+
 PERIODIC_TASK_INTERVAL = 120
 
 FITS_DOWNLOAD_ATTEMPTS = 6
