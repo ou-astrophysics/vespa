@@ -3,6 +3,7 @@
 # it easier to add new fields, since they're all in one place.
 
 import uuid
+import sentry_sdk
 
 from django.conf import settings
 from django.db import models
@@ -151,7 +152,11 @@ class DataExport(models.Model):
 
     @property
     def export_file_naturalsize(self):
-        return naturalsize(self.export_file.size)
+        try:
+            return naturalsize(self.export_file.size)
+        except OSError as exc:
+            sentry_sdk.capture_exception(exc)
+            return "size unavailable"
 
     @property
     def queryset_params(self):

@@ -4,6 +4,7 @@ import math
 import urllib
 
 import numpy
+import sentry_sdk
 
 from django.conf import settings
 from django.db import models
@@ -219,7 +220,11 @@ class Star(models.Model, ImageGenerator, JSONGenerator):
 
     @property
     def fits_file_naturalsize(self):
-        return naturalsize(self.fits_file.size)
+        try:
+            return naturalsize(self.fits_file.size)
+        except OSError as exc:
+            sentry_sdk.capture_exception(exc)
+            return "size unavailable"
 
     @property
     def timeseries(self):
